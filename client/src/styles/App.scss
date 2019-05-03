@@ -1,0 +1,25 @@
+@mixin flex($dir,$justifyContent) {
+    display: flex;
+    flex-direction: $dir;
+    justify-content: $justifyContent;    
+}
+
+.fromTo{
+    @include flex(row,center);
+}
+
+select {
+    position: relative;
+    top : 20%;
+    margin: 15px;
+    font-size: 25px;
+            
+}
+
+h2 {
+        font-size: 40px;
+}
+
+.search{
+    @include flex(column,flex-start)
+}
