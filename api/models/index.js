@@ -1,16 +1,15 @@
+/*
+    Provides models for mongo db
+*/
 const mongoose = require('mongoose');
 
 // import  models
 const User = require('./user');
+const Travel = require('./travel');
+const Group = require('./group');
 
-//TODO: take database url from env file
-const connectDb = (url, options) => {
-    options['useNewUrlParser'] = true;
-    return mongoose.connect(url, options);
-};
-const models = { User };
+const models = { User, Travel, Group };
 
 module.exports = {
-    connect: connectDb,
     models: models,
 };

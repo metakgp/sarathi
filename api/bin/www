@@ -6,25 +6,30 @@
 var app = require('../app');
 var debug = require('debug')('api:server');
 var http = require('http');
-var dbconnector = require('../models/index');
+var mongoose = require('mongoose');
 
 /**
  * Get port from environment and store in Express.
  */
-
 var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
+
+/*
+  Create mongodb database connection
+*/
+mongoose.connect('mongodb://localhost:27017', {dbName: 'travelkgp', useNewUrlParser: true});
+var connection = mongoose.connection;
+connection.on('error', console.error.bind(console, 'connection error:'));
 
 /**
  * Create HTTP server.
  */
-
 var server = http.createServer(app);
 
 /**
  * Listen on provided port, on all network interfaces.
  */
-dbconnector.connect('mongodb://localhost:27017', {dbName: 'travelkgp'}).then(() => {
+connection.once('open', () => {
   server.listen(port);
   server.on('error', onError);
   server.on('listening', onListening);
@@ -33,7 +38,6 @@ dbconnector.connect('mongodb://localhost:27017', {dbName: 'travelkgp'}).then(() 
 /**
  * Normalize a port into a number, string, or false.
  */
-
 function normalizePort(val) {
   var port = parseInt(val, 10);
 
@@ -53,7 +57,6 @@ function normalizePort(val) {
 /**
  * Event listener for HTTP server "error" event.
  */
-
 function onError(error) {
   if (error.syscall !== 'listen') {
     throw error;
@@ -81,7 +84,6 @@ function onError(error) {
 /**
  * Event listener for HTTP server "listening" event.
  */
-
 function onListening() {
   var addr = server.address();
   var bind = typeof addr === 'string'
