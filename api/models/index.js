@@ -1,7 +1,3 @@
-/*
-    Provides models for mongo db
-*/
-const mongoose = require('mongoose');
 
 // import  models
 const User = require('./user');
