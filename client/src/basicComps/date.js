@@ -16,10 +16,10 @@ export default class DateSelect extends React.Component {
   }
 
   handleChange(date) {
+    console.log("date", date)   
     this.setState({
       startDate: date
     });
-    console.log(this.state.startDate)
   }
 
   render() {
@@ -27,6 +27,7 @@ export default class DateSelect extends React.Component {
       <DatePicker
         selected={this.state.startDate}
         onChange={this.handleChange}
+        dateFormat="MMMM d, yyyy"
       />
     );
   }
