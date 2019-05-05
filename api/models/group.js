@@ -1,16 +1,11 @@
 const mongoose = require('mongoose');
+const travelerSchema = require('./traveler');
 
 const groupSchema = mongoose.Schema({
     from: String,
     to: String,
-    owner: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Travel'   
-    },
-    members: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Travel'
-    }],
+    owner: travelerSchema,
+    members: [travelerSchema],
     departure: Date,
     status: String,
 });

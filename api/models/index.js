@@ -1,10 +1,10 @@
 
 // import  models
 const User = require('./user');
-const Travel = require('./travel');
 const Group = require('./group');
+const Request = require('./request');
 
-const models = { User, Travel, Group };
+const models = { User, Group, Request };
 
 module.exports = {
     models: models,

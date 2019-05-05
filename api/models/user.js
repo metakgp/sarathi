@@ -11,7 +11,15 @@ const userSchema = mongoose.Schema({
     }],
     joined_groups: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'group',
+        ref: 'Group',
+    }],
+    sent_requests: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Request',
+    }],
+    received_requests: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Request',
     }],
 });
 
