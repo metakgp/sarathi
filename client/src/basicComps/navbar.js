@@ -24,8 +24,8 @@ function ButtonAppBar(props) {
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
-          <Typography variant="h6" color="inherit" className={classes.grow}>
-            Welcome {props.name}
+          <Typography variant="h6" color="inherit" className={classes.grow} onClick={() => console.log('yo')}>
+            Welcome 
           </Typography>
           <Button color="inherit">Existing Plans</Button>
           <Button color="inherit">Notifications</Button>

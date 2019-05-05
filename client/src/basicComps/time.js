@@ -30,7 +30,7 @@ class MaterialUIPickers extends React.Component {
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
           <TimePicker
             margin="normal"
-            label="Time picker"
+            label="Time of Departure"
             value={selectedDate}
             onChange={this.handleDateChange}
             

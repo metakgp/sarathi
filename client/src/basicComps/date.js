@@ -16,7 +16,8 @@ export default class DateSelect extends React.Component {
   }
 
   handleChange(date) {
-    console.log("date", date)   
+    var selectedDate = String(date).split(' ').slice(1,4)
+    console.log(selectedDate)
     this.setState({
       startDate: date
     });

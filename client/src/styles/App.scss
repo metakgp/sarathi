@@ -6,21 +6,41 @@
 
 .fromTo{
     @include flex(row,center);
+    flex-wrap : wrap
+}
+
+.menu-des{
+    @include flex(row,flex-end )
 }
 
 select {
     position: relative;
     top : 20%;
     margin: 15px;
-    font-size: 25px;
-            
-}
-
-h2 {
-        font-size: 40px;
+        
 }
 
 .search{
     @include flex(column,center);
-    align-items:center
+    align-items:center;
+    border : 1px solid black
 }
+
+.selectDate{
+    @include flex(row,flex-end );
+    align-items : center
+    
+}
+
+button {
+    background-color: #3f51b5;
+    border: none;
+    color: white;
+    padding: 10px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+  }
