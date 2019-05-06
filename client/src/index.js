@@ -1,12 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
 import Navbar from './basicComps/navbar'
 import Search from './comps/search'
 import Plans from './plans-notifs/plans'
 import Notifs from './plans-notifs/notifs'
 import * as serviceWorker from './serviceWorker';
-import { Route, Link, BrowserRouter as Router, Switch } from 'react-router-dom'
+import { Route, BrowserRouter as Router, Switch } from 'react-router-dom'
 
 const routing = (
     <div>
