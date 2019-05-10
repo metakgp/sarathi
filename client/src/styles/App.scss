@@ -43,4 +43,30 @@ button {
     font-size: 16px;
     margin: 4px 2px;
     cursor: pointer;
-  }
+}
+
+.details-in-card{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    left: 50%;
+    padding-right: 50%
+}        
+
+.closed{
+    color: red
+}
+
+.open{
+    color: green
+}
+
+.MuiCardContent-root-121 {
+    border: 2px solid black
+}
+
+.MuiButton-label-81 {
+    color: white;
+    text-decoration: none
+}

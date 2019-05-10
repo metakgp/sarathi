@@ -4,6 +4,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import { Link,BrowserRouter } from 'react-router-dom';
 
 const styles = {
   root: {
@@ -27,14 +28,17 @@ function ButtonAppBar(props) {
           <Typography variant="h6" color="inherit" className={classes.grow} onClick={() => console.log('yo')}>
             Welcome 
           </Typography>
-          <Button color="inherit">Existing Plans</Button>
-          <Button color="inherit">Notifications</Button>
-          <Button color="inherit">Log Out</Button>
+            <Button color="inherit">Home</Button>
+             <BrowserRouter>
+              <Link to="/plans"><Button color="inherit">Existing Plans</Button></Link>
+            </BrowserRouter>
+            <Button color="inherit">Notifications</Button>
+            <Button color="inherit">Log Out</Button>
         </Toolbar>
       </AppBar>
     </div>
   );
-}
+} 
 
 
 export default withStyles(styles)(ButtonAppBar);
