@@ -1,10 +1,13 @@
 const mongoose = require('mongoose');
 
 const userSchema = mongoose.Schema({
-    name: {
-        type: String,
+    name: String,
+    fb_id: {
+        type: String, 
         unique: true,
     },
+    profile: String,
+    token: String,
     created_groups: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Group',
