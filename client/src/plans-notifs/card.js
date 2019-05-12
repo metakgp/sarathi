@@ -2,6 +2,7 @@ import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
+import List from './lists'
 import '../styles/App.scss'
 
 const styles = {
@@ -46,11 +47,12 @@ function SimpleCard(props) {
               <p>Status : {handleStatus()}</p>
            </div>
            <div className='list-of-ppl'>
-              <ul>
-                    <li>Person-1</li>
-                    <li>Person-2</li>
-               </ul>
-               <button>JOIN</button> 
+            <List
+              msg1='person-1'
+              msg2='person-1'
+              msg3='person-1'
+           />
+            <button>JOIN</button> 
            </div>
          </div>
             

@@ -28,11 +28,15 @@ function ButtonAppBar(props) {
           <Typography variant="h6" color="inherit" className={classes.grow} onClick={() => console.log('yo')}>
             Welcome 
           </Typography>
-            <Button color="inherit">Home</Button>
-             <BrowserRouter>
+            <BrowserRouter>
+              <Link to='/'><Button color="inherit">Home</Button></Link>
+            </BrowserRouter> 
+            <BrowserRouter> 
               <Link to="/plans"><Button color="inherit">Existing Plans</Button></Link>
             </BrowserRouter>
-            <Button color="inherit">Notifications</Button>
+            <BrowserRouter>
+              <Link to="/notifs"><Button color="inherit">Notifications</Button></Link>
+            </BrowserRouter>
             <Button color="inherit">Log Out</Button>
         </Toolbar>
       </AppBar>
