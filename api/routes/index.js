@@ -5,15 +5,15 @@ var models = require('../models/index').models;
 var passport = require('passport');
 
 router.get('/', (req, res) => {
-  // models.Group.find({}, {__v: 0}).exec((err, objects) => {
-  //   res.send(objects);
-  // });
-  res.render('index', { user: req.user });
+  models.Group.find({}, {__v: 0}).exec((err, objects) => {
+    res.send(objects);
+  });
 });
 
 // creates a group for the user
 router.post('/create_group', (req, res) => {
   var traveler = {
+    fb_id: req.body.fb_id,
     name: req.body.name,
     from: req.body.from,
     to: req.body.to,
@@ -31,7 +31,7 @@ router.post('/create_group', (req, res) => {
     if (err)
       res.send(500, "error creating group");
     else {
-      models.User.findOneAndUpdate({name: traveler.name}, {$push: {created_groups: object}})
+      models.User.findOneAndUpdate({fb_id: traveler.fb_id}, {$push: {created_groups: object}})
       .exec((err, obj) => {
         res.send(200, "OK");
       }) ;
@@ -42,12 +42,13 @@ router.post('/create_group', (req, res) => {
 // sends a join request to the owner of the group
 router.post('/join_request', (req, res) => {
   var traveler = {
+    fb_id: req.body.fb_id,
     name: req.body.name,
     from: req.body.from,
     to: req.body.to,
     time: req.body.time,
   };
-  models.Group.findById(req.body.id).exec((err, object) => {
+  models.Group.findById(req.body.groupId).exec((err, object) => {
     var request = models.Request({
       group: object,
       traveler: traveler,
@@ -57,12 +58,12 @@ router.post('/join_request', (req, res) => {
         res.send(500, "Error creating request");
       else {
         // add those requests to the users concerned
-        models.User.findOneAndUpdate({name: req.body.name}, {$push: {sent_requests: request}})
+        models.User.findOneAndUpdate({name: req.body.fb_id}, {$push: {sent_requests: request}})
         .exec((err, object) => {
           if (err)
             res.send(500, "Error adding sent request to user");
         });
-        models.User.findOneAndUpdate({name: object.owner.name}, {$push: {received_requests: request}})
+        models.User.findOneAndUpdate({name: object.owner.fb_id}, {$push: {received_requests: request}})
         .exec((err, object) => {
           if (err)
             res.send(500, "Error adding received request to user");
@@ -78,6 +79,7 @@ router.post('/join_request', (req, res) => {
 //TODO: update notification and send it to all members
 router.post('/approve_request', (req, res) => {
   var traveler = {
+    fb_id: req.body.fb_id,
     name: req.body.name,
     from: req.body.from,
     to: req.body.to,
@@ -89,7 +91,7 @@ router.post('/approve_request', (req, res) => {
       res.send(500, err);
     else {
       // remove request from sent_request of user
-      models.User.findOneAndUpdate({name: req.body.name}, 
+      models.User.findOneAndUpdate({name: req.body.fb_id}, 
         {$pull: {sent_requests: req.body.requestId}, $push: {joined_groups: object}})  //remove requests matching req id
         .exec((err, object) => {
           if (err)
@@ -97,7 +99,7 @@ router.post('/approve_request', (req, res) => {
         });
       
       // remove request from recieved_request from group owner
-      models.User.findOneAndUpdate({name: object.owner.name}, 
+      models.User.findOneAndUpdate({name: object.owner.fb_id}, 
         {$pull: {received_requests: req.body.requestId}})  //remove requests matching req id
         .exec((err, object) => {
           if (err)
