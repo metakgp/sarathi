@@ -120,7 +120,7 @@ router.post('/reject_request', (req, res) => {
       res.send(500, err);
     else {
       // remove request from sent_request of user
-      models.User.findOneAndUpdate({name: req.body.name}, 
+      models.User.findOneAndUpdate({name: req.body.fb_id}, 
         {$pull: {sent_requests: req.body.requestId}})  //remove requests matching req id
         .exec((err, object) => {
           if (err)
@@ -128,7 +128,7 @@ router.post('/reject_request', (req, res) => {
         });
       
       // remove request from recieved_request from group owner
-      models.User.findOneAndUpdate({name: object.owner.name}, 
+      models.User.findOneAndUpdate({name: object.owner.fb_id}, 
         {$pull: {received_requests: req.body.requestId}})  //remove requests matching req id
         .exec((err, object) => {
           if (err)
