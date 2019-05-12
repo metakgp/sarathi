@@ -2,11 +2,13 @@ var express = require('express');
 var router = express.Router();
 var url = require('url');
 var models = require('../models/index').models;
+var passport = require('passport');
 
 router.get('/', (req, res) => {
-  models.Group.find({}, {__v: 0}).exec((err, objects) => {
-    res.send(objects);
-  });
+  // models.Group.find({}, {__v: 0}).exec((err, objects) => {
+  //   res.send(objects);
+  // });
+  res.render('index', { user: req.user });
 });
 
 // creates a group for the user
@@ -25,11 +27,15 @@ router.post('/create_group', (req, res) => {
     departure: req.body.time,
     status: 'open',
   });
-  grp.save((err) => {
+  grp.save((err, object) => {
     if (err)
       res.send(500, "error creating group");
-    else
-      res.send(200, "OK");
+    else {
+      models.User.findOneAndUpdate({name: traveler.name}, {$push: {created_groups: object}})
+      .exec((err, obj) => {
+        res.send(200, "OK");
+      }) ;
+    }
   });
 });
 
@@ -84,7 +90,7 @@ router.post('/approve_request', (req, res) => {
     else {
       // remove request from sent_request of user
       models.User.findOneAndUpdate({name: req.body.name}, 
-        {$pull: {sent_requests: req.body.requestId}})  //remove requests matching req id
+        {$pull: {sent_requests: req.body.requestId}, $push: {joined_groups: object}})  //remove requests matching req id
         .exec((err, object) => {
           if (err)
             res.send(500, "error removing request from user");
@@ -139,14 +145,28 @@ router.post('/search', (req, res) => {
   }));
 });
 
-router.get('/login', (req, res) => {
-  res.send("This is the login page");
+// send an authentication request to facebook OAuth
+router.get('/auth/facebook', passport.authenticate("facebook"));
+
+// This is the login redirect URI from the fb authentication server
+// params - state-param : unique code to prevent csrf
+// 
+router.get('/auth/facebook/callback', passport.authenticate("facebook", {
+  successRedirect: '/test',
+  failureRedirect: '/',
+}));
+
+router.get('/logout', (req, res) => {
+  req.logout();
+  res.send(200, "OK");
 });
 
 router.get('/test', (req, res) => {
-  models.Request.find({}).populate('group').exec((err, objects) => {
-    res.send(objects);
-  });
+  if (req.session.test)
+    req.session.test++;
+  else
+    req.session.test = 1;
+  res.send("OK" + req.session.test);
 });
 
 
