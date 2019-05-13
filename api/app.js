@@ -13,6 +13,7 @@ var usersRouter = require('./routes/users');
 var config = require('./config');
 var models = require('./models/index').models;
 
+
 var app = express();
 
 passport.serializeUser((user, done) => {
