@@ -5,7 +5,7 @@ export default class Notifs extends Component {
     render(){
         return(
             <div>
-                <h1>CURRENTLY NO Notifications</h1>
+                <h1 id='no-notifs-plans'>CURRENTLY NO NOTIFICATION</h1>
                <div id='notifs'> 
                     <List
                     msg1='this will be some long notification which will be telling you got a request from '

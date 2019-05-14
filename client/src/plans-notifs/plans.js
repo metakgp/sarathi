@@ -6,7 +6,7 @@ export default class Plans extends Component {
     render(){
         return(
             <div>
-                <h1>CURRENTLY NO PLANS</h1>
+                <h1 id='no-notifs-plans'>CURRENTLY NO PLANS</h1>
                 <Card />
             </div>
         )
