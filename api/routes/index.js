@@ -3,6 +3,7 @@ var router = express.Router();
 var url = require('url');
 var models = require('../models/index').models;
 var passport = require('passport');
+var webpush = require('web-push');
 
 router.get('/', (req, res) => {
   models.Group.find({}, {__v: 0}).exec((err, objects) => {
@@ -56,7 +57,7 @@ router.post('/join_request', (req, res) => {
     request.save((err) => {
       if (err)
         res.send(500, "Error creating request");
-      else {
+      else {  
         // add those requests to the users concerned
         models.User.findOneAndUpdate({name: req.body.fb_id}, {$push: {sent_requests: request}})
         .exec((err, object) => {
@@ -154,8 +155,8 @@ router.get('/auth/facebook', passport.authenticate("facebook"));
 // params - state-param : unique code to prevent csrf
 // 
 router.get('/auth/facebook/callback', passport.authenticate("facebook", {
-  successRedirect: '/test',
-  failureRedirect: '/',
+  successRedirect: '/',
+  failureRedirect: '/logout',
 }));
 
 router.get('/logout', (req, res) => {
@@ -163,13 +164,32 @@ router.get('/logout', (req, res) => {
   res.send(200, "OK");
 });
 
-router.get('/test', (req, res) => {
-  if (req.session.test)
-    req.session.test++;
-  else
-    req.session.test = 1;
-  res.send("OK" + req.session.test);
+router.get('/login', (req, res) => {
+  res.render('login.ejs', {user: req.user});
 });
 
+// test route for service worker registration
+router.get('/test', (req, res) => {
+  res.render('index.ejs');
+});
+
+// Test route for push messages
+router.post('/test2', (req, res) => {
+  const pushSubscription = JSON.parse(req.user.push_subscription);
+  const message = JSON.stringify({title: 'Notification', body: 'Hey! Arib'});
+  webpush.sendNotification(pushSubscription, message).catch(err => console.log(err))
+  .then(() => res.sendStatus(200));
+});
+
+router.post('/subscribe', (req, res) => {
+  const pushSubscription = JSON.stringify(req.body);
+  models.User.findByIdAndUpdate(req.user.id, {push_subscription: pushSubscription})
+  .exec((err) => {
+    if (err) {
+      res.send(500, "Error updating user object for storing push subscription");
+    }
+    res.sendStatus(200);
+  });
+});
 
 module.exports = router;
