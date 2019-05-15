@@ -10,7 +10,7 @@ router.post('/join_request', (req, res) => {
       name: req.body.name,
       from: req.body.from,
       to: req.body.to,
-      time: Date.now(),
+      time: req.body.time,
     };
   
     // find the group the user wants to join
