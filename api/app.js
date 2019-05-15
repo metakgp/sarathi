@@ -10,6 +10,7 @@ var fbStrategy = require('passport-facebook').Strategy;
 var webpush = require('web-push');
 
 var indexRouter = require('./routes/index');
+var requestsRouter = require('./routes/requests');
 var config = require('./config');
 var models = require('./models/index').models;
 
@@ -99,6 +100,7 @@ function isLoggedIn(req, res, next) {
   res.sendStatus(403);
 }
 
+app.use('/request', requestsRouter);
 app.use('/', indexRouter);
 
 // catch 404 and forward to error handler
@@ -112,6 +114,7 @@ app.use(function(err, req, res, next) {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
+  console.log(err.message);
   // render the error page
   res.status(err.status || 500).send(err);
 });
