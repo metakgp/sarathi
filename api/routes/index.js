@@ -49,27 +49,43 @@ router.post('/join_request', (req, res) => {
     to: req.body.to,
     time: req.body.time,
   };
-  models.Group.findById(req.body.groupId).exec((err, object) => {
+
+  // find the group the user wants to join
+  models.Group.findById(req.body.groupId).exec((err, group) => {
     var request = models.Request({
-      group: object,
+      group: group,
       traveler: traveler,
     });
+
+    // create a request object
     request.save((err) => {
       if (err)
         res.send(500, "Error creating request");
       else {  
         // add those requests to the users concerned
-        models.User.findOneAndUpdate({name: req.body.fb_id}, {$push: {sent_requests: request}})
-        .exec((err, object) => {
-          if (err)
+        models.User.findOneAndUpdate({fb_id: req.body.fb_id}, {$push: {sent_requests: request}})
+        .exec((err, user) => {
+          if (err) {
             res.send(500, "Error adding sent request to user");
-        });
-        models.User.findOneAndUpdate({name: object.owner.fb_id}, {$push: {received_requests: request}})
-        .exec((err, object) => {
-          if (err)
-            res.send(500, "Error adding received request to user");
-          else
-            res.send(200, "OK");
+          }
+
+          models.User.findOneAndUpdate({fb_id: group.owner.fb_id}, {$push: {received_requests: request}})
+          .exec((err, owner) => {
+            if (err)
+              res.send(500, "Error adding received request to user");
+            else {
+
+              // send notication to this user (the owner of the group)
+              const message = {
+                type: 'join_request',
+                title: 'Join Request',
+                body: user.name + " has sent a join request",
+              }
+              webpush.sendNotification(JSON.parse(owner.push_subscription), JSON.stringify(message))
+              .catch(err => console.log(err))
+              .then(() => res.send(200, "OK"));
+            }
+          });
         });
       }
     });
