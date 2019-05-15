@@ -7,9 +7,9 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var passport = require('passport');
 var fbStrategy = require('passport-facebook').Strategy;
+var webpush = require('web-push');
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
 var config = require('./config');
 var models = require('./models/index').models;
 
@@ -17,11 +17,15 @@ var models = require('./models/index').models;
 var app = express();
 
 passport.serializeUser((user, done) => {
-  done(null, user);
+  done(null, user.fb_id);
 });
 
-passport.deserializeUser((user, done) => {
-  done(null, user);
+passport.deserializeUser((fb_id, done) => {
+  models.User.findOne({fb_id: fb_id}, (err, user) => {
+    if (err)
+      done(err);
+    done(null, user);
+  });
 });
 
 passport.use(new fbStrategy({
@@ -31,8 +35,7 @@ passport.use(new fbStrategy({
   profileURL: config.profileURL,
   profileFields: config.profileFields,
 }, (token, refreshToken, profile, done) => {
-  console.log(profile);
-  user = models.User.findOne({fb_id: profile.id}).exec((err, user) => {
+  models.User.findOne({fb_id: profile.id}).exec((err, user) => {
     if (err) {
       console.log("Error searching for user");
       return done(err);
@@ -46,13 +49,13 @@ passport.use(new fbStrategy({
         token: token,
         profile: profile.profileUrl,
       });
-      newUser.save((err) => {
+      newUser.save((err, object) => {
         if (err) {
           console.log("Error creating new user");
           return done(err);
         }
         console.log("Successfully created new user");
-        return done(null, newUser);
+        return done(null, object);
       });
     }
     else {
@@ -61,6 +64,12 @@ passport.use(new fbStrategy({
     }
   });
 }));
+
+webpush.setVapidDetails(
+  'mailto:aribalam64@gmail.com',
+  config.publicKey,
+  config.privateKey
+);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -75,7 +84,14 @@ app.use(cookieParser());
 app.use(session({secret: 'app-secret', resave: true, saveUninitialized: true}));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(express.static(path.join(__dirname, 'public')));
+
+// Setting static media directory and including service worker option
+const options = {
+  setHeaders: (res, path, stat) => {
+    res.set('Service-Worker-Allowed', '/');
+  },
+};
+app.use(express.static(path.join(__dirname, 'public'), options));
 
 function isLoggedIn(req, res, next) {
   if  (req.isAuthenticated())
@@ -84,7 +100,6 @@ function isLoggedIn(req, res, next) {
 }
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -98,8 +113,7 @@ app.use(function(err, req, res, next) {
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+  res.status(err.status || 500).send(err);
 });
 
 module.exports = app;
