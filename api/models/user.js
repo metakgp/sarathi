@@ -24,6 +24,7 @@ const userSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Request',
     }],
+    push_subscription: String,
 });
 
 const User = mongoose.model('User', userSchema);
