@@ -11,6 +11,8 @@ var webpush = require('web-push');
 
 var indexRouter = require('./routes/index');
 var requestsRouter = require('./routes/requests');
+var userRouter = require('./routes/user');
+
 var config = require('./config');
 var models = require('./models/index').models;
 
@@ -100,6 +102,7 @@ function isLoggedIn(req, res, next) {
   res.sendStatus(403);
 }
 
+app.use('/user', userRouter);
 app.use('/request', requestsRouter);
 app.use('/', indexRouter);
 
