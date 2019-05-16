@@ -1,0 +1,139 @@
+@mixin flex($dir,$justifyContent) {
+    display: flex;
+    flex-direction: $dir;
+    justify-content: $justifyContent; 
+}
+
+.fromTo{
+    @include flex(row,center);
+    flex-wrap : wrap
+}
+
+.menu-des{
+    @include flex(row,flex-end )
+}
+
+select {
+    position: relative;
+    top : 20%;
+    margin: 15px;
+        
+}
+
+.search{
+    @include flex(column,center);
+    align-items:center;
+    border : 1px solid black
+}
+
+.selectDate{
+    @include flex(row,flex-end );
+    align-items : center
+    
+}
+
+button {
+    background-color: #3f51b5;
+    border: none;
+    color: white;
+    padding: 10px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+.details-in-card{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    text-align: center;
+    
+}        
+
+.closed{
+    color: red
+}
+
+.open{
+    color: green
+}
+
+.MuiCardContent-root-121 {
+    border: 2px solid black;
+    margin-right: 20%;
+    margin-left: 20%;
+}
+
+.MuiButton-label-81 {
+    color: white;
+    text-decoration: none
+}
+
+#notifs{
+    position: relative;
+    left: 40%;
+    right:50%
+}
+
+.login-page{
+    text-align: center;
+    border: 2px solid black;
+    border-radius: 8px;
+    margin-left: 15%;
+    margin-right: 15%;
+    margin-top:10%;
+    
+}
+
+#no-notifs-plans {
+    text-align: center  
+}
+
+.list-of-ppl{
+    margin: 0 auto
+}
+
+#title{
+    font-family: 'Krona One';
+    color: #b30000
+}
+
+#description{
+    color: #8c8c8c
+}
+
+.fb {
+    background-color: #3B5998;
+    color: white;
+}
+
+.btn {
+    width: 25%;
+    padding: 12px;
+    border: none;
+    border-radius: 4px;
+    margin: 5px 0;
+    opacity: 0.85;
+    display: inline-block;
+    font-size: 17px;
+    line-height: 20px;
+    text-decoration: none; /* remove underline from anchors */
+  }
+
+ @media only screen and (max-width: 768px) {
+    /* For mobile phones: */
+    body {
+        .btn{
+            width: 80%;
+            
+        }
+        #title{
+            font-size: 20px;
+        }
+    }
+  }
+  
