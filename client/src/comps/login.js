@@ -1,6 +1,5 @@
 import React,{ useEffect } from 'react'
 import '../styles/App.scss'
-import background from './bgpic.jpg'
 
 export default function LoginPage (){
                     
@@ -10,10 +9,7 @@ export default function LoginPage (){
                             bar.remove()
                                              
                     })
-                     var back = {
-                        backgroundImage : `url(${background})`
-                     }
-                    return(
+                      return(
                         <body >
                             <div className='login-page'>
                                 <h1 id='title'>TRAVEL KGP!</h1>

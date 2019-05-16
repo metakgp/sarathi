@@ -47,11 +47,7 @@ function SimpleCard(props) {
               <p>Status : {handleStatus()}</p>
            </div>
            <div className='list-of-ppl'>
-            <List
-              msg1='person-1'
-              msg2='person-1'
-              msg3='person-1'
-           />
+             <List/>
             <button>JOIN</button> 
            </div>
          </div>
