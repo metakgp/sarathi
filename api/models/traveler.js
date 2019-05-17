@@ -5,6 +5,7 @@ const travelerSchema = mongoose.Schema({
     name: String,
     from: String, 
     to: String,
+    date: Date,
     time: Date,
 }, {_id: false});
 
