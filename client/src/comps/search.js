@@ -18,6 +18,7 @@ var months = {
     Nov : 11,
     Dec : 12
 }
+var justDate
 
 class Search extends Component{
     constructor(props){
@@ -25,23 +26,22 @@ class Search extends Component{
         this.state = {
             fromPlace : 'kgp',
             toPlace :'kgp',
-            date: new Date(),
-            time: new Date().toLocaleTimeString()
+            time: new Date()
         }
     }
     
     setFromPlace = (fromPlace) => { this.setState({fromPlace : fromPlace}) }
     setToPlace = (toPlace) => { this.setState({toPlace : toPlace}) }   
-    setDate = (date) => {
-        var dateObj = new Date(date[2],months[date[0]],date[1])
-        this.setState({date: dateObj}) 
-    }   
-    setTime = (time) => { this.setState({time: time}) }
-
+    setDate = (date) => { justDate = date }   
+    setTime = (time) => { 
+        time = time.split(':')
+        var dateWithTime = new Date(justDate[2],months[justDate[0]]-1,justDate[1],time[0],time[1])
+        this.setState({time: dateWithTime}) 
+    }
+    
     sendData = () => {
         console.log(this.state.fromPlace)
         console.log(this.state.toPlace)
-        console.log(this.state.date)
         console.log(this.state.time)
         //this data will be sent to the backend via axios
     }
