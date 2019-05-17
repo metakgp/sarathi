@@ -1,14 +1,18 @@
 import React from 'react'
 import  '../styles/App.scss'
 
-function Menu (){
+function Menu (props){
+    const passData = (event) =>{
+         props.onPassData(event.target.value)
+    }
+    
     return(
         <div className="custom-select">
-            <select>
-                <option value="0">KGP</option>
-                <option value="1">CCU(Kolkata Airport)</option>
-                <option value="2">Railway Station-KGP</option>
-                <option value="2">Howrah</option>
+            <select onChange={passData}>
+                <option value="kgp">KGP</option>
+                <option value="ccu">CCU(Kolkata Airport)</option>
+                <option value="railwayStation">Railway Station-KGP</option>
+                <option value="howrah">Howrah</option>
             </select>
         </div>
     )

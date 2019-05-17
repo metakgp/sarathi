@@ -59,5 +59,4 @@ function SimpleCard(props) {
   );
 }
 
-
 export default withStyles(styles)(SimpleCard);
