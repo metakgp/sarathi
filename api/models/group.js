@@ -6,10 +6,7 @@ const groupSchema = mongoose.Schema({
     to: String,
     owner: travelerSchema,
     members: [travelerSchema],
-    departure: {
-        date: Date,
-        time: Date,
-    },
+    departure: Date,
     status: String,
 });
 
