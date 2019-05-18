@@ -1,62 +1,42 @@
 import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
+import CardHeader from '@material-ui/core/CardHeader';
 import List from './lists'
+import Chip from '@material-ui/core/Chip';
+import Grid from '@material-ui/core/Grid';
 import '../styles/App.scss'
 
-const styles = {
-  card: {
-    minWidth: 100 ,
-  },
-  bullet: {
-    display: 'inline-block',
-    margin: '0 2px',
-    transform: 'scale(0.8)',
-  },
-  title: {
-    fontSize: 14,
-  },
-  pos: {
-    marginBottom: 12,
-  },
-};
 
-
-function SimpleCard(props) {
-  const { classes } = props;
-  
-  function handleStatus (status){
-    
-    if(!status)
-      return <span className='closed'>CLOSED</span>
-    else
-      return <span className='open'>OPEN</span>  
-  }
-    
-
-  return (
-    <Card className={classes.card}>
-      <CardContent>
-        <div className="details-in-card ">
-           <div className='time-places'>
-              <h3>Time : 23:00</h3>
-              <h3>KGP  to CCU</h3>
+export default function SimpleCard (){
+  return(
+    <div className='theCard'>
+      <Card style={{maxWidth: 600,minWidth:200}}>
+        <CardHeader
+        style={{background : '#f2f2f2'}}
+        title='22:30'
+        subheader='KGP TO CCU'
+        titleTypographyProps={{ align: 'center' }}
+        subheaderTypographyProps={{ align: 'center' }}
+         />
+        <Grid container spacing={12}>
+          <Grid item xs={3} md={5}></Grid>
+          <Grid item xs={5} md={3}>
+            <Chip
+            color='secondary'
+            label='CLOSED'
+          style={{minWidth: 100,align:'center',marginTop:5}}
+            />
+            <div className='list-of-ppl'>
+              <List />
             </div>
-           <div className='status'>
-              <p>Status : {handleStatus()}</p>
-           </div>
-           <div className='list-of-ppl'>
-             <List/>
-            <button>JOIN</button> 
-           </div>
-         </div>
-            
-            
-        
-      </CardContent>
-      </Card>
-  );
+            <button className='joinBtn'>JOIN</button>
+                   
+            </Grid>
+            <Grid item xs={4} md={4}></Grid>
+        </Grid>
+           
+         </Card>
+    </div>
+  )
 }
 
-export default withStyles(styles)(SimpleCard);

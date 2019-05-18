@@ -54,14 +54,6 @@ button {
     
 }        
 
-.closed{
-    color: red
-}
-
-.open{
-    color: green
-}
-
 .MuiCardContent-root-121 {
     border: 2px solid black;
     margin-right: 20%;
@@ -73,7 +65,7 @@ button {
     text-decoration: none
 }
 
-#notifs{
+#notifs{    
     position: relative;
     left: 40%;
     right:50%
@@ -91,10 +83,6 @@ button {
 
 #no-notifs-plans {
     text-align: center  
-}
-
-.list-of-ppl{
-    margin: 0 auto
 }
 
 #title{
@@ -127,12 +115,19 @@ button {
 .MuiButton-label-81{
     color : white;
     background-color:#3f51b5;
+    text-decoration: none
  }
 
-.MuiButtonBase-root-106{
-    background-color: yellow
+.theCard{
+    margin-left: 30%;
+    margin-right:30% 
 }
- @media only screen and (max-width: 768px) {
+
+.joinBtn{
+    width: 125%
+}
+
+@media only screen and (max-width: 768px) {
     /* For mobile phones: */
     body {
         .btn{
