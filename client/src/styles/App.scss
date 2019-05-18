@@ -125,9 +125,13 @@ button {
   }
 
 .MuiButton-label-81{
-    color : #3B5998
-}
+    color : white;
+    background-color:#3f51b5;
+ }
 
+.MuiButtonBase-root-106{
+    background-color: yellow
+}
  @media only screen and (max-width: 768px) {
     /* For mobile phones: */
     body {
