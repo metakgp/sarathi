@@ -53,7 +53,11 @@ router.post('/join_request', (req, res) => {
                   body: user.name + " has sent a join request",
                 });
                 
+<<<<<<< HEAD
                 webpush.sendNotification(JSON.parse(owner.push_subscription), message)
+=======
+                webpush.sendNotification(JSON.parse(group.owner.push_subscription), message)
+>>>>>>> created endpoints for changing time of departure of group
                 .catch(err => console.log(err))
                 .then(() => res.sendStatus(200));
               }
@@ -104,7 +108,11 @@ router.post('/approve_request', (req, res) => {
                           body: traveler.name + " has joined the group",
                         };
 
+<<<<<<< HEAD
                         utils.createAndSendNotification(message, request, undefined, (err, notif) => {
+=======
+                        createAndSendNotification(message, request, undefined, (err, notif) => {
+>>>>>>> created endpoints for changing time of departure of group
                           message_string = JSON.stringify(message);
                         
                           // sending notification to all members of the group
@@ -113,7 +121,11 @@ router.post('/approve_request', (req, res) => {
                             models.User.findOneAndUpdate({fb_id: member.fb_id}, 
                               {$push: {'notifications': notif}})
                             .exec((err, user) => {
+<<<<<<< HEAD
                               webpush.sendNotification(JSON.parse(user.push_subscription), message_string)
+=======
+                              webpush.sendNotification(JSON.parse(user.push_subscription), message)
+>>>>>>> created endpoints for changing time of departure of group
                               .catch(err => console.log(err));
                             });
                           });
@@ -191,10 +203,13 @@ router.post('/reject_request', (req, res) => {
     });
 });
 
+<<<<<<< HEAD
 router.get('/change_time', (req, res) => {
   res.render('change_time.ejs');
 });
 
+=======
+>>>>>>> created endpoints for changing time of departure of group
 router.post('/change_time', (req, res) => {
   
   models.Group.findByIdAndUpdate(req.body.groupId, {departure: new Date(req.body.departure)})
@@ -208,7 +223,11 @@ router.post('/change_time', (req, res) => {
         body: group.owner.name + ' has changed the departure time'
       };
 
+<<<<<<< HEAD
       utils.createAndSendNotification(message, group, undefined, (err, notif) => {
+=======
+      createAndSendNotification(message, group, undefined, (err, notif) => {
+>>>>>>> created endpoints for changing time of departure of group
         for (var i = 0; i < group.members.length; i++) {
           // send notif to each user and add notid if
           models.User.findOneAndUpdate({fb_id: group.members[i].fb_id}, {$push: {'notifications': notif}})
@@ -218,15 +237,23 @@ router.post('/change_time', (req, res) => {
             else {
               webpush.sendNotification(JSON.parse(user.push_subscription), JSON.stringify(message))
               .catch(err => console.log(err));
+<<<<<<< HEAD
             }
           });
         }
         res.sendStatus(200);
+=======
+              res.sendStatus(200);
+            }
+          });
+        }
+>>>>>>> created endpoints for changing time of departure of group
       });
     }
   });
 });
 
+<<<<<<< HEAD
 // rejects a request to join the group
 //TODO: update notification and send it to all members
 router.post('/cancel_request', (req, res) => {
@@ -264,5 +291,29 @@ router.post('/cancel_request', (req, res) => {
       }
   });
 });
+=======
+
+function createAndSendNotification(message, object, push_subscription, callback) {
+  const notif = models.Notification({
+    type: message.type,
+    message: message.body,
+    object_id: object,
+    created_on: Date.now(),
+    is_read: false,
+  });
+
+  notif.save((err, notification) => {
+    if (err)
+      res.send(err);
+    else {
+      if (push_subscription) {
+        webpush.sendNotification(JSON.parse(push_subscription), JSON.stringify(message))
+        .catch(err => console.log(err));
+      }
+      callback(err, notification);
+    }
+  });
+}
+>>>>>>> created endpoints for changing time of departure of group
 
 module.exports = router;
