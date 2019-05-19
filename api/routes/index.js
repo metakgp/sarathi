@@ -18,14 +18,14 @@ router.post('/create_group', (req, res) => {
     name: req.body.name,
     from: req.body.from,
     to: req.body.to,
-    time: req.body.time,
+    time: new Date(req.body.time),
   };
   var grp = models.Group({
     from: req.body.from,
     to: req.body.to,
     owner: traveler,
     members: [traveler],
-    departure: req.body.time,
+    departure: traveler.time,
     status: 'open',
   });
   grp.save((err, object) => {
