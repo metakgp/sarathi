@@ -6,10 +6,11 @@ var passport = require('passport');
 var webpush = require('web-push');
 
 router.get('/', (req, res) => {
+  console.log(req.query);
   models.Group.aggregate([
-    {$match: req.query},
+    {$match: {'from': req.query.from, 'to': req.query.to }},
     {$addFields: {
-      'duration': {$abs: {$subtract: ['$departure.date', new Date(req.query.time)]}},
+      'duration': {$abs: {$subtract: ['$departure', new Date(req.query.time)]}},
     }},
     {$match: {'duration': {$lte: 86400000}}},
     {$sort: {'duration': 1}},
