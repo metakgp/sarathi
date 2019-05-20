@@ -3,6 +3,10 @@ const router = express.Router();
 const models = require('../models/index').models;
 const webpush = require('web-push');
 
+router.get('/join_request', (req, res) => {
+  res.render('join_request.ejs');
+});
+
 // sends a join request to the owner of the group
 router.post('/join_request', (req, res) => {
     var traveler = {
@@ -15,6 +19,9 @@ router.post('/join_request', (req, res) => {
   
     // find the group the user wants to join
     models.Group.findById(req.body.groupId).exec((err, group) => {
+      if (err)
+        res.send(500, err);
+
       var request = models.Request({
         group: group,
         traveler: traveler,
@@ -23,19 +30,19 @@ router.post('/join_request', (req, res) => {
       // create a request object
       request.save((err) => {
         if (err)
-          res.send(500, "Error creating request");
+          res.send(500, err);
         else {  
           // add those requests to the users concerned
           models.User.findOneAndUpdate({fb_id: req.body.fb_id}, {$push: {sent_requests: request}})
           .exec((err, user) => {
             if (err) {
-              res.send(500, "Error adding sent request to user");
+              res.send(500, err);
             }
   
             models.User.findOneAndUpdate({fb_id: group.owner.fb_id}, {$push: {received_requests: request}})
             .exec((err, owner) => {
               if (err)
-                res.send(500, "Error adding received request to user");
+                res.send(500, err);
               else {
   
                 // send request notication to this user (the owner of the group)
@@ -45,7 +52,7 @@ router.post('/join_request', (req, res) => {
                   body: user.name + " has sent a join request",
                 });
                 
-                webpush.sendNotification(JSON.parse(group.owner.push_subscription), message)
+                webpush.sendNotification(JSON.parse(owner.push_subscription), message)
                 .catch(err => console.log(err))
                 .then(() => res.sendStatus(200));
               }
@@ -54,6 +61,10 @@ router.post('/join_request', (req, res) => {
         }
       });
     });
+});
+
+router.get('/approve_request', (req, res) => {
+  res.render('approve_request.ejs');
 });
   
   // approves a request to join the group
@@ -75,14 +86,14 @@ router.post('/approve_request', (req, res) => {
               {$pull: {received_requests: req.body.requestId}})  //remove requests matching req id
               .exec((err) => {
                 if (err)
-                  res.send(500, "error removing request from user");
+                  res.send(500, err);
                 else {
                   // remove request from sent_request of traveler
                   models.User.findOneAndUpdate({fb_id: request.traveler.fb_id}, 
                     {$pull: {sent_requests: req.body.requestId}, $push: {joined_groups: group}})  //remove requests matching req id
                     .exec((err, traveler) => {
                       if (err)
-                        res.send(500, "error removing request from user");
+                        res.send(500, err);
                       else {
                         
                         // message to all the members of the group
@@ -101,7 +112,7 @@ router.post('/approve_request', (req, res) => {
                             models.User.findOneAndUpdate({fb_id: member.fb_id}, 
                               {$push: {'notifications': notif}})
                             .exec((err, user) => {
-                              webpush.sendNotification(JSON.parse(user.push_subscription), message)
+                              webpush.sendNotification(JSON.parse(user.push_subscription), message_string)
                               .catch(err => console.log(err));
                             });
                           });
@@ -126,7 +137,11 @@ router.post('/approve_request', (req, res) => {
       }
     });
 });
-  
+
+router.get('/reject_request', (req, res) => {
+  res.render('approve_request.ejs');
+});
+
 // rejects a request to join the group
 //TODO: update notification and send it to all members
 router.post('/reject_request', (req, res) => {
@@ -146,14 +161,14 @@ router.post('/reject_request', (req, res) => {
                 {$pull: {received_requests: req.body.requestId}})  //remove requests matching req id
                 .exec((err) => {
                 if (err)
-                    res.send(500, "error removing request from user");
+                    res.send(500, err);
                 else {
                     // remove request from sent_request of traveler
                     models.User.findOneAndUpdate({fb_id: request.traveler.fb_id}, 
                     {$pull: {sent_requests: req.body.requestId}})  //remove requests matching req id
                     .exec((err, traveler) => {
                         if (err)
-                        res.send(500, "error removing request from user");
+                        res.send(500, err);
                         else {
                         // message to the traveler
                         const message = {
@@ -173,6 +188,10 @@ router.post('/reject_request', (req, res) => {
         });
         }
     });
+});
+
+router.get('/change_time', (req, res) => {
+  res.render('change_time.ejs');
 });
 
 router.post('/change_time', (req, res) => {
@@ -196,12 +215,14 @@ router.post('/change_time', (req, res) => {
             if (err)
               res.send(err);
             else {
+              if (user.name !== 'Abu Zar Ali') {
               webpush.sendNotification(JSON.parse(user.push_subscription), JSON.stringify(message))
               .catch(err => console.log(err));
-              res.sendStatus(200);
+              }
             }
           });
         }
+        res.sendStatus(200);
       });
     }
   });

@@ -11,14 +11,20 @@ router.get('/', (req, res) => {
   });
 });
 
+router.get('/create_group', (req, res) => {
+  res.render('create_group.ejs');
+});
+
 // creates a group for the user
 router.post('/create_group', (req, res) => {
+  console.log(req.body);
   var traveler = {
     fb_id: req.body.fb_id,
     name: req.body.name,
     from: req.body.from,
     to: req.body.to,
     time: new Date(req.body.time),
+    // time: Date.now(),
   };
   var grp = models.Group({
     from: req.body.from,
@@ -30,7 +36,7 @@ router.post('/create_group', (req, res) => {
   });
   grp.save((err, object) => {
     if (err)
-      res.send(500, "error creating group");
+      res.send(500, err);
     else {
       models.User.findOneAndUpdate({fb_id: traveler.fb_id}, {$push: {created_groups: object}})
       .exec((err, obj) => {

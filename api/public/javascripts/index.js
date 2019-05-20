@@ -2,7 +2,7 @@
  * Javascript file that registers service worker for the website
  */
 
-const publicKey = 'BD7vX78ZLVlCvvSrTouEJLD2I4CKJV8oaTy_PpivJHxUPziXcQeAlQ4v8ApyM8w5-gLt3kQUtj7W2epHzL89wbY';
+const publicKey = 'BKXfzdbdl2sE_IKEpoEQU5AIyO2oTBUN-Ro_ZOksKVK6M3nMMn1XQboqDVuSaCC3CL2l2g4YriWwipVurr-6JPQ';
 
 if ('serviceWorker' in navigator) {
     registerServiceWorker().catch(err => console.log(err));
