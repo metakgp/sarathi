@@ -32,7 +32,7 @@ function ButtonAppBar(props) {
               <Link to='/'><Button color="inherit">Home</Button></Link>
             </BrowserRouter> 
             <BrowserRouter> 
-              <Link to="/plans"><Button color="inherit">Existing Plans</Button></Link>
+              <Link to="/plans"><Button color="inherit">Plans</Button></Link>
             </BrowserRouter>
             <BrowserRouter>
               <Link to="/notifs"><Button color="inherit">Notifications</Button></Link>

@@ -18,19 +18,17 @@ const styles = theme => ({
   },
 });
 
-var dupData = ['person1','person2','person3','person4']
-
 function AlignItemsList(props) {
   const { classes } = props;
   return (
     <List className={classes.root}>
-      {dupData.map(item => {
+      {props.members.map(item => {
         return (<ListItem alignItems="flex-start">
                   <ListItemAvatar>
                     <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
                   </ListItemAvatar>
                   <ListItemText
-                    primary={item}
+                    primary={<p href=''>item.name</p>}
                     flex-wrap="nowrap"
                   />
                 </ListItem>)

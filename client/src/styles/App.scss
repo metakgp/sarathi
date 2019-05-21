@@ -4,6 +4,11 @@
     justify-content: $justifyContent; 
 }
 
+body{
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
 .fromTo{
     @include flex(row,center);
     flex-wrap : wrap
@@ -11,6 +16,11 @@
 
 .menu-des{
     @include flex(row,flex-end )
+}
+
+
+#card-contents{
+    @include flex(column,space-between)
 }
 
 select {
@@ -123,13 +133,27 @@ button {
     margin-right:30% 
 }
 
-.joinBtn{
-    width: 125%
+#plans-page{
+    @include flex(row,flex-end)
+}
+
+#plans-buttons{
+    @include flex(column,flex-start)
 }
 
 @media only screen and (max-width: 768px) {
     /* For mobile phones: */
     body {
+        max-width: 100%;
+        overflow-x: none;
+        .search{
+            margin-left: 40px;
+            position: relative;
+            left: 40px;
+        }
+        #card{
+            margin-right: 80px;
+        }
         .btn{
             width: 80%;
             

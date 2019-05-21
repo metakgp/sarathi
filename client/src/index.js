@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Navbar from './basicComps/navbar'
-import Search from './comps/search'
-import Plans from './plans-notifs/plans'
+import Navbar from './searchComps/navbar'
+import Search from './pages/search'
+import Plans from './pages/plans'
 import Notifs from './plans-notifs/notifs'
-import LoginPage from './comps/login'
+import LoginPage from './pages/login'
 import * as serviceWorker from './serviceWorker';
 //import { BrowserRouter as Router,Route } from 'react-router-dom';
 import { BrowserRouter,Route } from 'react-router-dom'
@@ -13,9 +13,9 @@ const routing = (
         <BrowserRouter>
             <div>
                 <Route exact path="/" component={Search} />
-                <Route exact path = '/login' component={LoginPage} />
-                <Route exact path ="/plans" component={Plans} />
-                <Route  exact path="/notifs" component={Notifs} />
+                <Route path = '/login' component={LoginPage} />
+                <Route path ="/plans" component={Plans} />
+                <Route path="/notifs" component={Notifs} />
             </div>
         </BrowserRouter>    
     )
