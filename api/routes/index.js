@@ -6,7 +6,6 @@ var passport = require('passport');
 var webpush = require('web-push');
 
 router.get('/', (req, res) => {
-  console.log(req.query);
   models.Group.aggregate([
     {$match: {'from': req.query.from, 'to': req.query.to }},
     {$addFields: {
