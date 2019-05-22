@@ -27,8 +27,8 @@ class Search extends Component{
     constructor(props){
         super(props)
         this.state = {
-            fromPlace : 'kgp',
-            toPlace :'kgp',
+            fromPlace : 'KGP',
+            toPlace :'KGP',
             time: new Date(),
             showCard: false,
             dataCards: []
@@ -37,11 +37,19 @@ class Search extends Component{
     
     setFromPlace = (fromPlace) => { this.setState({fromPlace : fromPlace}) }
     setToPlace = (toPlace) => { this.setState({toPlace : toPlace}) }   
-    setDate = (date) => { justDate = date }   
-    setTime = (time) => { 
-        time = time.split(':')
-        var dateWithTime = new Date(justDate[2],months[justDate[0]]-1,justDate[1],time[0],time[1])
-        this.setState({time: dateWithTime}) 
+  
+    setTime = (time) => {
+        var newDate = new Date(this.state.time.getTime());
+        newDate.setHours(time.getHours());
+        newDate.setMinutes(time.getMinutes());
+        newDate.setSeconds(time.getSeconds());
+        this.setState({time: newDate}); 
+    }
+
+    setDate = (date) => {
+        var newDate = new Date(this.state.time.getTime());
+        newDate.setFullYear(date.getFullYear(), date.getMonth(), date.getDate());
+        this.setState({time: newDate});
     }
     
     sendData = () => {
@@ -56,7 +64,7 @@ class Search extends Component{
             }
         })
         .then((res) => {
-            var result = res.data;
+            var result = res.data.data;
             this.setState({dataCards: result, showCard: true});
         })
         .catch((err) => console.log(err)) 
