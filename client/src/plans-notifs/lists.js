@@ -28,7 +28,7 @@ function AlignItemsList(props) {
                     <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
                   </ListItemAvatar>
                   <ListItemText
-                    primary={<p href=''>item.name</p>}
+                    primary={<p href=''>{item.name}</p>}
                     flex-wrap="nowrap"
                   />
                 </ListItem>)

@@ -48,14 +48,16 @@ class Search extends Component{
         // console.log(this.state.fromPlace)
         // console.log(this.state.toPlace)
         // console.log(this.state.time)
-        axios.post('/',{
-            from : this.state.fromPlace,
-            to: this.state.toPlace,
-            time: this.state.time
+        axios.get('http://localhost:5000',{
+            params: {
+                from : this.state.fromPlace,
+                to: this.state.toPlace,
+                time: this.state.time,
+            }
         })
         .then((res) => {
-            var result = res.data.data
-            this.setState({dataCards: result})
+            var result = res.data;
+            this.setState({dataCards: result, showCard: true});
         })
         .catch((err) => console.log(err)) 
     }
