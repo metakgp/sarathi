@@ -9,8 +9,8 @@ function Menu (props){
     return(
         <div className="custom-select">
             <select onChange={passData}>
-                <option value="kgp">KGP</option>
-                <option value="ccu">CCU(Kolkata Airport)</option>
+                <option value="KGP">KGP</option>
+                <option value="CCU">CCU(Kolkata Airport)</option>
                 <option value="railwayStation">Railway Station-KGP</option>
                 <option value="howrah">Howrah</option>
             </select>
