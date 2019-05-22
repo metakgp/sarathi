@@ -6,8 +6,48 @@ var passport = require('passport');
 var webpush = require('web-push');
 
 router.get('/', (req, res) => {
-  models.Group.find({}, {__v: 0}).exec((err, objects) => {
-    res.send(objects);
+  console.log(req.query);
+  models.Group.aggregate([
+    {$match: {'from': req.query.from, 'to': req.query.to }},
+    {$addFields: {
+      'duration': {$abs: {$subtract: ['$departure', new Date(req.query.time)]}},
+    }},
+    {$match: {'duration': {$lte: 86400000}}},
+    {$sort: {'duration': 1}},
+  ]).exec((err, groups) => {
+    if (err)
+      res.send(err);
+    else {
+      // given sorted results, we need to paginate the data
+      var result = [];
+      var batchSize = 1;
+
+      // get the last element from the previous page
+      if (req.query.after) {
+        for (var i = 0; i < groups.length; i++) {
+          if (groups[i]._id.toString() === req.query.after) {
+            result = groups.slice(i+1, i + batchSize + 1);
+            break;
+          }
+        }
+      }
+      else
+        result = groups.slice(0, batchSize);
+
+      const page_details = {
+        base: '/',
+      };
+
+      // add next key for paging
+      if (result.length) {
+        page_details.next = url.format({
+          pathname: '/',
+          query: Object.assign(req.query, {after: result[result.length - 1]._id.toString()}),
+        });
+      }
+
+      res.send({paging: page_details, data: result});
+    }
   });
 });
 
@@ -25,7 +65,7 @@ router.post('/create_group', (req, res) => {
     to: req.body.to,
     owner: traveler,
     members: [traveler],
-    departure: req.body.time,
+    departure: traveler.time,
     status: 'open',
   });
   grp.save((err, object) => {
@@ -84,10 +124,10 @@ router.post('/subscribe', (req, res) => {
   const pushSubscription = JSON.stringify(req.body);
   models.User.findByIdAndUpdate(req.user.id, {push_subscription: pushSubscription})
   .exec((err) => {
-    if (err) {
+    if (err)
       res.send(500, "Error updating user object for storing push subscription");
-    }
-    res.sendStatus(200);
+    else
+      res.sendStatus(200);
   });
 });
 
