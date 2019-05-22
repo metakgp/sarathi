@@ -1,0 +1,166 @@
+@mixin flex($dir,$justifyContent) {
+    display: flex;
+    flex-direction: $dir;
+    justify-content: $justifyContent; 
+}
+
+body{
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+.fromTo{
+    @include flex(row,center);
+    flex-wrap : wrap
+}
+
+.menu-des{
+    @include flex(row,flex-end )
+}
+
+
+#card-contents{
+    @include flex(column,space-between)
+}
+
+select {
+    position: relative;
+    top : 20%;
+    margin: 15px;
+        
+}
+
+.search{
+    @include flex(column,center);
+    align-items:center;
+    border : 1px solid black
+}
+
+.selectDate{
+    @include flex(row,flex-end );
+    align-items : center
+    
+}
+
+button {
+    background-color: #3f51b5;
+    border: none;
+    color: white;
+    padding: 10px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+.details-in-card{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    text-align: center;
+    
+}        
+
+.MuiCardContent-root-121 {
+    border: 2px solid black;
+    margin-right: 20%;
+    margin-left: 20%;
+}
+
+.MuiButton-label-81 {
+    color: white;
+    text-decoration: none
+}
+
+#notifs{    
+    position: relative;
+    left: 40%;
+    right:50%
+}
+
+.login-page{
+    text-align: center;
+    border: 2px solid black;
+    border-radius: 8px;
+    margin-left: 15%;
+    margin-right: 15%;
+    margin-top:10%;
+    
+}
+
+#no-notifs-plans {
+    text-align: center  
+}
+
+#title{
+    font-family: 'Krona One';
+    color: #b30000
+}
+
+#description{
+    color: #8c8c8c
+}
+
+.fb {
+    background-color: #3B5998;
+    color: white;
+}
+
+.btn {
+    width: 25%;
+    padding: 12px;
+    border: none;
+    border-radius: 4px;
+    margin: 5px 0;
+    opacity: 0.85;
+    display: inline-block;
+    font-size: 17px;
+    line-height: 20px;
+    text-decoration: none; /* remove underline from anchors */
+  }
+
+.MuiButton-label-81{
+    color : white;
+    background-color:#3f51b5;
+    text-decoration: none
+ }
+
+.theCard{
+    margin-left: 30%;
+    margin-right:30% 
+}
+
+#plans-page{
+    @include flex(row,flex-end)
+}
+
+#plans-buttons{
+    @include flex(column,flex-start)
+}
+
+@media only screen and (max-width: 768px) {
+    /* For mobile phones: */
+    body {
+        max-width: 100%;
+        overflow-x: none;
+        .search{
+            margin-left: 40px;
+            position: relative;
+            left: 40px;
+        }
+        #card{
+            margin-right: 80px;
+        }
+        .btn{
+            width: 80%;
+            
+        }
+        #title{
+            font-size: 20px;
+        }
+    }
+  }
+  
