@@ -2,26 +2,13 @@ import React,{ Component } from 'react'
 import Menu from '../searchComps/select'
 import DateSelect from '../searchComps/date'
 import TimeSelect from '../searchComps/time'
-import Card from '../plans-notifs/card'
+// import Card from '../plans-notifs/card'
+import Card from '../plans-notifs/card';
+import CardHeader from '@material-ui/core/CardHeader';
+import axios from 'axios';
+import  '../styles/App.scss';
 import Grid from '@material-ui/core/Grid';
-import axios from 'axios'
-import  '../styles/App.scss'
 
-var months = {
-    Jan : 1,
-    Feb : 2,
-    Mar : 3,
-    Apr : 4,
-    May : 5,
-    Jun : 6,
-    Jul : 7,
-    Aug : 8,
-    Sep : 9,
-    Oct : 10,
-    Nov : 11,
-    Dec : 12
-}
-var justDate
 
 class Search extends Component{
     constructor(props){
@@ -56,7 +43,7 @@ class Search extends Component{
         // console.log(this.state.fromPlace)
         // console.log(this.state.toPlace)
         // console.log(this.state.time)
-        axios.get('http://localhost:5000',{
+        axios.get('http://192.168.0.103:5000',{
             params: {
                 from : this.state.fromPlace,
                 to: this.state.toPlace,
@@ -71,9 +58,12 @@ class Search extends Component{
     }
 
     render(){
+        
         return(
             <div id='homepage'>
-                <Grid container>
+            
+                <Grid container spacing={16}>
+                <Grid item>
                 <div className="search">
                     <div className="fromTo">
                         <div className="menu-des">
@@ -91,11 +81,14 @@ class Search extends Component{
                     <em>The above time indicates the time you are leaving from place</em>
                     <button onClick={this.sendData}>Search</button>
                 </div>
+                </Grid>
+                <Grid item>
                 <div id='card'>
                    {(this.state.showCard===true) ?
                      this.state.dataCards.map(item => {
                          return(
-                             <Card 
+                             <Card
+                             key={item._id} 
                              departure = {item.departure}
                              from = {item.from}
                              to = {item.to}
@@ -106,6 +99,7 @@ class Search extends Component{
                      }) 
                      : ''}
                 </div>
+                </Grid>
                 </Grid>
             </div>
         )
