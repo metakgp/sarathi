@@ -75,7 +75,7 @@ class Search extends Component{
         return(
             <div id='homepage'>
             
-                <Grid container spacing={16}>
+                <Grid container spacing={5}>
                 <Grid item>
                 <div className="search">
                     <div className="fromTo">
@@ -95,7 +95,7 @@ class Search extends Component{
                     <button onClick={this.sendData}>Search</button>
                 </div>
                 </Grid>
-                <Grid item>
+                <Grid item xs>
                 <div id='card'>
                    {(this.state.showCard===true) ?
                      this.state.dataCards.map(item => {
@@ -108,8 +108,11 @@ class Search extends Component{
                              to = {item.to}
                              status = {item.status}
                              members = {item.members}
-                             onButtonClick = {this.sendJoinRequest}   
+                             hasButton = {true}
+                             buttons={[{text: 'join', onClick: this.sendJoinRequest}]}
+                            //  onButtonClick = {this.sendJoinRequest}   
                              />
+
                          )
                      }) 
                      : ''}
