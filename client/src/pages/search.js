@@ -4,7 +4,6 @@ import DateSelect from '../searchComps/date'
 import TimeSelect from '../searchComps/time'
 // import Card from '../plans-notifs/card'
 import Card from '../plans-notifs/card';
-import CardHeader from '@material-ui/core/CardHeader';
 import axios from 'axios';
 import  '../styles/App.scss';
 import Grid from '@material-ui/core/Grid';
@@ -57,6 +56,20 @@ class Search extends Component{
         .catch((err) => console.log(err)) 
     }
 
+    sendJoinRequest = (groupId) => {
+        axios.post('http://192.168.0.103:5000/request/join_request', {
+            from: this.state.fromPlace,
+            to: this.state.toPlace,
+            time: this.state.time,
+            groupId: groupId,
+        }).then((res) => {
+            console.log(res.data);
+            // we need to hide the card or disable it
+        }).catch((err) => {
+            console.log(err);
+        });
+    }
+
     render(){
         
         return(
@@ -88,12 +101,14 @@ class Search extends Component{
                      this.state.dataCards.map(item => {
                          return(
                              <Card
-                             key={item._id} 
+                             key={item._id}
+                             id={item._id} 
                              departure = {item.departure}
                              from = {item.from}
                              to = {item.to}
                              status = {item.status}
-                             members = {item.members}   
+                             members = {item.members}
+                             onButtonClick = {this.sendJoinRequest}   
                              />
                          )
                      }) 

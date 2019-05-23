@@ -35,7 +35,7 @@ export default function SimpleCard (props) {
       <List style={{padding: 5}}>
         {props.members.map((item, index) => {
           return (
-            <ListItem>
+            <ListItem key={item.fb_id}>
                 <ListItemAvatar>
                     <Avatar alt='Remy Sharp' src='http://localhost:5000/images/user-image.png' />
                 </ListItemAvatar>
@@ -49,7 +49,9 @@ export default function SimpleCard (props) {
         })}
       </List>
       <CardActions>
-          <Button size='large' style={{padding: 5}}>Join</Button>
+          <Button size='large' style={{padding: 5}} onClick={() => {
+            props.onButtonClick(props.id);
+          }}>Join</Button>
       </CardActions>
     </Card>
   )
