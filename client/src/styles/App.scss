@@ -134,7 +134,7 @@ button {
 // }
 
 #plans-page{
-    @include flex(row,flex-end)
+    @include flex(row,flex-start)
 }
 
 #plans-buttons{

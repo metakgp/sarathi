@@ -1,7 +1,5 @@
 import React from 'react';
 import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-// import List from './lists'
 import Chip from '@material-ui/core/Chip';
 import '../styles/App.scss';
 import Typography from '@material-ui/core/Typography';
@@ -15,25 +13,37 @@ import moment from 'moment';
 
    
 export default function SimpleCard (props) {
+
+  var buttonHTML = props.buttons.map(item => 
+    (<Button 
+    size='large' 
+    style={{padding: 5}} 
+    onClick={item.onClick}>
+    {item.text}
+    </Button>)
+  );
+
+
   return (
-    <Card style={{minWidth: 600}}>
+    <Card style={{minWidth: 400, maxWidth: 500}}>
       <Grid container style={{padding: 10, background: '#efefef'}}>
           <Grid item xs>
-              <Typography variant='headline'>
+              <Typography variant='h5' gutterBottom>
                   {moment(props.departure).format('Do MMMM')} 
               </Typography>
-              <Typography variant='subheading'>
+              <Typography variant='subtitle2'>
                 {props.from} to {props.to}
               </Typography>
           </Grid>
           <Grid item>
-              <Typography variant='headline'>
+              <Typography variant='h5' gutterBottom>
                   {moment(props.departure).format('hh:mm a')}
               </Typography>
           </Grid>
       </Grid>
       <List style={{padding: 5}}>
         {props.members.map((item, index) => {
+          const chip = index == 0 ? <Chip label='creator' color='primary'/> : '';
           return (
             <ListItem key={item.fb_id}>
                 <ListItemAvatar>
@@ -41,18 +51,25 @@ export default function SimpleCard (props) {
                 </ListItemAvatar>
                 <ListItemText primary={item.name} secondary={
                     <React.Fragment>
-                        <Typography variant='span'>Flight Time : {moment(item.time).format('hh:mm a')}</Typography>
+                        <Typography component='span' variant='body2'>Flight Time : {moment(item.time).format('hh:mm a')}</Typography>
                     </React.Fragment>
                 }></ListItemText>
+                {chip}
             </ListItem>
           )
         })}
       </List>
-      <CardActions>
-          <Button size='large' style={{padding: 5}} onClick={() => {
+      {
+        props.hasButton ? 
+        <CardActions>
+          {buttonHTML}
+          {/* <Button size='large' style={{padding: 5}} onClick={() => {
             props.onButtonClick(props.id);
-          }}>Join</Button>
-      </CardActions>
+          }}>Join</Button> */}
+        </CardActions> :
+        ''
+      }
+      
     </Card>
   )
 }
