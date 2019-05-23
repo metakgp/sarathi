@@ -7,22 +7,6 @@ import Grid from '@material-ui/core/Grid';
 import axios from 'axios'
 import  '../styles/App.scss'
 
-var months = {
-    Jan : 1,
-    Feb : 2,
-    Mar : 3,
-    Apr : 4,
-    May : 5,
-    Jun : 6,
-    Jul : 7,
-    Aug : 8,
-    Sep : 9,
-    Oct : 10,
-    Nov : 11,
-    Dec : 12
-}
-var justDate
-
 class Search extends Component{
     constructor(props){
         super(props)
@@ -30,7 +14,6 @@ class Search extends Component{
             fromPlace : 'KGP',
             toPlace :'KGP',
             time: new Date(),
-            showCard: false,
             dataCards: []
         }
     }
@@ -72,7 +55,7 @@ class Search extends Component{
 
     render(){
         return(
-            <div id='homepage'>
+            <div>
                 <Grid container>
                 <div className="search">
                     <div className="fromTo">
@@ -88,7 +71,6 @@ class Search extends Component{
                         <DateSelect onPassData = {this.setDate} />
                     </div>
                     <TimeSelect onPassData={this.setTime} />
-                    <em>The above time indicates the time you are leaving from place</em>
                     <button onClick={this.sendData}>Search</button>
                 </div>
                 <div id='card'>
