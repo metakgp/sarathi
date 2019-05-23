@@ -10,8 +10,8 @@ router.get('/join_request', (req, res) => {
 // sends a join request to the owner of the group
 router.post('/join_request', (req, res) => {
     var traveler = {
-      fb_id: req.body.fb_id,
-      name: req.body.name,
+      fb_id: req.user.fb_id,
+      name: req.user.name,
       from: req.body.from,
       to: req.body.to,
       time: new Date(req.body.time),

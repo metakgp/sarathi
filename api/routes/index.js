@@ -99,7 +99,7 @@ router.get('/auth/facebook', passport.authenticate("facebook"));
 // params - state-param : unique code to prevent csrf
 // 
 router.get('/auth/facebook/callback', passport.authenticate("facebook", {
-  successRedirect: '/',
+  successRedirect: 'http://192.168.0.1:3000/',
   failureRedirect: '/logout',
 }));
 
