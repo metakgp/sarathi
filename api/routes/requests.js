@@ -3,6 +3,10 @@ const router = express.Router();
 const models = require('../models/index').models;
 const webpush = require('web-push');
 
+router.get('/join_request', (req, res) => {
+  res.render('join_request.ejs');
+});
+
 // sends a join request to the owner of the group
 router.post('/join_request', (req, res) => {
     var traveler = {
@@ -10,11 +14,14 @@ router.post('/join_request', (req, res) => {
       name: req.body.name,
       from: req.body.from,
       to: req.body.to,
-      time: req.body.time,
+      time: new Date(req.body.time),
     };
   
     // find the group the user wants to join
     models.Group.findById(req.body.groupId).exec((err, group) => {
+      if (err)
+        res.send(500, err);
+
       var request = models.Request({
         group: group,
         traveler: traveler,
@@ -23,36 +30,41 @@ router.post('/join_request', (req, res) => {
       // create a request object
       request.save((err) => {
         if (err)
-          res.send(500, "Error creating request");
+          res.send(500, err);
         else {  
           // add those requests to the users concerned
           models.User.findOneAndUpdate({fb_id: req.body.fb_id}, {$push: {sent_requests: request}})
           .exec((err, user) => {
             if (err) {
-              res.send(500, "Error adding sent request to user");
+              res.send(500, err);
             }
   
             models.User.findOneAndUpdate({fb_id: group.owner.fb_id}, {$push: {received_requests: request}})
             .exec((err, owner) => {
               if (err)
-                res.send(500, "Error adding received request to user");
+                res.send(500, err);
               else {
   
-                // send notication to this user (the owner of the group)
-                const message = {
+                // send request notication to this user (the owner of the group)
+                const message = JSON.stringify({
                   type: 'join_request',
                   title: 'Join Request',
                   body: user.name + " has sent a join request",
-                }
-                webpush.sendNotification(JSON.parse(owner.push_subscription), JSON.stringify(message))
+                });
+                
+                webpush.sendNotification(JSON.parse(owner.push_subscription), message)
                 .catch(err => console.log(err))
-                .then(() => res.send(200, "OK"));
+                .then(() => res.sendStatus(200));
               }
             });
           });
         }
       });
     });
+});
+
+router.get('/approve_request', (req, res) => {
+  res.render('approve_request.ejs');
 });
   
   // approves a request to join the group
@@ -74,52 +86,62 @@ router.post('/approve_request', (req, res) => {
               {$pull: {received_requests: req.body.requestId}})  //remove requests matching req id
               .exec((err) => {
                 if (err)
-                  res.send(500, "error removing request from user");
+                  res.send(500, err);
                 else {
                   // remove request from sent_request of traveler
                   models.User.findOneAndUpdate({fb_id: request.traveler.fb_id}, 
                     {$pull: {sent_requests: req.body.requestId}, $push: {joined_groups: group}})  //remove requests matching req id
                     .exec((err, traveler) => {
                       if (err)
-                        res.send(500, "error removing request from user");
+                        res.send(500, err);
                       else {
                         
                         // message to all the members of the group
-                        const message = JSON.stringify({
+                        const message = {
                           type: 'approve_request',
                           title: 'Group Update',
-                          body: request.traveler.name + " has joined the group",
-                        });
+                          body: traveler.name + " has joined the group",
+                        };
+
+                        createAndSendNotification(message, request, undefined, (err, notif) => {
+                          message_string = JSON.stringify(message);
                         
-                        // sending notification to all members of the group
-                        group.members.map((member) => {
-                          models.User.findOne({fb_id: member.fb_id})
-                          .exec((err, user) => {
-                            webpush.sendNotification(JSON.parse(user.push_subscription), message)
-                            .catch(err => console.log(err));
+                          // sending notification to all members of the group
+                          // add notification ids to each of these users
+                          group.members.map((member) => {
+                            models.User.findOneAndUpdate({fb_id: member.fb_id}, 
+                              {$push: {'notifications': notif}})
+                            .exec((err, user) => {
+                              webpush.sendNotification(JSON.parse(user.push_subscription), message_string)
+                              .catch(err => console.log(err));
+                            });
                           });
+    
+                          // message to the traveler
+                          const message2 = {
+                            type: 'approve_request',
+                            title: 'Request Update',
+                            body: group.owner.name + " has accepted your request",
+                          };
+
+                          webpush.sendNotification(traveler.push_subscription, JSON.stringify(message2))
+                          .catch(err => console.log(err))
+                          .then(() => res.sendStatus(200));
                         });
-  
-                        // message to the traveler
-                        const message2 = JSON.stringify({
-                          type: 'approve_request',
-                          title: 'Request Update',
-                          body: group.owner.name + " has accepted your request",
-                        });
-  
-                        webpush.sendNotification(JSON.parse(traveler.push_subscription), message2)
-                        .catch(err => console.log(err))
-                        .then(() => res.send(200, "OK"));
                       }
-                    });
+                  });
                 }
-              });
+            });
           }
         });
       }
     });
 });
-  
+
+router.get('/reject_request', (req, res) => {
+  res.render('approve_request.ejs');
+});
+
 // rejects a request to join the group
 //TODO: update notification and send it to all members
 router.post('/reject_request', (req, res) => {
@@ -128,7 +150,7 @@ router.post('/reject_request', (req, res) => {
         if (err)
         res.send(500, err);
         else {
-        // find the group and add the travler
+        // find the group
         models.Group.findById(request.group)
         .exec((err, group) => {
             if (err)
@@ -139,27 +161,26 @@ router.post('/reject_request', (req, res) => {
                 {$pull: {received_requests: req.body.requestId}})  //remove requests matching req id
                 .exec((err) => {
                 if (err)
-                    res.send(500, "error removing request from user");
+                    res.send(500, err);
                 else {
                     // remove request from sent_request of traveler
                     models.User.findOneAndUpdate({fb_id: request.traveler.fb_id}, 
-                    {$pull: {sent_requests: req.body.requestId}, $push: {joined_groups: group}})  //remove requests matching req id
-                    .exec((err) => {
+                    {$pull: {sent_requests: req.body.requestId}})  //remove requests matching req id
+                    .exec((err, traveler) => {
                         if (err)
-                        res.send(500, "error removing request from user");
+                        res.send(500, err);
                         else {
                         // message to the traveler
-                        const message = JSON.stringify({
+                        const message = {
                             type: 'approve_request',
                             title: 'Request Update',
-                            body: group.owner.name + " has rehected your request",
-                        });
-
-                        webpush.sendNotification(JSON.parse(traveler.push_subscription), message)
+                            body: group.owner.name + " has rejected your request",
+                        };
+                        
+                        webpush.sendNotification(traveler.push_subscription, JSON.stringify(message))
                         .catch(err => console.log(err))
-                        .then(() => res.send(200, "OK"));
-                        res.send(200, "OK");
-                        }
+                        .then(() => res.sendStatus(200));
+                      }
                     });
                 }
                 });
@@ -168,5 +189,66 @@ router.post('/reject_request', (req, res) => {
         }
     });
 });
+
+router.get('/change_time', (req, res) => {
+  res.render('change_time.ejs');
+});
+
+router.post('/change_time', (req, res) => {
+  
+  models.Group.findByIdAndUpdate(req.body.groupId, {departure: new Date(req.body.departure)})
+  .exec((err, group) => {
+    if (err)
+      res.send(err);
+    else {
+      const message = {
+        type: 'change_time',
+        title: 'Time change',
+        body: group.owner.name + ' has changed the departure time'
+      };
+
+      createAndSendNotification(message, group, undefined, (err, notif) => {
+        for (var i = 0; i < group.members.length; i++) {
+          // send notif to each user and add notid if
+          models.User.findOneAndUpdate({fb_id: group.members[i].fb_id}, {$push: {'notifications': notif}})
+          .exec((err, user) => {
+            if (err)
+              res.send(err);
+            else {
+              if (user.name !== 'Abu Zar Ali') {
+              webpush.sendNotification(JSON.parse(user.push_subscription), JSON.stringify(message))
+              .catch(err => console.log(err));
+              }
+            }
+          });
+        }
+        res.sendStatus(200);
+      });
+    }
+  });
+});
+
+
+function createAndSendNotification(message, object, push_subscription, callback) {
+  const notif = models.Notification({
+    type: message.type,
+    message: message.body,
+    object_id: object,
+    created_on: Date.now(),
+    is_read: false,
+  });
+
+  notif.save((err, notification) => {
+    if (err)
+      res.send(err);
+    else {
+      if (push_subscription) {
+        webpush.sendNotification(JSON.parse(push_subscription), JSON.stringify(message))
+        .catch(err => console.log(err));
+      }
+      callback(err, notification);
+    }
+  });
+}
 
 module.exports = router;

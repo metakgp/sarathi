@@ -6,6 +6,6 @@ module.exports = {
     authorizationURL: 'https://www.facebook.com/v3.3/dialog/oauth',
     tokenURL: 'https://graph.facebook.com/v3.3/oauth/access_token',
     profileFields: ['id', 'name', 'profileUrl'],
-    publicKey: 'BD7vX78ZLVlCvvSrTouEJLD2I4CKJV8oaTy_PpivJHxUPziXcQeAlQ4v8ApyM8w5-gLt3kQUtj7W2epHzL89wbY',
-    privateKey: 'I2kc91iXfRU-pSxC7hmK6tCecB0eidhT-oHtlYpYjxg',
+    publicKey: 'BKXfzdbdl2sE_IKEpoEQU5AIyO2oTBUN-Ro_ZOksKVK6M3nMMn1XQboqDVuSaCC3CL2l2g4YriWwipVurr-6JPQ',
+    privateKey: 'S5t-O5N11plFxQyGgWb8gVnKaGLJ4ckyXAOhRSE7Dhw',
 }
