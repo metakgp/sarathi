@@ -14,15 +14,15 @@ import moment from 'moment';
    
 export default function SimpleCard (props) {
 
+  // Displays button according to date provided through props
   var buttonHTML = props.buttons.map(item => 
     (<Button 
     size='large' 
     style={{padding: 5}} 
-    onClick={item.onClick}>
+    onClick={() => item.onClick(props.id)}>
     {item.text}
     </Button>)
   );
-
 
   return (
     <Card style={{minWidth: 400, maxWidth: 500}}>
@@ -43,7 +43,7 @@ export default function SimpleCard (props) {
       </Grid>
       <List style={{padding: 5}}>
         {props.members.map((item, index) => {
-          const chip = index == 0 ? <Chip label='creator' color='primary'/> : '';
+          const chip = index === 0 ? <Chip label='creator' color='primary'/> : '';
           return (
             <ListItem key={item.fb_id}>
                 <ListItemAvatar>
@@ -63,9 +63,6 @@ export default function SimpleCard (props) {
         props.hasButton ? 
         <CardActions>
           {buttonHTML}
-          {/* <Button size='large' style={{padding: 5}} onClick={() => {
-            props.onButtonClick(props.id);
-          }}>Join</Button> */}
         </CardActions> :
         ''
       }
