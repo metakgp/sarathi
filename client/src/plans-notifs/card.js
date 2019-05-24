@@ -11,18 +11,25 @@ import Avatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
 import moment from 'moment';
 
-   
+
 export default function SimpleCard (props) {
 
-  // Displays button according to date provided through props
-  var buttonHTML = props.buttons.map(item => 
-    (<Button 
-    size='large' 
-    style={{padding: 5}} 
-    onClick={() => item.onClick(props.id)}>
-    {item.text}
+  var buttonHTML = [];
+  if (props.timeChange) {
+    buttonHTML.push(<Button 
+    onClick={() => props.timeChange(props.id, props.departure)}
+    size='large'
+    style={{padding: 5}}
+    >Change Time
     </Button>)
-  );
+  }
+
+  if (props.join) {
+    buttonHTML.push(<Button 
+    onClick={() => props.join(props.id)}>
+    Join
+    </Button>)
+  }
 
   return (
     <Card style={{minWidth: 400, maxWidth: 500}}>
@@ -59,14 +66,7 @@ export default function SimpleCard (props) {
           )
         })}
       </List>
-      {
-        props.hasButton ? 
-        <CardActions>
-          {buttonHTML}
-        </CardActions> :
-        ''
-      }
-      
+      {buttonHTML}
     </Card>
   )
 }

@@ -108,8 +108,7 @@ class Search extends Component{
                              to = {item.to}
                              status = {item.status}
                              members = {item.members}
-                             hasButton = {true}
-                             buttons={[{text: 'join', onClick: this.sendJoinRequest}]}
+                             join={this.sendJoinRequest}
                             //  onButtonClick = {this.sendJoinRequest}   
                              />
 
