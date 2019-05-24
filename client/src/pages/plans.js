@@ -5,9 +5,8 @@ import Grid from '@material-ui/core/Grid';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Container from '@material-ui/core/Container';
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@material-ui/core';
-import { TimePicker, MuiPickersUtilsProvider, DatePicker } from '@material-ui/pickers';
-import DateFnsUtils from '@date-io/date-fns';
+import PickersDialog from '../plans-notifs/PickersDialog';
+
 
 export default class Groups extends React.Component {
 
@@ -16,10 +15,8 @@ export default class Groups extends React.Component {
         joined_groups: [],
         value: 0,
         showTimeDialog: false,
-        timeChangeData: {
-            groupId: '',
-            time: new Date()
-        }
+        timeChangeGroup: '',
+        timeChangeDeparture: new Date(),
     }
 
     componentDidMount() {
@@ -46,13 +43,12 @@ export default class Groups extends React.Component {
         console.log("Group to be removed");
     }
 
-    changeTime = () => {
+    handleTimeChange = (time) => {
         axios.post('http://192.168.0.103:5000/request/change_time', {
-            groupId: this.state.timeChangeData.groupId,
-            departure: this.state.timeChangeData.time,
+            groupId: this.state.timeChangeGroup,
+            departure: this.state.timeChangeDeparture,
         })
         .then((res) => {
-            // update state and group
             var newArray = [...this.state.created_groups];
             for (var i = 0; i < newArray.length; i++) {
                 if (newArray[i]._id === this.state.timeChangeData.groupId) {
@@ -65,16 +61,16 @@ export default class Groups extends React.Component {
         .catch((err) => {
             // display dialog box
         });
-        this.closeDialog();
     }
 
-    openDialog = (groupId) => {
-        this.setState({showTimeDialog: true});
-        this.setState({timeChangeData: {time: this.state.timeChangeData.time, groupId: groupId}});
+    openDialog = (groupId, departure) => {
+        this.setState({showTimeDialog: true, 
+            timeChangeGroup: groupId, 
+            timeChangeDeparture: departure
+        });
     }
 
     closeDialog = () => {
-        this.setState({timeChangeData: {groupId: '', time: new Date()}});
         this.setState({showTimeDialog: false});
     }
 
@@ -105,30 +101,17 @@ export default class Groups extends React.Component {
                             to = {item.to}
                             status = {item.status}
                             members = {item.members}
-                            hasButton = {true}
-                            buttons={this.state.value ? [] : [ 
-                                {text: 'change time', onClick: this.openDialog},
-                                {text: 'remove', onClick: this.removeGroup},
-                            ]} 
+                            timeChange = {this.openDialog} 
                             />
                         )}
                     </Container>
                 </Grid>
             </Grid>
-            <Dialog 
+            <PickersDialog
+            initialTime={this.state.timeChangeDeparture} 
             open={this.state.showTimeDialog} 
-            onClose={() => this.setState({showTimeDialog: false})}>
-                <DialogTitle>Change departure</DialogTitle>
-                <DialogContent>
-                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                        <DatePicker label='Select date' variant='inline' />
-                        <TimePicker label='Select time' variant='inline'/>
-                    </MuiPickersUtilsProvider>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={this.changeTime}>Change</Button>
-                </DialogActions>
-            </Dialog>
+            onClose={this.closeDialog}
+            onTimeChange={this.handleTimeChange} />
             </div>
         )
     }
