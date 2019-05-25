@@ -41,8 +41,8 @@ export default function ReceivedRequestCard(props) {
                 </div>
             </div>
             <CardActions>
-                <Button>Approve</Button>
-                <Button>Reject</Button>
+                <Button onClick={props.approve}>Approve</Button>
+                <Button onClick={props.reject}>Reject</Button>
             </CardActions>
         </Card>
     )

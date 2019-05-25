@@ -13,17 +13,36 @@ export default class Requests extends React.Component {
     state = {
         sent_requests: [],
         received_requests: [],
-        value: 0
+        value: 0,
+        count: true,
     }
 
     componentDidMount() {
+        console.log("Component mounted! Fetching data from backend...")
         axios.get('http://192.168.0.103:5000/user/my_requests?fb_id=2177672832321382')
         .then(res => {
-            this.setState({sent_requests: res.data.sent, received_requests: res.data.received})
+            var receivedRequestArray = res.data.received.map(item => {
+                item.group.membersCount = item.group.members.length;
+                return item;
+            });
+            var sentRequestArray = res.data.sent.map(item => {
+                item.group.membersCount = item.group.members.length;
+                return item;
+            })
+            this.setState({sent_requests: sentRequestArray, received_requests: receivedRequestArray})
         })
         .catch(err => {
             console.log(err.data);
         }); 
+    }
+
+    // updates all the member's (of the same group) count by 1
+    updateMembers(array, index) {
+        var groupId = array[index].group._id;
+        for (var i = 0; i < array.length; i++) {
+            if (array[i].group._id == groupId)
+                array[i].group.membersCount++;
+        }
     }
 
     handleTabChange = (event, value) => {
@@ -34,6 +53,35 @@ export default class Requests extends React.Component {
         if (this.state.value === 0)
             return this.state.sent_requests;
         return this.state.received_requests;
+    }
+
+    handleApprove = (requestId, index) => {
+        axios.post('http://192.168.0.103:5000/request/approve_request', {
+            requestId: requestId
+        })
+        .then((res) => {
+            var newArray = [...this.state.received_requests];
+            this.updateMembers(newArray, index);
+            newArray.splice(index, 1);
+            this.setState({received_requests: newArray});
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+    }
+
+    handleReject = (requestId, index) => {
+        axios.post('http://192.168.0.103:5000/request/approve_request', {
+            requestId: requestId
+        })
+        .then((res) => {
+            var newArray = [...this.state.received_requests];
+            newArray.splice(index, 1);
+            this.setState({received_requests: newArray});    
+        })
+        .catch((err) => {
+            console.log(err)
+        });
     }
 
     render() {
@@ -54,15 +102,17 @@ export default class Requests extends React.Component {
                 <Grid item>
                     <Container>
                         {this.state.value ? 
-                        this.state.received_requests.map(item => 
+                        this.state.received_requests.map((item, index) => 
                             <ReceivedRequestCard
                             key={item._id}
                             id={item._id} 
                             departure = {item.group.departure}
                             from = {item.group.from}
                             to = {item.group.to}
-                            members = {item.group.members.length}
+                            members = {item.group.membersCount}
                             traveler = {item.traveler} 
+                            approve = {() => this.handleApprove(item._id, index)}
+                            reject = {() => this.handleReject(item._id, index)}
                             />
                         ) :
                         this.state.sent_requests.map(item => 
@@ -72,7 +122,7 @@ export default class Requests extends React.Component {
                             departure = {item.group.departure}
                             from = {item.group.from}
                             to = {item.group.to}
-                            members = {item.group.members.length}
+                            members = {item.group.membersCount}
                             owner = {item.group.owner}
                             />
                         )
