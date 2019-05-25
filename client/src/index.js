@@ -4,6 +4,7 @@ import Navbar from './searchComps/navbar'
 import Search from './pages/search'
 import Plans from './pages/plans'
 import Notifs from './plans-notifs/notifs'
+import Requests from './plans-notifs/requests'
 import LoginPage from './pages/login'
 import * as serviceWorker from './serviceWorker';
 //import { BrowserRouter as Router,Route } from 'react-router-dom';
@@ -15,6 +16,7 @@ const routing = (
                 <Route exact path="/" component={Search} />
                 <Route path = '/login' component={LoginPage} />
                 <Route path ="/plans" component={Plans} />
+                <Route path='/requests' component={Requests} />
                 <Route path="/notifs" component={Notifs} />
             </div>
         </BrowserRouter>    
