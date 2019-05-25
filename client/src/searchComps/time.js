@@ -1,8 +1,7 @@
-import 'date-fns';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import DateFnsUtils from '@date-io/date-fns';
+import MomentUtils from '@date-io/moment';
 import { MuiPickersUtilsProvider, TimePicker} from 'material-ui-pickers';
 
 const styles = {
@@ -26,7 +25,7 @@ class MaterialUIPickers extends React.Component {
     const { selectedDate } = this.state;
 
     return (
-      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+      <MuiPickersUtilsProvider utils={MomentUtils}>
           <TimePicker
             margin="normal"
             label="Time of Departure"
