@@ -21,6 +21,7 @@ export default class Requests extends React.Component {
         console.log("Component mounted! Fetching data from backend...")
         axios.get('http://192.168.0.103:5000/user/my_requests?fb_id=2177672832321382')
         .then(res => {
+            console.log(res.data.sent);
             var receivedRequestArray = res.data.received.map(item => {
                 item.group.membersCount = item.group.members.length;
                 return item;
@@ -28,11 +29,11 @@ export default class Requests extends React.Component {
             var sentRequestArray = res.data.sent.map(item => {
                 item.group.membersCount = item.group.members.length;
                 return item;
-            })
+            });
             this.setState({sent_requests: sentRequestArray, received_requests: receivedRequestArray})
         })
         .catch(err => {
-            console.log(err.data);
+            console.log(err);
         }); 
     }
 
@@ -84,6 +85,20 @@ export default class Requests extends React.Component {
         });
     }
 
+    handleCancel = (requestId, index) => {
+        axios.post('http://192.168.0.103:5000/request/cancel_request', {
+            requestId: requestId
+        })
+        .then((res) => {
+            var newArray = [...this.state.sent_requests];
+            newArray.splice(index, 1);
+            this.setState({sent_requests: newArray});    
+        })
+        .catch((err) => {
+            console.log(err)
+        });
+    }
+
     render() {
         
         return (
@@ -115,7 +130,7 @@ export default class Requests extends React.Component {
                             reject = {() => this.handleReject(item._id, index)}
                             />
                         ) :
-                        this.state.sent_requests.map(item => 
+                        this.state.sent_requests.map((item, index) => 
                             <SentRequestCard
                             key={item._id}
                             id={item._id}
@@ -123,7 +138,8 @@ export default class Requests extends React.Component {
                             from = {item.group.from}
                             to = {item.group.to}
                             members = {item.group.membersCount}
-                            owner = {item.group.owner}
+                            owner = {item.group.owner.name}
+                            cancel = {() => this.handleCancel(item._id, index)}
                             />
                         )
                         }
