@@ -1,3 +1,5 @@
+var models = require('../models/index').models;
+
 function createAndSendNotification(message, object, push_subscription, callback) {
     const notif = models.Notification({
       type: message.type,
