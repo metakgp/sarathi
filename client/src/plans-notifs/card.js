@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import { Button, ListItemAvatar } from '@material-ui/core';
+import { Button, ListItemAvatar, CardActions } from '@material-ui/core';
 import Avatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
 import moment from 'moment';
@@ -66,7 +66,9 @@ export default function SimpleCard (props) {
           )
         })}
       </List>
+      <CardActions>
       {buttonHTML}
+      </CardActions>
     </Card>
   )
 }
