@@ -17,10 +17,8 @@ export default function SimpleCard (props) {
   var buttonHTML = [];
   if (props.timeChange) {
     buttonHTML.push(<Button 
-    onClick={() => props.timeChange(props.id, props.departure)}
-    size='large'
-    style={{padding: 5}}
-    >Change Time
+    onClick={() => props.timeChange(props.id, props.departure)}>
+    Change Time
     </Button>)
   }
 
@@ -31,8 +29,15 @@ export default function SimpleCard (props) {
     </Button>)
   }
 
+  if (props.remove) {
+    buttonHTML.push(<Button
+    onClick={props.remove}>
+    Remove
+    </Button>)
+  }
+
   return (
-    <Card style={{minWidth: 400, maxWidth: 500}}>
+    <Card style={{minWidth: 500, maxWidth: 500}}>
       <Grid container style={{padding: 10, background: '#efefef'}}>
           <Grid item xs>
               <Typography variant='h5' gutterBottom>
