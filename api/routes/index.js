@@ -5,6 +5,8 @@ var models = require('../models/index').models;
 var passport = require('passport');
 var webpush = require('web-push');
 
+var utils = require('./util');
+
 router.get('/', (req, res) => {
   models.Group.aggregate([
     {$match: {'from': req.query.from, 'to': req.query.to }},
@@ -56,14 +58,12 @@ router.get('/create_group', (req, res) => {
 
 // creates a group for the user
 router.post('/create_group', (req, res) => {
-  console.log(req.body);
   var traveler = {
     fb_id: req.body.fb_id,
     name: req.body.name,
     from: req.body.from,
     to: req.body.to,
     time: new Date(req.body.time),
-    // time: Date.now(),
   };
   var grp = models.Group({
     from: req.body.from,
@@ -82,6 +82,36 @@ router.post('/create_group', (req, res) => {
         res.send(200, "OK");
       }) ;
     }
+  });
+});
+
+router.get('/remove_group', (req, res) => {
+  res.render('remove_group.ejs');
+});
+
+router.post('/remove_group', (req, res) => {
+  models.Group.findByIdAndDelete(req.body.groupId, (err, group) => {
+    
+    const message = {
+      type: 'remove_group',
+      title: 'Group removed',
+      body: group.owner.name + ' has removed the group',
+    }
+
+    utils.createAndSendNotification(message, group, undefined, (err, notif) => {
+      for (var i = 0; i < group.members.length; i++) {
+        // send notif to each user and add notid if
+        models.User.findOneAndUpdate({fb_id: group.members[i].fb_id}, {$push: {'notifications': notif}})
+        .exec((err, user) => {
+          if (err)
+            res.send(err);
+          else {
+            webpush.sendNotification(JSON.parse(user.push_subscription), JSON.stringify(message))
+            .catch(err => console.log(err));
+          }
+        });
+      }
+    });
   });
 });
 

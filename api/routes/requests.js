@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const models = require('../models/index').models;
 const webpush = require('web-push');
+const utils = require('./util');
 
 router.get('/join_request', (req, res) => {
   res.render('join_request.ejs');
@@ -103,7 +104,7 @@ router.post('/approve_request', (req, res) => {
                           body: traveler.name + " has joined the group",
                         };
 
-                        createAndSendNotification(message, request, undefined, (err, notif) => {
+                        utils.createAndSendNotification(message, request, undefined, (err, notif) => {
                           message_string = JSON.stringify(message);
                         
                           // sending notification to all members of the group
@@ -207,7 +208,7 @@ router.post('/change_time', (req, res) => {
         body: group.owner.name + ' has changed the departure time'
       };
 
-      createAndSendNotification(message, group, undefined, (err, notif) => {
+      utils.createAndSendNotification(message, group, undefined, (err, notif) => {
         for (var i = 0; i < group.members.length; i++) {
           // send notif to each user and add notid if
           models.User.findOneAndUpdate({fb_id: group.members[i].fb_id}, {$push: {'notifications': notif}})
@@ -215,10 +216,8 @@ router.post('/change_time', (req, res) => {
             if (err)
               res.send(err);
             else {
-              if (user.name !== 'Abu Zar Ali') {
               webpush.sendNotification(JSON.parse(user.push_subscription), JSON.stringify(message))
               .catch(err => console.log(err));
-              }
             }
           });
         }
@@ -228,27 +227,42 @@ router.post('/change_time', (req, res) => {
   });
 });
 
-
-function createAndSendNotification(message, object, push_subscription, callback) {
-  const notif = models.Notification({
-    type: message.type,
-    message: message.body,
-    object_id: object,
-    created_on: Date.now(),
-    is_read: false,
-  });
-
-  notif.save((err, notification) => {
-    if (err)
-      res.send(err);
-    else {
-      if (push_subscription) {
-        webpush.sendNotification(JSON.parse(push_subscription), JSON.stringify(message))
-        .catch(err => console.log(err));
+// rejects a request to join the group
+//TODO: update notification and send it to all members
+router.post('/cancel_request', (req, res) => {
+  // find the request object
+  models.Request.findById(req.body.requestId, (err, request) => {
+      if (err)
+      res.send(500, err);
+      else {
+      // find the group
+      models.Group.findById(request.group)
+      .exec((err, group) => {
+          if (err)
+          res.send(500, err);
+          else {
+          // remove received request from owner of the group
+          models.User.findOneAndUpdate({fb_id: group.owner.fb_id}, 
+              {$pull: {received_requests: req.body.requestId}})  //remove requests matching req id
+              .exec((err) => {
+              if (err)
+                  res.send(500, err);
+              else {
+                  // remove request from sent_request of traveler
+                  models.User.findOneAndUpdate({fb_id: request.traveler.fb_id}, 
+                  {$pull: {sent_requests: req.body.requestId}})  //remove requests matching req id
+                  .exec((err, traveler) => {
+                      if (err)
+                        res.send(500, err);
+                      else
+                        res.sendStatus(200);
+                  });
+              }
+              });
+          }
+      });
       }
-      callback(err, notification);
-    }
   });
-}
+});
 
 module.exports = router;
