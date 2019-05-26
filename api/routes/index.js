@@ -85,6 +85,10 @@ router.post('/create_group', (req, res) => {
   });
 });
 
+router.get('/remove_group', (req, res) => {
+  res.render('remove_group.ejs');
+});
+
 router.post('/remove_group', (req, res) => {
   models.Group.findByIdAndDelete(req.body.groupId, (err, group) => {
     
