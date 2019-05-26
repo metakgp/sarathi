@@ -39,8 +39,18 @@ export default class Groups extends React.Component {
         return this.state.joined_groups;
     }
 
-    removeGroup = () => {
-        console.log("Group to be removed");
+    removeGroup = (groupId, index) => {
+        axios.post('http://192.168.0.103:5000/remove_group', {
+            groupId: groupId,
+        })
+        .then((res) => {
+            var newArray = [...this.state.created_groups];
+            newArray.splice(index, 1);
+            this.setState({created_groups: newArray});
+        })
+        .catch((err) => {
+            console.log(err);
+        });
     }
 
     handleTimeChange = (time) => {
@@ -94,7 +104,7 @@ export default class Groups extends React.Component {
                 </Grid>
                 <Grid item>
                     <Container>
-                        {this.getGroups().map(item => 
+                        {this.getGroups().map((item, index) => 
                             <Card
                             key={item._id}
                             id={item._id} 
@@ -103,7 +113,8 @@ export default class Groups extends React.Component {
                             to = {item.to}
                             status = {item.status}
                             members = {item.members}
-                            timeChange = {this.openDialog} 
+                            timeChange = {this.openDialog}
+                            remove = {() => this.removeGroup(item._id, index)} 
                             />
                         )}
                     </Container>
