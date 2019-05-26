@@ -44,21 +44,23 @@ export default class Groups extends React.Component {
     }
 
     handleTimeChange = (time) => {
+        
         axios.post('http://192.168.0.103:5000/request/change_time', {
             groupId: this.state.timeChangeGroup,
-            departure: this.state.timeChangeDeparture,
+            departure: time,
         })
         .then((res) => {
             var newArray = [...this.state.created_groups];
             for (var i = 0; i < newArray.length; i++) {
-                if (newArray[i]._id === this.state.timeChangeData.groupId) {
-                    newArray[i].departure = new Date(this.state.timeChangeData.time.getTime());
+                if (newArray[i]._id === this.state.timeChangeGroup) {
+                    newArray[i].departure = time;
                     break;
                 }
             }
-            this.setState({created_groups: newArray}); 
+            this.setState({created_groups: newArray});
         })
         .catch((err) => {
+            console.log(err);
             // display dialog box
         });
     }
@@ -66,7 +68,7 @@ export default class Groups extends React.Component {
     openDialog = (groupId, departure) => {
         this.setState({showTimeDialog: true, 
             timeChangeGroup: groupId, 
-            timeChangeDeparture: departure
+            timeChangeDeparture: new Date(departure)
         });
     }
 
