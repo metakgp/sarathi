@@ -16,7 +16,7 @@ class PickerDialog extends Component {
     }
 
     setTime = (time) => {
-        this.setState({time: time});
+        this.setState({time: new Date(time)});
     }
 
     componentDidUpdate(prevProps) {
