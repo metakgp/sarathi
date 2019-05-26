@@ -18,7 +18,6 @@ export default class Requests extends React.Component {
     }
 
     componentDidMount() {
-        console.log("Component mounted! Fetching data from backend...")
         axios.get('http://192.168.0.103:5000/user/my_requests?fb_id=2177672832321382')
         .then(res => {
             console.log(res.data.sent);
