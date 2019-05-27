@@ -23,9 +23,25 @@ export default function SimpleCard (props) {
   }
 
   if (props.join) {
-    buttonHTML.push(<Button 
+    var buttonDisabled = false;
+    var buttonText = "join";
+    if (props.status === 'request_sent') {
+      buttonDisabled = true;
+      buttonText = "Request sent"
+    }
+    else if (props.status === 'joined') {
+      buttonDisabled = true;
+      buttonText = "already a member";
+    }
+    else if (props.status === 'closed') {
+      buttonDisabled = true;
+      buttonText = "closed";
+    }
+
+    buttonHTML.push(<Button
+    disabled={buttonDisabled} 
     onClick={props.join}>
-    Join
+    {buttonText}
     </Button>)
   }
 
