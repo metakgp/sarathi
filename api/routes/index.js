@@ -7,7 +7,7 @@ var webpush = require('web-push');
 
 var utils = require('./util');
 
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
   models.Group.aggregate([
     {$match: {'from': req.query.from, 'to': req.query.to }},
     {$addFields: {
@@ -15,13 +15,23 @@ router.get('/', (req, res) => {
     }},
     {$match: {'duration': {$lte: 86400000}}},
     {$sort: {'duration': 1}},
-  ]).exec((err, groups) => {
+  ]).exec(async (err, groups) => {
     if (err)
       res.send(err);
     else {
+
+      // remove groups that should be in disable form
+      // 1. user is sent a join request
+      // 2. user is a member already
+      // 3. group is closed
+      groups = await disableRequestSentGroups(groups, req.query.fb_id);
+      // groups = disableJoinedOrCreatedGroups(group, req.user);
+      // groups = disableClosedGroups(group, req.user);
+      // res.send(groups);
+
       // given sorted results, we need to paginate the data
       var result = [];
-      var batchSize = 1;
+      var batchSize = 10;
 
       // get the last element from the previous page
       if (req.query.after) {
@@ -165,5 +175,23 @@ router.post('/subscribe', (req, res) => {
       res.sendStatus(200);
   });
 });
+
+async function disableRequestSentGroups(groups, userId) {
+  try {
+    user = await models.User.findOne({fb_id: userId}).populate('sent_requests');
+    // getting group ids from all sent requests
+    sentRequestGroups = user.sent_requests.map(item => item.group.toString());
+    for (var i = 0; i < groups.length; i++) {
+      if (sentRequestGroups.includes(groups[i]._id.toString()))
+        groups[i].status = 'request_sent';
+    }
+
+    return groups;
+  }
+  catch(err) {
+    console.log(err);
+    return groups;
+  }
+}
 
 module.exports = router;
