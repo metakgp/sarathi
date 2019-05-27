@@ -26,6 +26,7 @@ class Search extends Component{
   
     setTime = (time) => {
         var newDate = new Date(this.state.time.getTime());
+        time = new Date(time);
         newDate.setHours(time.getHours());
         newDate.setMinutes(time.getMinutes());
         newDate.setSeconds(time.getSeconds());
@@ -51,20 +52,23 @@ class Search extends Component{
         })
         .then((res) => {
             var result = res.data.data;
+            console.log(result);
             this.setState({dataCards: result, showCard: true});
         })
         .catch((err) => console.log(err)) 
     }
 
-    sendJoinRequest = (groupId) => {
-        axios.post('http://192.168.0.103:5000/request/join_request', {
+    sendJoinRequest = (groupId, index) => {
+        axios.post('http://192.168.0.103:5000/request/join_request?fb_id=2177672832321382&name=Arib Alam', {
             from: this.state.fromPlace,
             to: this.state.toPlace,
             time: this.state.time,
             groupId: groupId,
         }).then((res) => {
             console.log(res.data);
-            // we need to hide the card or disable it
+            var newArray = [...this.state.dataCards];
+            newArray.splice(index, 1);
+            this.setState({dataCards: newArray});
         }).catch((err) => {
             console.log(err);
         });
@@ -98,7 +102,7 @@ class Search extends Component{
                 <Grid item xs>
                 <div id='card'>
                    {(this.state.showCard===true) ?
-                     this.state.dataCards.map(item => {
+                     this.state.dataCards.map((item, index) => {
                          return(
                              <Card
                              key={item._id}
@@ -108,8 +112,7 @@ class Search extends Component{
                              to = {item.to}
                              status = {item.status}
                              members = {item.members}
-                             join={this.sendJoinRequest}
-                            //  onButtonClick = {this.sendJoinRequest}   
+                             join={() => this.sendJoinRequest(item._id, index)}
                              />
 
                          )
