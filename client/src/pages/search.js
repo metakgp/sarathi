@@ -52,14 +52,13 @@ class Search extends Component{
         })
         .then((res) => {
             var result = res.data.data;
-            console.log(result);
             this.setState({dataCards: result, showCard: true});
         })
         .catch((err) => console.log(err)) 
     }
 
     sendJoinRequest = (groupId, index) => {
-        axios.post('http://192.168.0.103:5000/request/join_request?fb_id=2177672832321382&name=Arib Alam', {
+        axios.post('http://192.168.0.103:5000/request/join_request', {
             from: this.state.fromPlace,
             to: this.state.toPlace,
             time: this.state.time,
