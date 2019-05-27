@@ -48,6 +48,7 @@ class Search extends Component{
                 from : this.state.fromPlace,
                 to: this.state.toPlace,
                 time: this.state.time,
+                fb_id: 2177672832321382,
             }
         })
         .then((res) => {
@@ -58,7 +59,7 @@ class Search extends Component{
     }
 
     sendJoinRequest = (groupId, index) => {
-        axios.post('http://192.168.0.103:5000/request/join_request', {
+        axios.post('http://192.168.0.103:5000/request/join_request?fb_id=2177672832321382', {
             from: this.state.fromPlace,
             to: this.state.toPlace,
             time: this.state.time,
@@ -66,7 +67,7 @@ class Search extends Component{
         }).then((res) => {
             console.log(res.data);
             var newArray = [...this.state.dataCards];
-            newArray.splice(index, 1);
+            newArray[index].status = 'request_sent';
             this.setState({dataCards: newArray});
         }).catch((err) => {
             console.log(err);
