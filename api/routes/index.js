@@ -25,7 +25,7 @@ router.get('/', async (req, res) => {
       // 2. user is a member already
       // 3. group is closed
       groups = await disableRequestSentGroups(groups, req.query.fb_id);
-      // groups = disableJoinedOrCreatedGroups(group, req.user);
+      groups = disableJoinedOrCreatedGroups(groups, req.query.fb_id);
       // groups = disableClosedGroups(group, req.user);
       // res.send(groups);
 
@@ -192,6 +192,17 @@ async function disableRequestSentGroups(groups, userId) {
     console.log(err);
     return groups;
   }
+}
+
+function disableJoinedOrCreatedGroups(groups, userId) {
+  for (var i = 0; i < groups.length; i++) {
+    for (var j = 0; j < groups[i].members.length; j++) {
+      if (groups[i].members[j].fb_id === userId)
+        groups[i].status = 'joined';
+    }
+  }
+
+  return groups;
 }
 
 module.exports = router;
