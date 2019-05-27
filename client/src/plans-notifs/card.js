@@ -24,7 +24,7 @@ export default function SimpleCard (props) {
 
   if (props.join) {
     buttonHTML.push(<Button 
-    onClick={() => props.join(props.id)}>
+    onClick={props.join}>
     Join
     </Button>)
   }
@@ -37,7 +37,7 @@ export default function SimpleCard (props) {
   }
 
   return (
-    <Card style={{minWidth: 500, maxWidth: 500}}>
+    <Card style={{minWidth: 500, maxWidth: 500, marginBottom: 5}}>
       <Grid container style={{padding: 10, background: '#efefef'}}>
           <Grid item xs>
               <Typography variant='h5' gutterBottom>

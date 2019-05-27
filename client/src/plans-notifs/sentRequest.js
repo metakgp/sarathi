@@ -12,7 +12,7 @@ import Button from '@material-ui/core/Button';
 export default function SentRequestCard(props) {
 
     return (
-        <Card style={{maxWidth: 500, minWidth: 500}}>
+        <Card style={{maxWidth: 500, minWidth: 500, marginBottom: 5}}>
             <Grid container style={{padding: 10}}>
                 <Grid item xs>
                     <Typography variant='h5'>
