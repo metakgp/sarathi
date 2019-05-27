@@ -26,8 +26,6 @@ router.get('/', async (req, res) => {
       // 3. group is closed
       groups = await disableRequestSentGroups(groups, req.query.fb_id);
       groups = disableJoinedOrCreatedGroups(groups, req.query.fb_id);
-      // groups = disableClosedGroups(group, req.user);
-      // res.send(groups);
 
       // given sorted results, we need to paginate the data
       var result = [];
