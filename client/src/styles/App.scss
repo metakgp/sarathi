@@ -163,9 +163,85 @@ button {
     margin-right: 1.5%
 
 }
+
+// responsive nav stylings
+
+.topnav {
+    overflow: hidden;
+    background-color: #3f51b5;
+    // display: flex;
+    // flex-direction: row;
+    // justify-content: flex-end;
+}
+    
+
+.topnav a {
+    float: left;
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+  }
+
+  
+
+  .topnav a:hover {
+    background-color: #4255bd;
+    color: white;
+  }
+  
+  .topnav .icon {
+    display: none;
+  }
+  
+@media only screen and (min-width: 992px){
+    .to-right {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+    
+    }
+    #hide{
+        display: none;
+    }
+}  
+
 @media only screen and (max-width: 768px) {
     /* For mobile phones: */
     body {
+        // responsive navbar
+        
+         .topnav a:not(:first-child ) {
+            display: none ;
+          }
+         #hide{
+             display: none;
+         }       
+        
+
+        .topnav a.icon {
+            float: right;
+            display: block;
+        }
+        .topnav.responsive {position: relative;}
+        .topnav.responsive .icon {
+            position: absolute;
+            right: 0;
+            top: 0;
+        }
+        .topnav.responsive a {
+            float: none;
+            display: block;
+            text-align: center;
+
+        }
+
+        .to-right{
+            // display: none
+        }
+
         #NewSearch{
             @include flex(column,center);
             align-items: baseline;

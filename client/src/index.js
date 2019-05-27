@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Navbar from './searchComps/navbar'
+import Navbar from './searchComps/respNav'
 import Search from './pages/newSearch'
 import Plans from './pages/plans'
 import Notifs from './plans-notifs/notifs'
