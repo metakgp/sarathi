@@ -18,7 +18,7 @@ export default class Requests extends React.Component {
     }
 
     componentDidMount() {
-        axios.get('http://192.168.0.103:5000/user/my_requests?fb_id=2177672832321382')
+        axios.get('http://192.168.0.103:5000/user/my_requests')
         .then(res => {
             console.log(res.data.sent);
             var receivedRequestArray = res.data.received.map(item => {
@@ -71,7 +71,7 @@ export default class Requests extends React.Component {
     }
 
     handleReject = (requestId, index) => {
-        axios.post('http://192.168.0.103:5000/request/approve_request', {
+        axios.post('http://192.168.0.103:5000/request/reject_request', {
             requestId: requestId
         })
         .then((res) => {
