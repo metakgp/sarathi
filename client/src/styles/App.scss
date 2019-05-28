@@ -165,15 +165,11 @@ button {
 }
 
 // responsive nav stylings
-
 .topnav {
     overflow: hidden;
     background-color: #3f51b5;
-    // display: flex;
-    // flex-direction: row;
-    // justify-content: flex-end;
 }
-    
+
 
 .topnav a {
     float: left;
@@ -196,7 +192,13 @@ button {
     display: none;
   }
   
-@media only screen and (min-width: 992px){
+// only for desktop screens
+  @media only screen and (min-width: 992px){
+    .topnav {                   //to remove the white space at the left and right corners of navbar
+        width: 102%;
+        margin-left: -1%
+    }
+    
     .to-right {
         display: flex;
         flex-direction: row;
@@ -212,7 +214,11 @@ button {
     /* For mobile phones: */
     body {
         // responsive navbar
-        
+        .topnav {               //to remove the white space at the left and right corners of navbar
+            width: 110%;
+            margin-left: -6%;
+            
+        }
          .topnav a:not(:first-child ) {
             display: none ;
           }
@@ -245,8 +251,8 @@ button {
         #NewSearch{
             @include flex(column,center);
             align-items: baseline;
-            margin-left: 22%
-        }
+            margin-left: 22%;
+         }
         .MuiFormControl-root.MuiFormControl-marginNormal.MuiTextField-root{
             margin-right: -53%;
             margin-left: 3%

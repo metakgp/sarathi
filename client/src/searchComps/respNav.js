@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import Typography from '@material-ui/core/Typography';
+import { StickyContainer, Sticky } from 'react-sticky';
+
 
 export default class Example extends Component {
   
@@ -16,31 +18,31 @@ export default class Example extends Component {
   render() {
     return (
       <div>
-        <div className="topnav" id="myTopnav">
+         <div className="topnav" id="myTopnav">
                   <a href="/" >
-                    <Typography variant="h6">
+                    <Typography variant="subtitle1">
                         TRAVEL KGP !
                     </Typography>
                   </a>
                <div className='to-right'>
                   <a href="#" id="hide">1</a>
                   <a href="/requests">
-                    <Typography variant="h6">
+                    <Typography variant="subtitle1">
                           Requests
                     </Typography>  
                   </a>
                   <a href="/groups">
-                     <Typography variant="h6">
+                     <Typography variant="subtitle1">
                           Groups
                       </Typography>
                    </a>
                   <a href="/notifications">
-                    <Typography variant="h6">
+                    <Typography variant="subtitle1">
                             Notifications
                         </Typography>
                   </a>
                   <a href="#">
-                      <Typography variant="h6">
+                      <Typography variant="subtitle1">
                          Logout
                       </Typography>
                   </a>
@@ -51,7 +53,7 @@ export default class Example extends Component {
             </a>
         </div>
       </div>
-    );
+  );
   }
 
 }
