@@ -17,6 +17,7 @@ export default class Requests extends React.Component {
             value: 0,
             count: true,
             contentSectionHeight: 0,
+            contentSectionWidth: 0,
         }
         this.updateContentSectionHeight = this.updateContentSectionHeight.bind(this);
     }
@@ -47,7 +48,8 @@ export default class Requests extends React.Component {
     }
 
     updateContentSectionHeight() {
-        this.setState({contentSectionHeight: window.innerHeight - 88});
+        const width = window.innerWidth < 500 ? window.innerWidth : 500;
+        this.setState({contentSectionHeight: window.innerHeight - 48, contentSectionWidth: width});
     }
 
     // updates all the member's (of the same group) count by 1
@@ -116,7 +118,7 @@ export default class Requests extends React.Component {
         
         return (
             <Grid container direction='column' alignItems='center' spacing={5}>
-                <Grid item>
+                <Grid item style={{padding: 0}}>
                     <Tabs 
                     value={this.state.value}
                     onChange={this.handleTabChange} 
@@ -134,6 +136,7 @@ export default class Requests extends React.Component {
                             <ReceivedRequestCard
                             key={item._id}
                             id={item._id} 
+                            width={this.state.contentSectionWidth}
                             departure = {item.group.departure}
                             from = {item.group.from}
                             to = {item.group.to}
@@ -148,6 +151,7 @@ export default class Requests extends React.Component {
                             key={item._id}
                             id={item._id}
                             departure = {item.group.departure}
+                            width={this.state.contentSectionWidth}
                             from = {item.group.from}
                             to = {item.group.to}
                             members = {item.group.membersCount}

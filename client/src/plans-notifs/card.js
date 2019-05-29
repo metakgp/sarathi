@@ -53,7 +53,7 @@ export default function SimpleCard (props) {
   }
 
   return (
-    <Card style={{minWidth: 500, maxWidth: 500, marginBottom: 5}}>
+    <Card style={{width: props.width, marginBottom: 5}}>
       <Grid container style={{padding: 10, background: '#efefef'}}>
           <Grid item xs>
               <Typography variant='h5' gutterBottom>
@@ -75,7 +75,7 @@ export default function SimpleCard (props) {
           return (
             <ListItem key={item.fb_id}>
                 <ListItemAvatar>
-                    <Avatar alt='Remy Sharp' src='http://localhost:5000/images/user-image.png' />
+                    <Avatar alt='Remy Sharp' src='http://192.168.0.103:5000/images/user-image.png' />
                 </ListItemAvatar>
                 <ListItemText primary={item.name} secondary={
                     <React.Fragment>

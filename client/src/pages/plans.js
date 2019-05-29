@@ -19,6 +19,7 @@ export default class Groups extends React.Component {
             timeChangeGroup: '',
             timeChangeDeparture: new Date(),
             contentSectionHeight: 0,
+            contentSectionWidth: 0,
         }
         this.updateContentSectionHeight = this.updateContentSectionHeight.bind(this);
     }
@@ -40,7 +41,8 @@ export default class Groups extends React.Component {
     }
 
     updateContentSectionHeight() {
-        this.setState({contentSectionHeight: window.innerHeight - 88});
+        const width = window.innerWidth < 500 ? window.innerWidth : 500;
+        this.setState({contentSectionHeight: window.innerHeight - 48, contentSectionWidth: width});
     }
 
     handleTabChange = (event, value) => {
@@ -99,7 +101,7 @@ export default class Groups extends React.Component {
         return (
             <div>
             <Grid container direction='column' alignItems='center' spacing={5}>
-                <Grid item>
+                <Grid item style={{padding: 0}}>
                     <Tabs 
                     value={this.state.value}
                     onChange={this.handleTabChange} 
@@ -116,6 +118,7 @@ export default class Groups extends React.Component {
                             this.state.joined_groups.map((item, index) => <Card
                             key={item._id}
                             id={item._id} 
+                            width={this.state.contentSectionWidth}
                             departure = {item.departure}
                             from = {item.from}
                             to = {item.to}
@@ -126,7 +129,8 @@ export default class Groups extends React.Component {
                             this.state.created_groups.map((item, index) => 
                             <Card
                             key={item._id}
-                            id={item._id} 
+                            id={item._id}
+                            width={this.state.contentSectionWidth} 
                             departure = {item.departure}
                             from = {item.from}
                             to = {item.to}
