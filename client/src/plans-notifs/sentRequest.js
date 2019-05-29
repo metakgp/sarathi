@@ -12,7 +12,7 @@ import Button from '@material-ui/core/Button';
 export default function SentRequestCard(props) {
 
     return (
-        <Card style={{maxWidth: 500, minWidth: 500, marginBottom: 5}}>
+        <Card style={{minWidth: 500, marginBottom: 5}}>
             <Grid container style={{padding: 10}}>
                 <Grid item xs>
                     <Typography variant='h5'>
@@ -31,7 +31,7 @@ export default function SentRequestCard(props) {
                 <Divider variant='middle' />
                     <div style={{margin: 10}}>
                         <Chip
-                        avatar={<Avatar alt='Remy Sharp' src='http://localhost:5000/images/user-image.png'/>} 
+                        avatar={<Avatar alt='Remy Sharp' src='http://192.168.0.103:5000/images/user-image.png'/>} 
                         label={'Owner: ' + props.owner} 
                         variant='outlined' />
                         <Chip label={props.members + ' members'} variant='outlined' style={{margin:5}} />
