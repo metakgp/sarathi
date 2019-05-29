@@ -52,6 +52,13 @@ export default function SimpleCard (props) {
     </Button>)
   }
 
+  if (props.leave) {
+    buttonHTML.push(<Button
+    onClick={props.leave}>
+    Leave
+    </Button>)
+  }
+
   return (
     <Card style={{width: props.width, marginBottom: 5}}>
       <Grid container style={{padding: 10, background: '#efefef'}}>

@@ -85,6 +85,20 @@ export default class Groups extends React.Component {
         });
     }
 
+    handleLeaveGroup = (groupId, index) => {
+        axios.post('http://192.168.0.103:5000/leave_group?fb_id=2177672832321382', {
+            groupId: groupId,
+        })
+        .then((res) => {
+            var newArray = [...this.state.joined_groups];
+            newArray.splice(index, 1);
+            this.setState({joined_groups: newArray});
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+    }
+
     openDialog = (groupId, departure) => {
         this.setState({showTimeDialog: true, 
             timeChangeGroup: groupId, 
@@ -123,7 +137,8 @@ export default class Groups extends React.Component {
                             from = {item.from}
                             to = {item.to}
                             status = {item.status}
-                            members = {item.members} 
+                            members = {item.members}
+                            leave = {() => this.handleLeaveGroup(item._id, index)} 
                             />)
                         :
                             this.state.created_groups.map((item, index) => 
