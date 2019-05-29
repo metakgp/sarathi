@@ -208,6 +208,13 @@ button {
     #hide{
         display: none;
     }
+    //keeping the notif-cards at the center
+    #notif-cards {
+        margin-left:37%;
+
+    }
+   //FOR NOTIFS
+    
 }  
 
 @media only screen and (max-width: 768px) {
