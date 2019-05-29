@@ -101,7 +101,8 @@ router.post('/remove_group', (req, res) => {
     utils.createAndSendNotification(message, group, undefined, (err, notif) => {
       for (var i = 0; i < group.members.length; i++) {
         // send notif to each user and add notid if
-        models.User.findOneAndUpdate({fb_id: group.members[i].fb_id}, {$push: {'notifications': notif}})
+        models.User.findOneAndUpdate({fb_id: group.members[i].fb_id}, {$push: {'notifications': notif}},
+        {$pull: {'joined_groups': group._id}})
         .exec((err, user) => {
           if (err)
             res.send(err);
