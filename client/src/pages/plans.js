@@ -140,19 +140,6 @@ export default class Groups extends React.Component {
                             remove = {() => this.removeGroup(item._id, index)} 
                             />)
                         }
-                        {/* {this.getGroups().map((item, index) => 
-                            <Card
-                            key={item._id}
-                            id={item._id} 
-                            departure = {item.departure}
-                            from = {item.from}
-                            to = {item.to}
-                            status = {item.status}
-                            members = {item.members}
-                            timeChange = {this.openDialog}
-                            remove = {() => this.removeGroup(item._id, index)} 
-                            />
-                        )} */}
                     </Container>
                 </Grid>
             </Grid>
