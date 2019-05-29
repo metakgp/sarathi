@@ -9,12 +9,16 @@ import Container from '@material-ui/core/Container';
 
 
 export default class Requests extends React.Component {
-
-    state = {
-        sent_requests: [],
-        received_requests: [],
-        value: 0,
-        count: true,
+    constructor(props) {
+        super(props);
+        this.state = {
+            sent_requests: [],
+            received_requests: [],
+            value: 0,
+            count: true,
+            contentSectionHeight: 0,
+        }
+        this.updateContentSectionHeight = this.updateContentSectionHeight.bind(this);
     }
 
     componentDidMount() {
@@ -34,6 +38,16 @@ export default class Requests extends React.Component {
         .catch(err => {
             console.log(err);
         }); 
+        this.updateContentSectionHeight();
+        window.addEventListener('resize', this.updateContentSectionHeight);
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.updateContentSectionHeight);
+    }
+
+    updateContentSectionHeight() {
+        this.setState({contentSectionHeight: window.innerHeight - 88});
     }
 
     // updates all the member's (of the same group) count by 1
@@ -113,8 +127,8 @@ export default class Requests extends React.Component {
                         <Tab label='Received' />
                     </Tabs>
                 </Grid>
-                <Grid item>
-                    <Container>
+                <Grid item style={{width: '100%', height: this.state.contentSectionHeight, overflowY: 'scroll', overflowX: 'hidden'}}>
+                    <Container style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>    
                         {this.state.value ? 
                         this.state.received_requests.map((item, index) => 
                             <ReceivedRequestCard

@@ -9,14 +9,18 @@ import PickersDialog from '../plans-notifs/PickersDialog';
 
 
 export default class Groups extends React.Component {
-
-    state = {
-        created_groups: [],
-        joined_groups: [],
-        value: 0,
-        showTimeDialog: false,
-        timeChangeGroup: '',
-        timeChangeDeparture: new Date(),
+    constructor(props) {
+        super(props);
+        this.state = {
+            created_groups: [],
+            joined_groups: [],
+            value: 0,
+            showTimeDialog: false,
+            timeChangeGroup: '',
+            timeChangeDeparture: new Date(),
+            contentSectionHeight: 0,
+        }
+        this.updateContentSectionHeight = this.updateContentSectionHeight.bind(this);
     }
 
     componentDidMount() {
@@ -26,17 +30,21 @@ export default class Groups extends React.Component {
         })
         .catch(err => {
             console.log(err.data);
-        }); 
+        });
+        this.updateContentSectionHeight();
+        window.addEventListener('resize', this.updateContentSectionHeight);
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.updateContentSectionHeight);
+    }
+
+    updateContentSectionHeight() {
+        this.setState({contentSectionHeight: window.innerHeight - 88});
     }
 
     handleTabChange = (event, value) => {
         this.setState({value: value});
-    }
-
-    getGroups = () => {
-        if (this.state.value === 0)
-            return this.state.created_groups;
-        return this.state.joined_groups;
     }
 
     removeGroup = (groupId, index) => {
@@ -102,9 +110,33 @@ export default class Groups extends React.Component {
                         <Tab label='Joined' />
                     </Tabs>
                 </Grid>
-                <Grid item>
-                    <Container>
-                        {this.getGroups().map((item, index) => 
+                <Grid item style={{width: '100%', height: this.state.contentSectionHeight, overflowX: 'hidden', overflowY: 'scroll'}}>
+                    <Container style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+                        {this.state.value ? 
+                            this.state.joined_groups.map((item, index) => <Card
+                            key={item._id}
+                            id={item._id} 
+                            departure = {item.departure}
+                            from = {item.from}
+                            to = {item.to}
+                            status = {item.status}
+                            members = {item.members} 
+                            />)
+                        :
+                            this.state.created_groups.map((item, index) => 
+                            <Card
+                            key={item._id}
+                            id={item._id} 
+                            departure = {item.departure}
+                            from = {item.from}
+                            to = {item.to}
+                            status = {item.status}
+                            members = {item.members}
+                            timeChange = {this.openDialog}
+                            remove = {() => this.removeGroup(item._id, index)} 
+                            />)
+                        }
+                        {/* {this.getGroups().map((item, index) => 
                             <Card
                             key={item._id}
                             id={item._id} 
@@ -116,7 +148,7 @@ export default class Groups extends React.Component {
                             timeChange = {this.openDialog}
                             remove = {() => this.removeGroup(item._id, index)} 
                             />
-                        )}
+                        )} */}
                     </Container>
                 </Grid>
             </Grid>
