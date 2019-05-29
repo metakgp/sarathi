@@ -1,7 +1,23 @@
 import React, { Component } from 'react';
 import Typography from '@material-ui/core/Typography';
-import { StickyContainer, Sticky } from 'react-sticky';
+import Notifications from '../plans-notifs/notifs'
 
+
+const samples = [
+  {
+    message: 'x has agreed to join u from kgp to ccu vx has agreed to join u from kgp to ccu',
+    time: '15 min ago'
+  },
+  {
+    message: 'x has agreed to join u from kgp to ccu',
+    time: '15 min ago'
+  },
+  {
+    message: 'x has agreed to join u from kgp to ccu',
+    time: '15 min ago'
+  },
+  
+]
 
 export default class Example extends Component {
   
@@ -25,6 +41,7 @@ export default class Example extends Component {
                     </Typography>
                   </a>
                <div className='to-right'>
+                { /*eslint-disable-next-line*/ }
                   <a href="#" id="hide">1</a>
                   <a href="/requests">
                     <Typography variant="subtitle1">
@@ -36,11 +53,13 @@ export default class Example extends Component {
                           Groups
                       </Typography>
                    </a>
-                  <a href="/notifications">
-                    <Typography variant="subtitle1">
-                            Notifications
-                        </Typography>
+                   { /*eslint-disable-next-line*/ }
+                  <a href="javascript:void(0);">
+                      <Typography variant="subtitle1">
+                              Notifications
+                      </Typography>
                   </a>
+                  { /*eslint-disable-next-line*/ }
                   <a href="#">
                       <Typography variant="subtitle1">
                          Logout
@@ -48,6 +67,7 @@ export default class Example extends Component {
                   </a>
                
                 </div>
+                { /*eslint-disable-next-line*/ }
               <a href="javascript:void(0);" className="icon" onClick={this.myFunction}>
               <i className="fa fa-bars"></i>
             </a>
