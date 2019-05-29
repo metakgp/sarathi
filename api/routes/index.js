@@ -100,27 +100,64 @@ router.get('/remove_group', (req, res) => {
 router.post('/remove_group', (req, res) => {
   models.Group.findByIdAndDelete(req.body.groupId, (err, group) => {
     
-    const message = {
-      type: 'remove_group',
-      title: 'Group removed',
-      body: group.owner.name + ' has removed the group',
-    }
+    // const message = {
+    //   type: 'remove_group',
+    //   title: 'Group removed',
+    //   body: group.owner.name + ' has removed the group',
+    // }
 
-    utils.createAndSendNotification(message, group, undefined, (err, notif) => {
-      for (var i = 0; i < group.members.length; i++) {
-        // send notif to each user and add notid if
-        models.User.findOneAndUpdate({fb_id: group.members[i].fb_id}, {$push: {'notifications': notif}},
-        {$pull: {'joined_groups': group._id}})
-        .exec((err, user) => {
-          if (err)
-            res.send(err);
-          else {
-            webpush.sendNotification(JSON.parse(user.push_subscription), JSON.stringify(message))
-            .catch(err => console.log(err));
-          }
-        });
-      }
-    });
+    // utils.createAndSendNotification(message, group, undefined, (err, notif) => {
+    //   for (var i = 0; i < group.members.length; i++) {
+    //     // send notif to each user and add notid if
+    //     models.User.findOneAndUpdate({fb_id: group.members[i].fb_id}, {$push: {'notifications': notif}},
+    //     {$pull: {'joined_groups': group._id}})
+    //     .exec((err, user) => {
+    //       if (err)
+    //         res.send(err);
+    //       else {
+    //         webpush.sendNotification(JSON.parse(user.push_subscription), JSON.stringify(message))
+    //         .catch(err => console.log(err));
+    //       }
+    //     });
+    //   }
+    // });
+
+    res.send(200);
+  });
+});
+
+router.post('/leave_group', (req, res) => {
+  // find the user from the database
+  models.User.findOneAndUpdate({fb_id: req.query.fb_id}, {$pull: {'joined_groups': req.body.groupId}})
+  .exec((err, user) => {
+     // find the group and remove that member
+     models.Group.findByIdAndUpdate(req.body.groupId, {$pull: {'members': {'fb_id': req.query.fb_id}}}, {new: true})
+     .exec((err, group) => {
+       
+        // create and send notifications to all the members
+      //  const message = {
+      //    type: 'left_group',
+      //    title: 'Left group',
+      //    body: user.name + " has left the group",
+      //  };
+
+      //  utils.createAndSendNotification(message, group, undefined, (err, notif) => {
+      //   for (var i = 0; i < group.members.length; i++) {
+      //     // send notif to each user and add notid if
+      //     models.User.findOne({fb_id: group.members[i].fb_id})
+      //     .exec((err, user) => {
+      //       if (err)
+      //         res.send(err);
+      //       else {
+      //         webpush.sendNotification(JSON.parse(user.push_subscription), JSON.stringify(message))
+      //         .catch(err => console.log(err));
+      //       }
+      //     });
+      //   }
+      // });
+
+      res.send(200);
+     });
   });
 });
 
