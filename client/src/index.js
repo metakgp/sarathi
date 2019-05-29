@@ -23,7 +23,7 @@ const routing = (
     )
 
 
-ReactDOM.render(<Navbar />, document.getElementById('navbar'));
+// ReactDOM.render(<Navbar />, document.getElementById('navbar'));
 ReactDOM.render(routing, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change

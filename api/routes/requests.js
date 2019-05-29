@@ -11,8 +11,8 @@ router.get('/join_request', (req, res) => {
 // sends a join request to the owner of the group
 router.post('/join_request', (req, res) => {
     var traveler = {
-      fb_id: req.user.fb_id,
-      name: req.user.name,
+      fb_id: req.query.fb_id,
+      name: req.query.name,
       from: req.body.from,
       to: req.body.to,
       time: new Date(req.body.time),
@@ -34,7 +34,7 @@ router.post('/join_request', (req, res) => {
           res.send(500, err);
         else {  
           // add those requests to the users concerned
-          models.User.findOneAndUpdate({fb_id: req.body.fb_id}, {$push: {sent_requests: request}})
+          models.User.findOneAndUpdate({fb_id: req.query.fb_id}, {$push: {sent_requests: request}})
           .exec((err, user) => {
             if (err) {
               res.send(500, err);
@@ -46,16 +46,17 @@ router.post('/join_request', (req, res) => {
                 res.send(500, err);
               else {
   
-                // send request notication to this user (the owner of the group)
-                const message = JSON.stringify({
-                  type: 'join_request',
-                  title: 'Join Request',
-                  body: user.name + " has sent a join request",
-                });
+                // // send request notication to this user (the owner of the group)
+                // const message = JSON.stringify({
+                //   type: 'join_request',
+                //   title: 'Join Request',
+                //   body: user.name + " has sent a join request",
+                // });
                 
-                webpush.sendNotification(JSON.parse(owner.push_subscription), message)
-                .catch(err => console.log(err))
-                .then(() => res.sendStatus(200));
+                // webpush.sendNotification(JSON.parse(owner.push_subscription), message)
+                // .catch(err => console.log(err))
+                // .then(() => res.sendStatus(200));
+                res.sendStatus(200);
               }
             });
           });
@@ -96,39 +97,39 @@ router.post('/approve_request', (req, res) => {
                       if (err)
                         res.send(500, err);
                       else {
-                        
+                        res.send(200);
                         // message to all the members of the group
-                        const message = {
-                          type: 'approve_request',
-                          title: 'Group Update',
-                          body: traveler.name + " has joined the group",
-                        };
+                        // const message = {
+                        //   type: 'approve_request',
+                        //   title: 'Group Update',
+                        //   body: traveler.name + " has joined the group",
+                        // };
 
-                        utils.createAndSendNotification(message, request, undefined, (err, notif) => {
-                          message_string = JSON.stringify(message);
+                        // utils.createAndSendNotification(message, request, undefined, (err, notif) => {
+                        //   message_string = JSON.stringify(message);
                         
-                          // sending notification to all members of the group
-                          // add notification ids to each of these users
-                          group.members.map((member) => {
-                            models.User.findOneAndUpdate({fb_id: member.fb_id}, 
-                              {$push: {'notifications': notif}})
-                            .exec((err, user) => {
-                              webpush.sendNotification(JSON.parse(user.push_subscription), message_string)
-                              .catch(err => console.log(err));
-                            });
-                          });
+                        //   // sending notification to all members of the group
+                        //   // add notification ids to each of these users
+                        //   group.members.map((member) => {
+                        //     models.User.findOneAndUpdate({fb_id: member.fb_id}, 
+                        //       {$push: {'notifications': notif}})
+                        //     .exec((err, user) => {
+                        //       webpush.sendNotification(JSON.parse(user.push_subscription), message_string)
+                        //       .catch(err => console.log(err));
+                        //     });
+                        //   });
     
-                          // message to the traveler
-                          const message2 = {
-                            type: 'approve_request',
-                            title: 'Request Update',
-                            body: group.owner.name + " has accepted your request",
-                          };
+                        //   // message to the traveler
+                        //   const message2 = {
+                        //     type: 'approve_request',
+                        //     title: 'Request Update',
+                        //     body: group.owner.name + " has accepted your request",
+                        //   };
 
-                          webpush.sendNotification(traveler.push_subscription, JSON.stringify(message2))
-                          .catch(err => console.log(err))
-                          .then(() => res.sendStatus(200));
-                        });
+                        //   webpush.sendNotification(traveler.push_subscription, JSON.stringify(message2))
+                        //   .catch(err => console.log(err))
+                        //   .then(() => res.sendStatus(200));
+                        // });
                       }
                   });
                 }
@@ -162,27 +163,28 @@ router.post('/reject_request', (req, res) => {
                 {$pull: {received_requests: req.body.requestId}})  //remove requests matching req id
                 .exec((err) => {
                 if (err)
-                    res.send(500, err);
+                  res.send(500, err);
                 else {
+                  res.send(200);
                     // remove request from sent_request of traveler
-                    models.User.findOneAndUpdate({fb_id: request.traveler.fb_id}, 
-                    {$pull: {sent_requests: req.body.requestId}})  //remove requests matching req id
-                    .exec((err, traveler) => {
-                        if (err)
-                        res.send(500, err);
-                        else {
-                        // message to the traveler
-                        const message = {
-                            type: 'approve_request',
-                            title: 'Request Update',
-                            body: group.owner.name + " has rejected your request",
-                        };
+                    // models.User.findOneAndUpdate({fb_id: request.traveler.fb_id}, 
+                    // {$pull: {sent_requests: req.body.requestId}})  //remove requests matching req id
+                    // .exec((err, traveler) => {
+                    //     if (err)
+                    //     res.send(500, err);
+                    //     else {
+                    //     // message to the traveler
+                    //     const message = {
+                    //         type: 'approve_request',
+                    //         title: 'Request Update',
+                    //         body: group.owner.name + " has rejected your request",
+                    //     };
                         
-                        webpush.sendNotification(traveler.push_subscription, JSON.stringify(message))
-                        .catch(err => console.log(err))
-                        .then(() => res.sendStatus(200));
-                      }
-                    });
+                    //     webpush.sendNotification(traveler.push_subscription, JSON.stringify(message))
+                    //     .catch(err => console.log(err))
+                    //     .then(() => res.sendStatus(200));
+                    //   }
+                    // });
                 }
                 });
             }
@@ -202,27 +204,28 @@ router.post('/change_time', (req, res) => {
     if (err)
       res.send(err);
     else {
-      const message = {
-        type: 'change_time',
-        title: 'Time change',
-        body: group.owner.name + ' has changed the departure time'
-      };
+      res.send(200);
+      // const message = {
+      //   type: 'change_time',
+      //   title: 'Time change',
+      //   body: group.owner.name + ' has changed the departure time'
+      // };
 
-      utils.createAndSendNotification(message, group, undefined, (err, notif) => {
-        for (var i = 0; i < group.members.length; i++) {
-          // send notif to each user and add notid if
-          models.User.findOneAndUpdate({fb_id: group.members[i].fb_id}, {$push: {'notifications': notif}})
-          .exec((err, user) => {
-            if (err)
-              res.send(err);
-            else {
-              webpush.sendNotification(JSON.parse(user.push_subscription), JSON.stringify(message))
-              .catch(err => console.log(err));
-            }
-          });
-        }
-        res.sendStatus(200);
-      });
+      // utils.createAndSendNotification(message, group, undefined, (err, notif) => {
+      //   for (var i = 0; i < group.members.length; i++) {
+      //     // send notif to each user and add notid if
+      //     models.User.findOneAndUpdate({fb_id: group.members[i].fb_id}, {$push: {'notifications': notif}})
+      //     .exec((err, user) => {
+      //       if (err)
+      //         res.send(err);
+      //       else {
+      //         webpush.sendNotification(JSON.parse(user.push_subscription), JSON.stringify(message))
+      //         .catch(err => console.log(err));
+      //       }
+      //     });
+      //   }
+      //   res.sendStatus(200);
+      // });
     }
   });
 });

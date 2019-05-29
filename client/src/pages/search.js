@@ -7,6 +7,7 @@ import Card from '../plans-notifs/card';
 import axios from 'axios';
 import  '../styles/App.scss';
 import Grid from '@material-ui/core/Grid';
+import { List, ListItem } from '@material-ui/core';
 
 
 class Search extends Component{
@@ -17,8 +18,23 @@ class Search extends Component{
             toPlace :'KGP',
             time: new Date(),
             showCard: false,
-            dataCards: []
+            dataCards: [],
+            contentSectionHeight: 0,
         }
+        this.updateContentSectionHeight = this.updateContentSectionHeight.bind(this);
+    }
+
+    componentDidMount() {
+        this.updateContentSectionHeight();
+        window.addEventListener('resize', this.updateContentSectionHeight);
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.updateContentSectionHeight);
+    }
+
+    updateContentSectionHeight() {
+        this.setState({contentSectionHeight: window.innerHeight});
     }
     
     setFromPlace = (fromPlace) => { this.setState({fromPlace : fromPlace}) }
@@ -48,6 +64,7 @@ class Search extends Component{
                 from : this.state.fromPlace,
                 to: this.state.toPlace,
                 time: this.state.time,
+                fb_id: 2177672832321382,
             }
         })
         .then((res) => {
@@ -58,7 +75,7 @@ class Search extends Component{
     }
 
     sendJoinRequest = (groupId, index) => {
-        axios.post('http://192.168.0.103:5000/request/join_request', {
+        axios.post('http://192.168.0.103:5000/request/join_request?fb_id=2177672832321382', {
             from: this.state.fromPlace,
             to: this.state.toPlace,
             time: this.state.time,
@@ -66,7 +83,7 @@ class Search extends Component{
         }).then((res) => {
             console.log(res.data);
             var newArray = [...this.state.dataCards];
-            newArray.splice(index, 1);
+            newArray[index].status = 'request_sent';
             this.setState({dataCards: newArray});
         }).catch((err) => {
             console.log(err);
@@ -80,7 +97,7 @@ class Search extends Component{
             
                 <Grid container spacing={5}>
                 <Grid item>
-                <div className="search">
+                <div className="search" style={{zIndex: 1}}>
                     <div className="fromTo">
                         <div className="menu-des">
                             <h2>From</h2><Menu onPassData={this.setFromPlace} />
@@ -98,7 +115,7 @@ class Search extends Component{
                     <button onClick={this.sendData}>Search</button>
                 </div>
                 </Grid>
-                <Grid item xs>
+                <Grid item xs style={{height: this.state.contentSectionHeight, overflowY: 'scroll', overflowX: 'hidden'}}>
                 <div id='card'>
                    {(this.state.showCard===true) ?
                      this.state.dataCards.map((item, index) => {
@@ -113,7 +130,6 @@ class Search extends Component{
                              members = {item.members}
                              join={() => this.sendJoinRequest(item._id, index)}
                              />
-
                          )
                      }) 
                      : ''}
