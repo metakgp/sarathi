@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Typography from '@material-ui/core/Typography';
-import Notifications from '../plans-notifs/notifs'
 
 
 const samples = [
@@ -54,7 +53,7 @@ export default class Example extends Component {
                       </Typography>
                    </a>
                    { /*eslint-disable-next-line*/ }
-                  <a href="javascript:void(0);">
+                  <a href="/notifs">
                       <Typography variant="subtitle1">
                               Notifications
                       </Typography>

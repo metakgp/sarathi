@@ -2,24 +2,8 @@ import React from 'react';
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import Notifs from './notifs'
+import Notifs from '../pages/notifs'
 
-
-const SampleNotifs = [
-  {
-    message: 'x has agreed to join u from kgp to ccu vx has agreed to join u from kgp to ccu',
-    time: '15 min ago'
-  },
-  {
-    message: 'x has agreed to join u from kgp to ccu',
-    time: '15 min ago'
-  },
-  {
-    message: 'x has agreed to join u from kgp to ccu',
-    time: '15 min ago'
-  },
-  
-]
 
 
 function SimpleMenu(props) {

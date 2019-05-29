@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import Navbar from './searchComps/respNav'
 import Search from './pages/newSearch'
 import Plans from './pages/plans'
-import Notifs from './plans-notifs/notifs'
+import Notifs from './pages/notifs'
 import LoginPage from './pages/login'
 import * as serviceWorker from './serviceWorker';
 //import { BrowserRouter as Router,Route } from 'react-router-dom';
