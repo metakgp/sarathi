@@ -6,16 +6,12 @@ import FormControl from '@material-ui/core/FormControl';
 import { withStyles } from '@material-ui/core/styles';
 
 const styles = theme => ({
-    root: {
-      display: 'flex',
-      flexWrap: 'wrap',
-    },
     formControl: {
-      margin: theme.spacing.unit,
-      minWidth: 120,
+      // margin: theme.spacing.unit,
+      minWidth: 150,
     },
     selectEmpty: {
-      marginTop: theme.spacing.unit * 2,
+      // marginTop: theme.spacing.unit * 2,
     },
   });
   
@@ -35,7 +31,7 @@ class MaterialSelect extends Component {
         const { classes } = this.props;
         
         return (
-            <div>
+            <div style={{display: 'flex', justifyContent: 'center', margin: 10}}>
               <FormControl className={classes.formControl}>
                 <InputLabel >{this.props.dir}</InputLabel>
                 <Select
@@ -43,8 +39,8 @@ class MaterialSelect extends Component {
                   onChange={this.handleChange}
                   
                 >
-                  <MenuItem value='kgp'>KGP</MenuItem>
-                  <MenuItem value='ccu'>CCU Kolkata Airport</MenuItem>
+                  <MenuItem value='KGP'>KGP</MenuItem>
+                  <MenuItem value='CCU'>CCU Kolkata Airport</MenuItem>
                   <MenuItem value='railway-station'>Railway Station-KGP</MenuItem>
                   <MenuItem value='howrah'>Howrah</MenuItem>
                 </Select>

@@ -4,11 +4,11 @@ import { withStyles } from '@material-ui/core/styles';
 import MomentUtils from '@date-io/moment';
 import { MuiPickersUtilsProvider, TimePicker} from 'material-ui-pickers';
 
-const styles = {
-  grid: {
-    width: '60%',
-  },
-};
+// const styles = {
+//   grid: {
+//     width: '60%',
+//   },
+// };
 
 class MaterialUIPickers extends React.Component {
   state = {
@@ -25,15 +25,15 @@ class MaterialUIPickers extends React.Component {
     const { selectedDate } = this.state;
 
     return (
+      <div style={{display: 'flex', justifyContent: 'center', margin: 10}}>
       <MuiPickersUtilsProvider utils={MomentUtils}>
           <TimePicker
-            margin="normal"
             label="Time of Departure"
             value={selectedDate}
             onChange={this.handleDateChange}
-            
           />
-         </MuiPickersUtilsProvider>
+      </MuiPickersUtilsProvider>
+      </div>
     );
   }
 }
@@ -42,4 +42,4 @@ MaterialUIPickers.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(MaterialUIPickers);
+export default MaterialUIPickers;
