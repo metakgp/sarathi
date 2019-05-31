@@ -9,10 +9,6 @@ import  '../styles/App.scss';
 import Grid from '@material-ui/core/Grid';
 import { List, ListItem } from '@material-ui/core';
 
-<<<<<<< HEAD
-
-=======
->>>>>>> planning to change the search page
 class Search extends Component{
     constructor(props){
         super(props)
@@ -20,13 +16,9 @@ class Search extends Component{
             fromPlace : 'KGP',
             toPlace :'KGP',
             time: new Date(),
-<<<<<<< HEAD
             showCard: false,
             dataCards: [],
             contentSectionHeight: 0,
-=======
-            dataCards: []
->>>>>>> planning to change the search page
         }
         this.updateContentSectionHeight = this.updateContentSectionHeight.bind(this);
     }
@@ -100,17 +92,11 @@ class Search extends Component{
     render(){
         
         return(
-<<<<<<< HEAD
             <div id='homepage'>
             
                 <Grid container spacing={5}>
                 <Grid item>
                 <div className="search" style={{zIndex: 1}}>
-=======
-            <div>
-                <Grid container>
-                <div className="search">
->>>>>>> planning to change the search page
                     <div className="fromTo">
                         <div className="menu-des">
                             <h2>From</h2><Menu onPassData={this.setFromPlace} />

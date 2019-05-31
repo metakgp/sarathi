@@ -16,9 +16,9 @@ export default class DateSelect extends React.Component {
   }
 
   handleChange(date) {
-    this.props.onPassData(date);
+    this.props.onPassData(new Date(date));
     this.setState({
-      startDate: date
+      startDate: new Date(date)
     });
   }
 

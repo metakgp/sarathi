@@ -17,8 +17,8 @@ class MaterialUIPickers extends React.Component {
   };
 
   handleDateChange = date => {
-    this.setState({ selectedDate: date });
-    this.props.onPassData(date);
+    this.setState({ selectedDate: new Date(date) });
+    this.props.onPassData(new Date(date));
   };
 
   render() {

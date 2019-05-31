@@ -1,8 +1,7 @@
-import 'date-fns';
 import React,{ useState } from 'react';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
-import DateFnsUtils from '@date-io/date-fns';
+import MomentFnsUtils from '@date-io/moment';
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
@@ -21,12 +20,12 @@ function MaterialUIPickers(props) {
   const classes = useStyles();
 
   function handleDateChange(date) {
-    setSelectedDate(date);
-    props.onPassData(date)  
+    setSelectedDate(new Date(date));
+    props.onPassData(new Date(date));  
   }
 
   return (
-    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+    <MuiPickersUtilsProvider utils={MomentFnsUtils}>
       <Grid  className={classes.grid} >
         <KeyboardDatePicker
           margin="normal"
