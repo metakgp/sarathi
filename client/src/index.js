@@ -1,10 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Navbar from './searchComps/navbar'
-import Search from './pages/search'
+import Navbar from './searchComps/respNav'
+import Search from './pages/newSearch'
 import Plans from './pages/plans'
+<<<<<<< HEAD
 import Notifs from './plans-notifs/notifs'
 import Requests from './plans-notifs/requests'
+=======
+import Notifs from './pages/notifs'
+>>>>>>> container of notification made
 import LoginPage from './pages/login'
 import * as serviceWorker from './serviceWorker';
 //import { BrowserRouter as Router,Route } from 'react-router-dom';

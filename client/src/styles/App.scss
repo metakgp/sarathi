@@ -141,15 +141,128 @@ button {
     @include flex(column,flex-start)
 }
 
+
+//Styling the newSearch
+
+#NewSearch{
+    @include flex(row,center);
+    align-items: flex-end
+}
+
+.MuiFormControl-root.MuiFormControl-marginNormal.MuiTextField-root{
+    margin-right: -95%;
+    margin-left: 15%
+}
+
+#search-btn{
+    margin-right: 60%;
+    margin-left:40%
+}
+
+.fromto{
+    margin-right: 1.5%
+
+}
+
+// responsive nav stylings
+.topnav {
+    overflow: hidden;
+    background-color: #3f51b5;
+}
+
+
+.topnav a {
+    float: left;
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 9px 16px;
+    text-decoration: none;
+    font-size: 17px;
+  }
+
+  
+
+  .topnav a:hover {
+    background-color: #4255bd;
+    color: white;
+  }
+  
+  .topnav .icon {
+    display: none;
+  }
+  
+// only for desktop screens
+  @media only screen and (min-width: 992px){
+    .topnav {                   //to remove the white space at the left and right corners of navbar
+        width: 102%;
+        margin-left: -1%
+    }
+    
+    .to-right {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+    
+    }
+    #hide{
+        display: none;
+    }
+    //keeping the notif-cards at the center
+    #notif-cards {
+        margin-left:37%;
+
+    }
+   //FOR NOTIFS
+    
+}  
+
 @media only screen and (max-width: 768px) {
     /* For mobile phones: */
     body {
-        max-width: 100%;
-        overflow-x: none;
-        .search{
-            margin-left: 40px;
-            position: relative;
-            left: 40px;
+        // responsive navbar
+        .topnav {               //to remove the white space at the left and right corners of navbar
+            width: 110%;
+            margin-left: -6%;
+            
+        }
+         .topnav a:not(:first-child ) {
+            display: none ;
+          }
+         #hide{
+             display: none;
+         }       
+        
+
+        .topnav a.icon {
+            float: right;
+            display: block;
+        }
+        .topnav.responsive {position: relative;}
+        .topnav.responsive .icon {
+            position: absolute;
+            right: 0;
+            top: 0;
+        }
+        .topnav.responsive a {
+            float: none;
+            display: block;
+            text-align: center;
+
+        }
+
+        .to-right{
+            // display: none
+        }
+
+        #NewSearch{
+            @include flex(column,center);
+            align-items: baseline;
+            margin-left: 22%;
+         }
+        .MuiFormControl-root.MuiFormControl-marginNormal.MuiTextField-root{
+            margin-right: -53%;
+            margin-left: 3%
         }
         // #card{
         //     margin-right: 80px;
