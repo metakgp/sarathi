@@ -6,6 +6,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Container from '@material-ui/core/Container';
 import PickersDialog from '../plans-notifs/PickersDialog';
+import ConfirmDialog from '../plans-notifs/confirmDialog';
 
 
 export default class Groups extends React.Component {
@@ -16,6 +17,10 @@ export default class Groups extends React.Component {
             joined_groups: [],
             value: 0,
             showTimeDialog: false,
+            showGroupRemoveDialog: false,
+            groupRemoveCallback: undefined,
+            showGroupLeaveDialog: false,
+            groupLeaveCallback: undefined,
             timeChangeGroup: '',
             timeChangeDeparture: new Date(),
             contentSectionHeight: 0,
@@ -49,7 +54,7 @@ export default class Groups extends React.Component {
         this.setState({value: value});
     }
 
-    removeGroup = (groupId, index) => {
+    handleRemoveGroup = (groupId, index) => {
         axios.post('http://192.168.0.103:5000/remove_group', {
             groupId: groupId,
         })
@@ -61,6 +66,7 @@ export default class Groups extends React.Component {
         .catch((err) => {
             console.log(err);
         });
+        this.closeGroupRemoveDialog();
     }
 
     handleTimeChange = (time) => {
@@ -97,7 +103,10 @@ export default class Groups extends React.Component {
         .catch((err) => {
             console.log(err);
         });
+        this.closeLeaveGroupDialog();
     }
+
+    // functions for handling dialog boxes for different cases
 
     openDialog = (groupId, departure) => {
         this.setState({showTimeDialog: true, 
@@ -108,6 +117,22 @@ export default class Groups extends React.Component {
 
     closeDialog = () => {
         this.setState({showTimeDialog: false});
+    }
+
+    openGroupRemoveDialog = (confirmCallback) => {
+        this.setState({showGroupRemoveDialog: true, groupRemoveCallback: confirmCallback});
+    }
+
+    closeGroupRemoveDialog = () => {
+        this.setState({showGroupRemoveDialog: false, groupRemoveCallback: undefined});
+    }
+
+    openLeaveGroupDialog = (confirmCallback) => {
+        this.setState({showGroupLeaveDialog: true, groupLeaveCallback: confirmCallback});
+    }
+
+    closeLeaveGroupDialog = () => {
+        this.setState({showGroupLeaveDialog: false, groupLeaveCallback: undefined});
     }
 
     render() {
@@ -138,7 +163,8 @@ export default class Groups extends React.Component {
                             to = {item.to}
                             status = {item.status}
                             members = {item.members}
-                            leave = {() => this.handleLeaveGroup(item._id, index)} 
+                            leave = {() => this.openLeaveGroupDialog(() => 
+                            this.handleLeaveGroup(item._id, index))} 
                             />)
                         :
                             this.state.created_groups.map((item, index) => 
@@ -152,7 +178,8 @@ export default class Groups extends React.Component {
                             status = {item.status}
                             members = {item.members}
                             timeChange = {this.openDialog}
-                            remove = {() => this.removeGroup(item._id, index)} 
+                            remove = {() => this.openGroupRemoveDialog(() => 
+                            this.handleRemoveGroup(item._id, index))} 
                             />)
                         }
                     </Container>
@@ -163,6 +190,17 @@ export default class Groups extends React.Component {
             open={this.state.showTimeDialog} 
             onClose={this.closeDialog}
             onTimeChange={this.handleTimeChange} />
+            <ConfirmDialog
+            open={this.state.showGroupRemoveDialog}
+            onClose={this.closeGroupRemoveDialog}
+            onConfirm={this.state.groupRemoveCallback}
+            body='This will remove the group and all its members'
+            />
+            <ConfirmDialog
+            open={this.state.showGroupLeaveDialog}
+            onClose={this.closeLeaveGroupDialog}
+            onConfirm={this.state.groupLeaveCallback}
+            body='You will no longer be a member of this group' />
             </div>
         )
     }
