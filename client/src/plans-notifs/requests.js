@@ -23,7 +23,7 @@ export default class Requests extends React.Component {
     }
 
     componentDidMount() {
-        axios.get('http://192.168.0.103:5000/user/my_requests?fb_id=2177672832321382')
+        axios.get('http://192.168.0.103:5000/user/my_requests?fb_id=2177672832321333')
         .then(res => {
             console.log(res.data.sent);
             var receivedRequestArray = res.data.received.map(item => {
