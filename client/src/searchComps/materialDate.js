@@ -7,17 +7,15 @@ import {
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 
-const useStyles = makeStyles({
-  grid: {
-    width: '50%',
-  },
-});
+// const useStyles = makeStyles({
+//   grid: {
+//     width: '50%',
+//   },
+// });
 
 function MaterialUIPickers(props) {
   // The first commit of Material-UI
   const [selectedDate, setSelectedDate] = useState(new Date());
-
-  const classes = useStyles();
 
   function handleDateChange(date) {
     setSelectedDate(new Date(date));
@@ -25,16 +23,15 @@ function MaterialUIPickers(props) {
   }
 
   return (
+    <div style={{display: 'flex', justifyContent: 'center', margin: 10}}>
     <MuiPickersUtilsProvider utils={MomentFnsUtils}>
-      <Grid  className={classes.grid} >
         <KeyboardDatePicker
-          margin="normal"
           label="Date of Departure"
           value={selectedDate}
           onChange={handleDateChange}
         />
-       </Grid>
     </MuiPickersUtilsProvider>
+    </div>
   );
 }
 

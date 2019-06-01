@@ -35,7 +35,7 @@ export default function ReceivedRequestCard(props) {
                 />
                 <div style={{padding: 5}}>
                     <Typography variant='h6'>{props.traveler.name}</Typography>
-                    <Typography variant='subtitle1'>
+                    <Typography component='span' variant='body2'>
                         Flight Time: {moment(props.traveler.time).format('hh:mm a')}
                     </Typography>
                 </div>
