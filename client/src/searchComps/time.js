@@ -13,14 +13,14 @@ import { MuiPickersUtilsProvider, TimePicker} from 'material-ui-pickers';
 class MaterialUIPickers extends React.Component {
   state = {
     // The first commit of Material-UI
-    selectedDate:  Date('2014-08-18T21:11:54'),
+    selectedDate: this.props.initialValue ? this.props.initialValue : new Date(),
   };
 
   handleDateChange = date => {
     this.setState({ selectedDate: new Date(date) });
     this.props.onPassData(new Date(date));
   };
-
+  
   render() {
     const { selectedDate } = this.state;
 
@@ -28,7 +28,7 @@ class MaterialUIPickers extends React.Component {
       <div style={{display: 'flex', justifyContent: 'center', margin: 10}}>
       <MuiPickersUtilsProvider utils={MomentUtils}>
           <TimePicker
-            label="Time of Departure"
+            label={this.props.label}
             value={selectedDate}
             onChange={this.handleDateChange}
           />
