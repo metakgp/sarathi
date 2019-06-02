@@ -12,7 +12,6 @@ import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
 import {ListItemAvatar, Avatar, Grid, ListSubheader, Chip} from '@material-ui/core'
-
 import moment from 'moment'
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -63,8 +62,7 @@ function FullScreenDialog(props) {
                         </ListItemAvatar>
                         <ListItemText primary={item.name} secondary={
                             <React.Fragment>
-                                <Typography component='span' variant='body2'>Flight Time : {moment(item.time).format('hh:mm a')}</Typography>
-                                {/* <Typography component='span' variant='body2'>Flight Time : 05:30 am</Typography> */}
+                                <Typography component='span' variant='body2'>Boarding Time : {moment(item.time).format('hh:mm a')}</Typography>
                             </React.Fragment>
                         }></ListItemText>
                         {chip}
