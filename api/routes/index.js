@@ -66,19 +66,20 @@ router.get('/create_group', (req, res) => {
 
 // creates a group for the user
 router.post('/create_group', (req, res) => {
+  console.log(req.body.departure);
   var traveler = {
     fb_id: req.body.fb_id,
     name: req.body.name,
     from: req.body.from,
     to: req.body.to,
-    time: new Date(req.body.time),
+    time: new Date(req.body.boardingTime),
   };
   var grp = models.Group({
     from: req.body.from,
     to: req.body.to,
     owner: traveler,
     members: [traveler],
-    departure: traveler.time,
+    departure: req.body.departure,
     status: 'open',
   });
   grp.save((err, object) => {
