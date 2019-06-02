@@ -8,6 +8,7 @@ import  '../styles/App.scss';
 import { Paper, Typography, Grid, Button, Fab } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add'
 import CreateGroupDialog from '../plans-notifs/CreateGroupDialog'
+import moment from 'moment'
 
 class Search extends Component{
     constructor(props){
@@ -66,12 +67,12 @@ class Search extends Component{
     handleSearch = () => {
         // console.log(this.state.fromPlace)
         // console.log(this.state.toPlace)
-        // console.log(this.state.time)
+        var utcOffset = moment(this.state.time).utcOffset();
         axios.get('http://192.168.0.103:5000',{
             params: {
                 from : this.state.fromPlace,
                 to: this.state.toPlace,
-                time: this.state.time,
+                time: moment(this.state.time).add(utcOffset).format(),
                 fb_id: 2177672832321382,
             }
         })
