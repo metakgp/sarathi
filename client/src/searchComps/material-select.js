@@ -19,7 +19,7 @@ const styles = theme => ({
 class MaterialSelect extends Component {
     state={
         labelWidth: 0,
-        place:''
+        place: this.props.initialValue ? this.props.initialValue : '',
     }
 
     handleChange = event => {
@@ -37,7 +37,6 @@ class MaterialSelect extends Component {
                 <Select
                   value={this.state.place}
                   onChange={this.handleChange}
-                  
                 >
                   <MenuItem value='KGP'>KGP</MenuItem>
                   <MenuItem value='CCU'>CCU Kolkata Airport</MenuItem>

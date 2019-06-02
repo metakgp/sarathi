@@ -15,7 +15,7 @@ import {
 
 function MaterialUIPickers(props) {
   // The first commit of Material-UI
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState(props.initialValue ? props.initialValue : new Date());
 
   function handleDateChange(date) {
     setSelectedDate(new Date(date));
@@ -26,7 +26,7 @@ function MaterialUIPickers(props) {
     <div style={{display: 'flex', justifyContent: 'center', margin: 10}}>
     <MuiPickersUtilsProvider utils={MomentFnsUtils}>
         <KeyboardDatePicker
-          label="Date of Departure"
+          label={props.label}
           value={selectedDate}
           onChange={handleDateChange}
         />
