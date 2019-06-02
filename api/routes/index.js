@@ -66,7 +66,6 @@ router.get('/create_group', (req, res) => {
 
 // creates a group for the user
 router.post('/create_group', (req, res) => {
-  console.log(req.body.departure);
   var traveler = {
     fb_id: req.body.fb_id,
     name: req.body.name,
