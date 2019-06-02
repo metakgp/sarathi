@@ -26,7 +26,7 @@ export default class Groups extends React.Component {
             contentSectionHeight: 0,
             contentSectionWidth: 0,
         }
-        this.updateContentSectionHeight = this.updateContentSectionHeight.bind(this);
+        this.updateContentDimensions = this.updateContentDimensions.bind(this);
     }
 
     componentDidMount() {
@@ -37,15 +37,15 @@ export default class Groups extends React.Component {
         .catch(err => {
             console.log(err.data);
         });
-        this.updateContentSectionHeight();
-        window.addEventListener('resize', this.updateContentSectionHeight);
+        this.updateContentDimensions();
+        window.addEventListener('resize', this.updateContentDimensions);
     }
 
     componentWillUnmount() {
-        window.removeEventListener('resize', this.updateContentSectionHeight);
+        window.removeEventListener('resize', this.updateContentDimensions);
     }
 
-    updateContentSectionHeight() {
+    updateContentDimensions() {
         const width = window.innerWidth < 500 ? window.innerWidth : 500;
         this.setState({contentSectionHeight: window.innerHeight - 48 - 46, contentSectionWidth: width});
     }
