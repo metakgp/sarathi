@@ -136,7 +136,7 @@ router.post('/leave_group', (req, res) => {
        
         // create and send notifications to all the members
       //  const message = {
-      //    type: 'left_group',
+      //    type: 'leave_group',
       //    title: 'Left group',
       //    body: user.name + " has left the group",
       //  };
@@ -161,11 +161,23 @@ router.post('/leave_group', (req, res) => {
   });
 });
 
-router.post('/search', (req, res) => {
-  res.redirect(301, url.format({
-    pathname: '/',
-    query: req.body,
-  }));
+router.get('/group/:id', (req, res) => {
+  models.Group.findById(req.params.id, (err, group) => {
+    if (err)
+      res.send(err)
+    else
+      res.send(group);
+  });
+});
+
+router.post('/notification/read_notif', (req, res) => {
+  models.Notification.findByIdAndUpdate(req.body.notifId, {read: true})
+  .exec((err, notif) => {
+    if (err)
+      res.send(err);
+    else
+      res.send(200);
+  });
 });
 
 // send an authentication request to facebook OAuth
