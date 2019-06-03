@@ -5,6 +5,7 @@ import Search from './pages/newSearch'
 import Plans from './pages/plans'
 import Notifs from './pages/notifs'
 import LoginPage from './pages/login'
+import Requests from './plans-notifs/requests'
 import * as serviceWorker from './serviceWorker';
 //import { BrowserRouter as Router,Route } from 'react-router-dom';
 import { BrowserRouter,Route } from 'react-router-dom'
@@ -22,7 +23,7 @@ const routing = (
     )
 
 
-// ReactDOM.render(<Navbar />, document.getElementById('navbar'));
+ReactDOM.render(<Navbar />, document.getElementById('navbar'));
 ReactDOM.render(routing, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
