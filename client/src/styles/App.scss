@@ -128,13 +128,13 @@ button {
     text-decoration: none
  }
 
-.theCard{
-    margin-left: 30%;
-    margin-right:30% 
-}
+// .theCard{
+//     margin-left: 30%;
+//     margin-right:30% 
+// }
 
 #plans-page{
-    @include flex(row,flex-end)
+    @include flex(row,flex-start)
 }
 
 #plans-buttons{
@@ -264,9 +264,9 @@ button {
             margin-right: -53%;
             margin-left: 3%
         }
-        #card{
-            margin-right: 80px;
-        }
+        // #card{
+        //     margin-right: 80px;
+        // }
         .btn{
             width: 80%;
             

@@ -5,8 +5,9 @@ var models = require('../models/index').models;
 var passport = require('passport');
 var webpush = require('web-push');
 
-router.get('/', (req, res) => {
-  console.log(req.query);
+var utils = require('./util');
+
+router.get('/', async (req, res) => {
   models.Group.aggregate([
     {$match: {'from': req.query.from, 'to': req.query.to }},
     {$addFields: {
@@ -14,13 +15,21 @@ router.get('/', (req, res) => {
     }},
     {$match: {'duration': {$lte: 86400000}}},
     {$sort: {'duration': 1}},
-  ]).exec((err, groups) => {
+  ]).exec(async (err, groups) => {
     if (err)
       res.send(err);
     else {
+
+      // remove groups that should be in disable form
+      // 1. user is sent a join request
+      // 2. user is a member already
+      // 3. group is closed
+      groups = await disableRequestSentGroups(groups, req.query.fb_id);
+      groups = disableJoinedOrCreatedGroups(groups, req.query.fb_id);
+
       // given sorted results, we need to paginate the data
       var result = [];
-      var batchSize = 1;
+      var batchSize = 10;
 
       // get the last element from the previous page
       if (req.query.after) {
@@ -51,6 +60,10 @@ router.get('/', (req, res) => {
   });
 });
 
+router.get('/create_group', (req, res) => {
+  res.render('create_group.ejs');
+});
+
 // creates a group for the user
 router.post('/create_group', (req, res) => {
   var traveler = {
@@ -58,7 +71,7 @@ router.post('/create_group', (req, res) => {
     name: req.body.name,
     from: req.body.from,
     to: req.body.to,
-    time: req.body.time,
+    time: new Date(req.body.time),
   };
   var grp = models.Group({
     from: req.body.from,
@@ -70,13 +83,81 @@ router.post('/create_group', (req, res) => {
   });
   grp.save((err, object) => {
     if (err)
-      res.send(500, "error creating group");
+      res.send(500, err);
     else {
       models.User.findOneAndUpdate({fb_id: traveler.fb_id}, {$push: {created_groups: object}})
       .exec((err, obj) => {
         res.send(200, "OK");
       }) ;
     }
+  });
+});
+
+router.get('/remove_group', (req, res) => {
+  res.render('remove_group.ejs');
+});
+
+router.post('/remove_group', (req, res) => {
+  models.Group.findByIdAndDelete(req.body.groupId, (err, group) => {
+    
+    // const message = {
+    //   type: 'remove_group',
+    //   title: 'Group removed',
+    //   body: group.owner.name + ' has removed the group',
+    // }
+
+    // utils.createAndSendNotification(message, group, undefined, (err, notif) => {
+    //   for (var i = 0; i < group.members.length; i++) {
+    //     // send notif to each user and add notid if
+    //     models.User.findOneAndUpdate({fb_id: group.members[i].fb_id}, {$push: {'notifications': notif}},
+    //     {$pull: {'joined_groups': group._id}})
+    //     .exec((err, user) => {
+    //       if (err)
+    //         res.send(err);
+    //       else {
+    //         webpush.sendNotification(JSON.parse(user.push_subscription), JSON.stringify(message))
+    //         .catch(err => console.log(err));
+    //       }
+    //     });
+    //   }
+    // });
+
+    res.send(200);
+  });
+});
+
+router.post('/leave_group', (req, res) => {
+  // find the user from the database
+  models.User.findOneAndUpdate({fb_id: req.query.fb_id}, {$pull: {'joined_groups': req.body.groupId}})
+  .exec((err, user) => {
+     // find the group and remove that member
+     models.Group.findByIdAndUpdate(req.body.groupId, {$pull: {'members': {'fb_id': req.query.fb_id}}}, {new: true})
+     .exec((err, group) => {
+       
+        // create and send notifications to all the members
+      //  const message = {
+      //    type: 'left_group',
+      //    title: 'Left group',
+      //    body: user.name + " has left the group",
+      //  };
+
+      //  utils.createAndSendNotification(message, group, undefined, (err, notif) => {
+      //   for (var i = 0; i < group.members.length; i++) {
+      //     // send notif to each user and add notid if
+      //     models.User.findOne({fb_id: group.members[i].fb_id})
+      //     .exec((err, user) => {
+      //       if (err)
+      //         res.send(err);
+      //       else {
+      //         webpush.sendNotification(JSON.parse(user.push_subscription), JSON.stringify(message))
+      //         .catch(err => console.log(err));
+      //       }
+      //     });
+      //   }
+      // });
+
+      res.send(200);
+     });
   });
 });
 
@@ -94,7 +175,7 @@ router.get('/auth/facebook', passport.authenticate("facebook"));
 // params - state-param : unique code to prevent csrf
 // 
 router.get('/auth/facebook/callback', passport.authenticate("facebook", {
-  successRedirect: '/',
+  successRedirect: 'http://192.168.0.1:3000/',
   failureRedirect: '/logout',
 }));
 
@@ -130,5 +211,34 @@ router.post('/subscribe', (req, res) => {
       res.sendStatus(200);
   });
 });
+
+async function disableRequestSentGroups(groups, userId) {
+  try {
+    user = await models.User.findOne({fb_id: userId}).populate('sent_requests');
+    // getting group ids from all sent requests
+    sentRequestGroups = user.sent_requests.map(item => item.group.toString());
+    for (var i = 0; i < groups.length; i++) {
+      if (sentRequestGroups.includes(groups[i]._id.toString()))
+        groups[i].status = 'request_sent';
+    }
+
+    return groups;
+  }
+  catch(err) {
+    console.log(err);
+    return groups;
+  }
+}
+
+function disableJoinedOrCreatedGroups(groups, userId) {
+  for (var i = 0; i < groups.length; i++) {
+    for (var j = 0; j < groups[i].members.length; j++) {
+      if (groups[i].members[j].fb_id === userId)
+        groups[i].status = 'joined';
+    }
+  }
+
+  return groups;
+}
 
 module.exports = router;

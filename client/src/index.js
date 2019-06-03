@@ -15,13 +15,14 @@ const routing = (
                 <Route exact path="/" component={Search} />
                 <Route path = '/login' component={LoginPage} />
                 <Route path ="/plans" component={Plans} />
+                <Route path='/requests' component={Requests} />
                 <Route path="/notifs" component={Notifs} />
             </div>
         </BrowserRouter>    
     )
 
 
-ReactDOM.render(<Navbar />, document.getElementById('navbar'));
+// ReactDOM.render(<Navbar />, document.getElementById('navbar'));
 ReactDOM.render(routing, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change

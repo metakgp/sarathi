@@ -2,10 +2,12 @@ import React,{ Component } from 'react'
 import Menu from '../searchComps/select'
 import DateSelect from '../searchComps/date'
 import TimeSelect from '../searchComps/time'
-import Card from '../plans-notifs/card'
+// import Card from '../plans-notifs/card'
+import Card from '../plans-notifs/card';
+import axios from 'axios';
+import  '../styles/App.scss';
 import Grid from '@material-ui/core/Grid';
-import axios from 'axios'
-import  '../styles/App.scss'
+import { List, ListItem } from '@material-ui/core';
 
 class Search extends Component{
     constructor(props){
@@ -16,6 +18,20 @@ class Search extends Component{
             time: new Date(),
             dataCards: []
         }
+        this.updateContentSectionHeight = this.updateContentSectionHeight.bind(this);
+    }
+
+    componentDidMount() {
+        this.updateContentSectionHeight();
+        window.addEventListener('resize', this.updateContentSectionHeight);
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.updateContentSectionHeight);
+    }
+
+    updateContentSectionHeight() {
+        this.setState({contentSectionHeight: window.innerHeight});
     }
     
     setFromPlace = (fromPlace) => { this.setState({fromPlace : fromPlace}) }
@@ -23,6 +39,7 @@ class Search extends Component{
   
     setTime = (time) => {
         var newDate = new Date(this.state.time.getTime());
+        time = new Date(time);
         newDate.setHours(time.getHours());
         newDate.setMinutes(time.getMinutes());
         newDate.setSeconds(time.getSeconds());
@@ -39,11 +56,12 @@ class Search extends Component{
         // console.log(this.state.fromPlace)
         // console.log(this.state.toPlace)
         // console.log(this.state.time)
-        axios.get('http://localhost:5000',{
+        axios.get('http://192.168.0.103:5000',{
             params: {
                 from : this.state.fromPlace,
                 to: this.state.toPlace,
                 time: this.state.time,
+                fb_id: 2177672832321382,
             }
         })
         .then((res) => {
@@ -53,10 +71,27 @@ class Search extends Component{
         .catch((err) => console.log(err)) 
     }
 
+    sendJoinRequest = (groupId, index) => {
+        axios.post('http://192.168.0.103:5000/request/join_request?fb_id=2177672832321382', {
+            from: this.state.fromPlace,
+            to: this.state.toPlace,
+            time: this.state.time,
+            groupId: groupId,
+        }).then((res) => {
+            console.log(res.data);
+            var newArray = [...this.state.dataCards];
+            newArray[index].status = 'request_sent';
+            this.setState({dataCards: newArray});
+        }).catch((err) => {
+            console.log(err);
+        });
+    }
+
     render(){
+        
         return(
             <div>
-                <Grid container>
+            <Grid container>
                 <div className="search">
                     <div className="fromTo">
                         <div className="menu-des">
@@ -73,23 +108,28 @@ class Search extends Component{
                     <TimeSelect onPassData={this.setTime} />
                     <button onClick={this.sendData}>Search</button>
                 </div>
-                <div id='card'>
-                   {(this.state.showCard===true) ?
-                     this.state.dataCards.map(item => {
-                         return(
-                             <Card 
-                             departure = {item.departure}
-                             from = {item.from}
-                             to = {item.to}
-                             status = {item.status}
-                             members = {item.members}   
-                             />
-                         )
-                     }) 
-                     : ''}
+            </Grid>
+                    <Grid item xs style={{height: this.state.contentSectionHeight, overflowY: 'scroll', overflowX: 'hidden'}}>
+                        <div id='card'>
+                        {(this.state.showCard===true) ?
+                            this.state.dataCards.map((item, index) => {
+                                return(
+                                    <Card
+                                    key={item._id}
+                                    id={item._id} 
+                                    departure = {item.departure}
+                                    from = {item.from}
+                                    to = {item.to}
+                                    status = {item.status}
+                                    members = {item.members}
+                                    join={() => this.sendJoinRequest(item._id, index)}
+                                    />
+                                )
+                            }) 
+                            : ''}
+                        </div>
+                    </Grid>
                 </div>
-                </Grid>
-            </div>
         )
     }
 }

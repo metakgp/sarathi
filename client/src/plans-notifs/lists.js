@@ -22,8 +22,8 @@ function AlignItemsList(props) {
   const { classes } = props;
   return (
     <List className={classes.root}>
-      {props.members.map(item => {
-        return (<ListItem alignItems="flex-start">
+      {props.members.map((item, index) => {
+        return (<ListItem alignItems="flex-start" key={index}>
                   <ListItemAvatar>
                     <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
                   </ListItemAvatar>
