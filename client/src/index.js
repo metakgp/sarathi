@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Navbar from './searchComps/respNav'
-import Search from './pages/newSearch'
+import Search from './pages/search'
 import Plans from './pages/plans'
+import Requests from './plans-notifs/requests'
 import Notifs from './pages/notifs'
 import LoginPage from './pages/login'
 import Requests from './plans-notifs/requests'
@@ -15,7 +16,7 @@ const routing = (
             <div>
                 <Route exact path="/" component={Search} />
                 <Route path = '/login' component={LoginPage} />
-                <Route path ="/plans" component={Plans} />
+                <Route path ="/groups" component={Plans} />
                 <Route path='/requests' component={Requests} />
                 <Route path="/notifs" component={Notifs} />
             </div>

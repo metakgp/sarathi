@@ -23,7 +23,7 @@ export default class Requests extends React.Component {
     }
 
     componentDidMount() {
-        axios.get('http://192.168.0.103:5000/user/my_requests?fb_id=2177672832321382')
+        axios.get('http://192.168.0.103:5000/user/my_requests?fb_id=2177672832321333')
         .then(res => {
             console.log(res.data.sent);
             var receivedRequestArray = res.data.received.map(item => {
@@ -49,7 +49,7 @@ export default class Requests extends React.Component {
 
     updateContentSectionHeight() {
         const width = window.innerWidth < 500 ? window.innerWidth : 500;
-        this.setState({contentSectionHeight: window.innerHeight - 48, contentSectionWidth: width});
+        this.setState({contentSectionHeight: window.innerHeight - 46 - 48, contentSectionWidth: width});
     }
 
     // updates all the member's (of the same group) count by 1
@@ -117,20 +117,19 @@ export default class Requests extends React.Component {
     render() {
         
         return (
-            <Grid container direction='column' alignItems='center' spacing={5}>
-                <Grid item style={{padding: 0}}>
-                    <Tabs 
-                    value={this.state.value}
-                    onChange={this.handleTabChange} 
-                    textColor='primary' 
-                    indicatorColor='primary' 
-                    centered>
-                        <Tab label='Sent' />
-                        <Tab label='Received' />
-                    </Tabs>
-                </Grid>
-                <Grid item style={{width: '100%', height: this.state.contentSectionHeight, overflowY: 'scroll', overflowX: 'hidden'}}>
-                    <Container style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>    
+            <div>
+                <Tabs 
+                value={this.state.value}
+                onChange={this.handleTabChange} 
+                textColor='primary' 
+                indicatorColor='primary' 
+                centered
+                style={{position: 'fixed', top: '46px', width: '100%', zIndex: 1}}>
+                    <Tab label='Sent' />
+                    <Tab label='Received' />
+                </Tabs>
+                <div style={{position: 'relative', top: '48px', height: this.state.contentSectionHeight, overflow: 'auto'}}>
+                    <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center',}}>    
                         {this.state.value ? 
                         this.state.received_requests.map((item, index) => 
                             <ReceivedRequestCard
@@ -160,9 +159,9 @@ export default class Requests extends React.Component {
                             />
                         )
                         }
-                    </Container>
-                </Grid>
-            </Grid>
+                    </div>
+                </div>
+            </div>
         )
     }
 }

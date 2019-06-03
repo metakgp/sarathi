@@ -167,24 +167,24 @@ router.post('/reject_request', (req, res) => {
                 else {
                   res.send(200);
                     // remove request from sent_request of traveler
-                    // models.User.findOneAndUpdate({fb_id: request.traveler.fb_id}, 
-                    // {$pull: {sent_requests: req.body.requestId}})  //remove requests matching req id
-                    // .exec((err, traveler) => {
-                    //     if (err)
-                    //     res.send(500, err);
-                    //     else {
-                    //     // message to the traveler
-                    //     const message = {
-                    //         type: 'approve_request',
-                    //         title: 'Request Update',
-                    //         body: group.owner.name + " has rejected your request",
-                    //     };
+                    models.User.findOneAndUpdate({fb_id: request.traveler.fb_id}, 
+                    {$pull: {sent_requests: req.body.requestId}})  //remove requests matching req id
+                    .exec((err, traveler) => {
+                        if (err)
+                        res.send(500, err);
+                        else {
+                        // message to the traveler
+                        // const message = {
+                        //     type: 'approve_request',
+                        //     title: 'Request Update',
+                        //     body: group.owner.name + " has rejected your request",
+                        // };
                         
-                    //     webpush.sendNotification(traveler.push_subscription, JSON.stringify(message))
-                    //     .catch(err => console.log(err))
-                    //     .then(() => res.sendStatus(200));
-                    //   }
-                    // });
+                        // webpush.sendNotification(traveler.push_subscription, JSON.stringify(message))
+                        // .catch(err => console.log(err))
+                        // .then(() => res.sendStatus(200));
+                      }
+                    });
                 }
                 });
             }

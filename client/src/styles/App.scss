@@ -144,10 +144,10 @@ button {
 
 //Styling the newSearch
 
-#NewSearch{
-    @include flex(row,center);
-    align-items: flex-end
-}
+// #NewSearch{
+//     @include flex(row,center);
+//     align-items: flex-end
+// }
 
 .MuiFormControl-root.MuiFormControl-marginNormal.MuiTextField-root{
     margin-right: -95%;
@@ -255,11 +255,11 @@ button {
             // display: none
         }
 
-        #NewSearch{
-            @include flex(column,center);
-            align-items: baseline;
-            margin-left: 22%;
-         }
+        // #NewSearch{
+        //     @include flex(column,center);
+        //     align-items: baseline;
+        //     margin-left: 22%;
+        //  }
         .MuiFormControl-root.MuiFormControl-marginNormal.MuiTextField-root{
             margin-right: -53%;
             margin-left: 3%
