@@ -4,7 +4,7 @@ function createAndSendNotification(message, subject, object, push_subscription, 
     const notif = models.Notification({
       type: message.type,
       message: message.body,
-      subject: subject
+      subject: subject,
       object_id: object,
       created_on: Date.now(),
       is_read: false,
