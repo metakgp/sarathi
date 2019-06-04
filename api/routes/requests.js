@@ -52,7 +52,7 @@ router.post('/join_request', (req, res) => {
                 //   title: 'Join Request',
                 //   body: user.name + " has sent a join request",
                 // });
-                
+
                 // webpush.sendNotification(JSON.parse(owner.push_subscription), message)
                 // .catch(err => console.log(err))
                 // .then(() => res.sendStatus(200));
@@ -105,7 +105,12 @@ router.post('/approve_request', (req, res) => {
                         //   body: traveler.name + " has joined the group",
                         // };
 
-                        // utils.createAndSendNotification(message, request, undefined, (err, notif) => {
+                        // const subject = {
+                        //   fb_id: traveler.fb_id,
+                        //   name: traveler.name,
+                        // }
+
+                        // utils.createAndSendNotification(message, subject, group, undefined, (err, notif) => {
                         //   message_string = JSON.stringify(message);
                         
                         //   // sending notification to all members of the group
@@ -211,7 +216,12 @@ router.post('/change_time', (req, res) => {
       //   body: group.owner.name + ' has changed the departure time'
       // };
 
-      // utils.createAndSendNotification(message, group, undefined, (err, notif) => {
+      // const subject = {
+      //   fb_id: group.owner.fb_id,
+      //   name: group.owner.name,
+      // }
+
+      // utils.createAndSendNotification(message, subject, group, undefined, (err, notif) => {
       //   for (var i = 0; i < group.members.length; i++) {
       //     // send notif to each user and add notid if
       //     models.User.findOneAndUpdate({fb_id: group.members[i].fb_id}, {$push: {'notifications': notif}})

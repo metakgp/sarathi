@@ -108,7 +108,12 @@ router.post('/remove_group', (req, res) => {
     //   body: group.owner.name + ' has removed the group',
     // }
 
-    // utils.createAndSendNotification(message, group, undefined, (err, notif) => {
+    // const subject = {
+    //   fb_id: group.owner.fb_id,
+    //   name: group.owner.name,
+    // }
+
+    // utils.createAndSendNotification(message, subject, group, undefined, (err, notif) => {
     //   for (var i = 0; i < group.members.length; i++) {
     //     // send notif to each user and add notid if
     //     models.User.findOneAndUpdate({fb_id: group.members[i].fb_id}, {$push: {'notifications': notif}},
@@ -136,26 +141,31 @@ router.post('/leave_group', (req, res) => {
      models.Group.findByIdAndUpdate(req.body.groupId, {$pull: {'members': {'fb_id': req.query.fb_id}}}, {new: true})
      .exec((err, group) => {
        
-        // create and send notifications to all the members
-      //  const message = {
-      //    type: 'leave_group',
-      //    title: 'Left group',
-      //    body: user.name + " has left the group",
-      //  };
+      // create and send notifications to all the members
+      // const message = {
+      //   type: 'leave_group',
+      //   title: 'Left group',
+      //   body: user.name + " has left the group",
+      // };
 
-      //  utils.createAndSendNotification(message, group, undefined, (err, notif) => {
-      //   for (var i = 0; i < group.members.length; i++) {
-      //     // send notif to each user and add notid if
-      //     models.User.findOne({fb_id: group.members[i].fb_id})
-      //     .exec((err, user) => {
-      //       if (err)
-      //         res.send(err);
-      //       else {
-      //         webpush.sendNotification(JSON.parse(user.push_subscription), JSON.stringify(message))
-      //         .catch(err => console.log(err));
-      //       }
-      //     });
-      //   }
+      // const subject = {
+      //   fb_id: user.fb_id,
+      //   name: user.name,
+      // }
+
+      // utils.createAndSendNotification(message, subject, group, undefined, (err, notif) => {
+      // for (var i = 0; i < group.members.length; i++) {
+      //   // send notif to each user and add notid if
+      //   models.User.findOne({fb_id: group.members[i].fb_id})
+      //   .exec((err, user) => {
+      //     if (err)
+      //       res.send(err);
+      //     else {
+      //       webpush.sendNotification(JSON.parse(user.push_subscription), JSON.stringify(message))
+      //       .catch(err => console.log(err));
+      //     }
+      //   });
+      // }
       // });
 
       res.send(200);
