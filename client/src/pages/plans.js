@@ -6,6 +6,8 @@ import Tab from '@material-ui/core/Tab';
 import PickersDialog from '../plans-notifs/PickersDialog';
 import ConfirmDialog from '../plans-notifs/confirmDialog';
 
+import EmptyMessage from '../plans-notifs/emptyMessage';
+
 
 export default class Groups extends React.Component {
     constructor(props) {
@@ -180,8 +182,10 @@ export default class Groups extends React.Component {
                 </Tabs>
                 <div style={{position: 'relative', top: '48px', height: this.state.contentSectionHeight, overflow: 'auto'}}>
                 <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-                    {this.state.value ? 
-                        this.state.joined_groups.map((item, index) => <Card
+                    {this.state.value ?
+                        this.state.joined_groups.length ?
+                        this.state.joined_groups.map((item, index) => 
+                        <Card
                         key={item._id}
                         id={item._id} 
                         width={this.state.contentSectionWidth}
@@ -192,8 +196,10 @@ export default class Groups extends React.Component {
                         members = {item.members}
                         leave = {() => this.openLeaveGroupDialog(() => 
                         this.handleLeaveGroup(item._id, index))} 
-                        />)
+                        />) :
+                        <EmptyMessage>No groups joined</EmptyMessage>
                     :
+                        this.state.created_groups.length ?
                         this.state.created_groups.map((item, index) => 
                         <Card
                         key={item._id}
@@ -209,7 +215,8 @@ export default class Groups extends React.Component {
                         this.handleRemoveGroup(item._id, index))}
                         statusToggle={() => this.onToggleStatus(item.status, () =>
                         this.handleToggleStatus(item._id, index))}
-                        />)
+                        />) :
+                        <EmptyMessage>No groups created</EmptyMessage>
                     }
                 </div>
                 </div>
