@@ -83,7 +83,7 @@ export default class Notifications extends Component {
                         <Grid item style={{display: 'flex', alignItems: 'center'}}>
                             <Avatar 
                             alt='Arib Alam' 
-                            src='http://192.168.0.103:5000/images/user-image.png'
+                            src={'http://192.168.0.103:5000/images/' + item.subject.fb_id + '.jpg'}
                             style={{height: 60, width: 60}} />
                         </Grid>
                         <Grid item xs style={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>

@@ -29,6 +29,7 @@ const userSchema = mongoose.Schema({
         ref: 'Notification'
     }],
     push_subscription: String,
+    profilePic: String,
 });
 
 const User = mongoose.model('User', userSchema);
