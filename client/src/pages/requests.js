@@ -4,8 +4,7 @@ import ReceivedRequestCard from '../plans-notifs/recievedRequests';
 import SentRequestCard from '../plans-notifs/sentRequest';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import EmptyMessage from './emptyMessage';
-import Typography from 'material-ui/styles/typography';
+import EmptyMessage from '../plans-notifs/emptyMessage';
 
 
 export default class Requests extends React.Component {
