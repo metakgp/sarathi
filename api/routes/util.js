@@ -1,9 +1,10 @@
 var models = require('../models/index').models;
 
-function createAndSendNotification(message, object, push_subscription, callback) {
+function createAndSendNotification(message, subject, object, push_subscription, callback) {
     const notif = models.Notification({
       type: message.type,
       message: message.body,
+      subject: subject
       object_id: object,
       created_on: Date.now(),
       is_read: false,
