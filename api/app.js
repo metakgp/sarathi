@@ -9,6 +9,8 @@ var passport = require('passport');
 var fbStrategy = require('passport-facebook').Strategy;
 var webpush = require('web-push');
 var cors = require('cors');
+var axios = require('axios');
+var fs = require('fs');
 
 var indexRouter = require('./routes/index');
 var requestsRouter = require('./routes/requests');
@@ -47,20 +49,33 @@ passport.use(new fbStrategy({
     
     if (!user) {
       console.log("User not found");
-      var newUser = models.User({
-        name: profile.name.givenName + " " + profile.name.familyName,
-        fb_id: profile.id,
-        token: token,
-        profile: profile.profileUrl,
-      });
-      newUser.save((err, object) => {
-        if (err) {
-          console.log("Error creating new user");
-          return done(err);
-        }
-        console.log("Successfully created new user");
-        return done(null, object);
-      });
+      axios.get('http://graph.facebook.com/' + profile.id + '/picture?type=square', {
+        contentType: 'stream',
+      })
+      .then(response => {
+        // fetch the user profile picture from fb api
+        var staticSourcePath = 'http://192.168.0.103:5000/images/' + profile.id + '.jpg';
+        var filepath = './public/images/' + profile.id + '.jpg';
+        var file = fs.createWriteStream(filepath);
+        response.data.pipe(file);
+
+        // create and save the user model
+        var newUser = models.User({
+          name: profile.name.givenName + " " + profile.name.familyName,
+          fb_id: profile.id,
+          token: token,
+          profile: profile.profileUrl,
+          profilePic: staticSourcePath,
+        });
+        newUser.save((err, object) => {
+          if (err) {
+            console.log("Error creating new user");
+            return done(err);
+          }
+          console.log("Successfully created new user");
+          return done(null, object);
+        });
+      })
     }
     else {
       console.log("User found. Returning the user");
