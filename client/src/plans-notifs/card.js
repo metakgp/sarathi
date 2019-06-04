@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import { Button, ListItemAvatar, CardActions } from '@material-ui/core';
+import { Button, ListItemAvatar, CardActions, Switch, FormControlLabel } from '@material-ui/core';
 import Avatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
 import moment from 'moment';
@@ -60,7 +60,19 @@ export default function SimpleCard (props) {
   }
 
   return (
-    <Card style={{width: props.width, marginBottom: 5}}>
+    <Card style={{width: props.width, marginBottom: 10}}>
+      {props.statusToggle ? 
+      (
+        <FormControlLabel
+        style={{paddingLeft: 10, width: '100%', background: '#efefef'}}
+        control={
+          <Switch
+          checked={props.status === 'open'}
+          onChange={props.statusToggle}
+          color='primary'/>
+        } 
+        label={props.status} />
+        ) : ''}
       <Grid container style={{padding: 10, background: '#efefef'}}>
           <Grid item xs>
               <Typography variant='h5' gutterBottom>

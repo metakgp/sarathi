@@ -11,7 +11,7 @@ import moment from 'moment';
 export default function ReceivedRequestCard(props) {
     
     return (
-        <Card style={{width: props.width, marginBottom: 5}}>
+        <Card style={{width: props.width, marginBottom: 10}}>
             <div style={{margin: 5}}>
                 <Chip label={props.from + ' to '+props.to} 
                 variant='outlined' 
