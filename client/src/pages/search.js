@@ -5,7 +5,7 @@ import TimeSelect from '../searchComps/time'
 import Card from '../plans-notifs/card';
 import axios from 'axios';
 import  '../styles/App.scss';
-import { Paper, Typography, Grid, Button, Fab } from '@material-ui/core';
+import { Paper, Grid, Button, Fab } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add'
 import CreateGroupDialog from '../plans-notifs/CreateGroupDialog'
 import moment from 'moment'
@@ -81,6 +81,9 @@ class Search extends Component{
             this.setState({dataCards: result, showCard: true});
         })
         .catch((err) => console.log(err)) 
+        
+        //scrolling down in phone
+        if(window.screen.availWidth < 768) window.scrollBy(0,600)
     }
 
     sendJoinRequest = (groupId, index) => {
@@ -118,49 +121,6 @@ class Search extends Component{
 
     render() {
         
-<<<<<<< HEAD
-        return(
-            <div>
-            <Grid container>
-                <div className="search">
-                    <div className="fromTo">
-                        <div className="menu-des">
-                            <h2>From</h2><Menu onPassData={this.setFromPlace} />
-                        </div>
-                        <div className="menu-des">    
-                            <h2>To</h2><Menu onPassData = {this.setToPlace} />
-                        </div>    
-                    </div>
-                    <div className="selectDate">
-                        <h3>Date of Departure :</h3>
-                        <DateSelect onPassData = {this.setDate} />
-                    </div>
-                    <TimeSelect onPassData={this.setTime} />
-                    <button onClick={this.sendData}>Search</button>
-                </div>
-            </Grid>
-                    <Grid item xs style={{height: this.state.contentSectionHeight, overflowY: 'scroll', overflowX: 'hidden'}}>
-                        <div id='card'>
-                        {(this.state.showCard===true) ?
-                            this.state.dataCards.map((item, index) => {
-                                return(
-                                    <Card
-                                    key={item._id}
-                                    id={item._id} 
-                                    departure = {item.departure}
-                                    from = {item.from}
-                                    to = {item.to}
-                                    status = {item.status}
-                                    members = {item.members}
-                                    join={() => this.sendJoinRequest(item._id, index)}
-                                    />
-                                )
-                            }) 
-                            : ''}
-                        </div>
-                    </Grid>
-                </div>
-=======
         return (
         <div>
             <Paper id='search_section' style={{position: 'fixed', top: 46, left: 0, width: '100%', zIndex: 1}}>
@@ -218,7 +178,6 @@ class Search extends Component{
             onSubmit={this.createGroup}
             />
         </div>
->>>>>>> d9825d530b58bd6767455dc6bd08fa4acdded802
         )
     }
 }

@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
 import MomentUtils from '@date-io/moment';
 import { MuiPickersUtilsProvider, TimePicker} from 'material-ui-pickers';
 
@@ -9,7 +8,10 @@ import { MuiPickersUtilsProvider, TimePicker} from 'material-ui-pickers';
 //     width: '60%',
 //   },
 // };
-
+const width = () => { 
+  if(window.screen.availWidth < 768) return 275
+  else return 250
+}
 class MaterialUIPickers extends React.Component {
   state = {
     // The first commit of Material-UI
@@ -28,6 +30,7 @@ class MaterialUIPickers extends React.Component {
       <div style={{display: 'flex', justifyContent: 'center', margin: 10}}>
       <MuiPickersUtilsProvider utils={MomentUtils}>
           <TimePicker
+            style = {{minWidth : width()}}
             label={this.props.label}
             value={selectedDate}
             onChange={this.handleDateChange}
