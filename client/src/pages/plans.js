@@ -21,6 +21,8 @@ export default class Groups extends React.Component {
             groupRemoveCallback: undefined,
             showGroupLeaveDialog: false,
             groupLeaveCallback: undefined,
+            showCloseStatusDialog: false,
+            closeStatusCallback: undefined,
             timeChangeGroup: '',
             timeChangeDeparture: new Date(),
             contentSectionHeight: 0,
@@ -106,6 +108,27 @@ export default class Groups extends React.Component {
         this.closeLeaveGroupDialog();
     }
 
+    handleToggleStatus = (groupId, index) => {
+        axios.post('http://192.168.0.103:5000/group/toggle_status', {
+            groupId: groupId,
+            status: this.state.created_groups[index].status,
+        })
+        .then(res => {
+            var newArray = [...this.state.created_groups];
+            newArray[index].status = res.data;
+            this.setState({created_groups: newArray});
+        })
+        .catch(err => console.log(err));
+        this.closeCloseStatusDialog();
+    }
+
+    onToggleStatus = (status, confirmCallback) => {
+        if (status === 'open')
+            this.openCloseStatusDialog(confirmCallback);
+        else
+            confirmCallback();
+    }
+
     // functions for handling dialog boxes for different cases
 
     openDialog = (groupId, departure) => {
@@ -133,6 +156,14 @@ export default class Groups extends React.Component {
 
     closeLeaveGroupDialog = () => {
         this.setState({showGroupLeaveDialog: false, groupLeaveCallback: undefined});
+    }
+
+    openCloseStatusDialog = (confirmCallback) => {
+        this.setState({showCloseStatusDialog: true, closeStatusCallback: confirmCallback});
+    }
+
+    closeCloseStatusDialog = () => {
+        this.setState({showCloseStatusDialog: false, closeStatusCallback: undefined});
     }
 
     render() {
@@ -177,7 +208,9 @@ export default class Groups extends React.Component {
                         members = {item.members}
                         timeChange = {this.openDialog}
                         remove = {() => this.openGroupRemoveDialog(() => 
-                        this.handleRemoveGroup(item._id, index))} 
+                        this.handleRemoveGroup(item._id, index))}
+                        statusToggle={() => this.onToggleStatus(item.status, () =>
+                        this.handleToggleStatus(item._id, index))}
                         />)
                     }
                 </div>
@@ -198,6 +231,11 @@ export default class Groups extends React.Component {
                 onClose={this.closeLeaveGroupDialog}
                 onConfirm={this.state.groupLeaveCallback}
                 body='You will no longer be a member of this group' />
+                <ConfirmDialog
+                open={this.state.showCloseStatusDialog}
+                onClose={this.closeCloseStatusDialog}
+                onConfirm={this.state.closeStatusCallback}
+                body='No further requests to this group will be received' />      
             </div>
         )
     }
