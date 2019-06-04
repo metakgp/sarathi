@@ -192,6 +192,21 @@ router.post('/notification/read_notif', (req, res) => {
   });
 });
 
+router.post('/group/toggle_status', (req, res) => {
+  if (req.body.status == 'open')
+    var newStatus = 'closed';
+  else
+    var newStatus = 'open';
+
+  models.Group.findByIdAndUpdate(req.body.groupId, {status: newStatus})
+  .exec((err, group) => {
+    if (err)
+      res.send(err);
+    else
+      res.send(newStatus);
+  });
+})
+
 // send an authentication request to facebook OAuth
 router.get('/auth/facebook', passport.authenticate("facebook"));
 
