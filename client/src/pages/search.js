@@ -126,10 +126,16 @@ class Search extends Component{
             <Paper id='search_section' style={{position: 'fixed', top: 46, left: 0, width: '100%', zIndex: 1}}>
                 <Grid container justify='center' >
                     <Grid item xs={12} sm={6} lg={2}>
-                        <MaterialSelect dir='FROM' onPassData={this.setFromPlace} />
+                        <MaterialSelect 
+                        dir='FROM' 
+                        initialValue={this.state.fromPlace} 
+                        onPassData={this.setFromPlace} />
                     </Grid>
                     <Grid item xs={12} sm={6} lg={2}>
-                        <MaterialSelect dir='TO' onPassData = {this.setToPlace} />
+                        <MaterialSelect 
+                        dir='TO' 
+                        initialValue={this.state.toPlace}
+                        onPassData = {this.setToPlace} />
                     </Grid>
                     <Grid item xs={12} sm={6} lg={3}>
                         <MaterialDate label='Date of Departure' onPassData = {this.setDate} />
