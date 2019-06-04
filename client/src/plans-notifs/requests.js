@@ -4,6 +4,8 @@ import ReceivedRequestCard from '../plans-notifs/recievedRequests';
 import SentRequestCard from '../plans-notifs/sentRequest';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import EmptyMessage from './emptyMessage';
+import Typography from 'material-ui/styles/typography';
 
 
 export default class Requests extends React.Component {
@@ -129,33 +131,38 @@ export default class Requests extends React.Component {
                 <div style={{position: 'relative', top: '48px', height: this.state.contentSectionHeight, overflow: 'auto'}}>
                     <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center',}}>    
                         {this.state.value ? 
-                        this.state.received_requests.map((item, index) => 
-                            <ReceivedRequestCard
-                            key={item._id}
-                            id={item._id} 
-                            width={this.state.contentSectionWidth}
-                            departure = {item.group.departure}
-                            from = {item.group.from}
-                            to = {item.group.to}
-                            members = {item.group.membersCount}
-                            traveler = {item.traveler} 
-                            approve = {() => this.handleApprove(item._id, index)}
-                            reject = {() => this.handleReject(item._id, index)}
-                            />
-                        ) :
-                        this.state.sent_requests.map((item, index) => 
-                            <SentRequestCard
-                            key={item._id}
-                            id={item._id}
-                            departure = {item.group.departure}
-                            width={this.state.contentSectionWidth}
-                            from = {item.group.from}
-                            to = {item.group.to}
-                            members = {item.group.membersCount}
-                            owner = {item.group.owner}
-                            cancel = {() => this.handleCancel(item._id, index)}
-                            />
-                        )
+                            this.state.received_requests.length ?
+                            this.state.received_requests.map((item, index) => 
+                                <ReceivedRequestCard
+                                key={item._id}
+                                id={item._id} 
+                                width={this.state.contentSectionWidth}
+                                departure = {item.group.departure}
+                                from = {item.group.from}
+                                to = {item.group.to}
+                                members = {item.group.membersCount}
+                                traveler = {item.traveler} 
+                                approve = {() => this.handleApprove(item._id, index)}
+                                reject = {() => this.handleReject(item._id, index)}
+                                />)
+                            :
+                                <EmptyMessage>No requests received</EmptyMessage>
+                        : 
+                            this.state.sent_requests.length ?
+                            this.state.sent_requests.map((item, index) => 
+                                <SentRequestCard
+                                key={item._id}
+                                id={item._id}
+                                departure = {item.group.departure}
+                                width={this.state.contentSectionWidth}
+                                from = {item.group.from}
+                                to = {item.group.to}
+                                members = {item.group.membersCount}
+                                owner = {item.group.owner}
+                                cancel = {() => this.handleCancel(item._id, index)}
+                                />)
+                            :
+                                <EmptyMessage>No requests sent</EmptyMessage>
                         }
                     </div>
                 </div>

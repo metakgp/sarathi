@@ -5,10 +5,11 @@ import TimeSelect from '../searchComps/time'
 import Card from '../plans-notifs/card';
 import axios from 'axios';
 import  '../styles/App.scss';
-import { Paper, Grid, Button, Fab } from '@material-ui/core';
+import { Paper, Grid, Button, Fab, Typography } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add'
 import CreateGroupDialog from '../plans-notifs/CreateGroupDialog'
 import moment from 'moment'
+import EmptyMessage from '../plans-notifs/emptyMessage';
 
 class Search extends Component{
     constructor(props){
@@ -152,7 +153,7 @@ class Search extends Component{
             </Paper>
             <div id='card' style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
             <div style={{height: this.state.contentSectionMargin, margin: 10}}></div>
-            { this.state.showCard ?
+            { this.state.dataCards.length ?
             this.state.dataCards.map((item, index) => {
                 return(
                     <Card
@@ -167,8 +168,9 @@ class Search extends Component{
                     join={() => this.sendJoinRequest(item._id, index)}
                     />
                 )
-            }) 
-            : ''}
+            }) :
+            <EmptyMessage>No groups to show</EmptyMessage>
+            }
             </div>
             <Fab 
             color="primary" 
