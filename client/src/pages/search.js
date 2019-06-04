@@ -5,7 +5,7 @@ import TimeSelect from '../searchComps/time'
 import Card from '../plans-notifs/card';
 import axios from 'axios';
 import  '../styles/App.scss';
-import { Paper, Typography, Grid, Button, Fab } from '@material-ui/core';
+import { Paper, Grid, Button, Fab } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add'
 import CreateGroupDialog from '../plans-notifs/CreateGroupDialog'
 import moment from 'moment'
@@ -81,6 +81,9 @@ class Search extends Component{
             this.setState({dataCards: result, showCard: true});
         })
         .catch((err) => console.log(err)) 
+        
+        //scrolling down in phone
+        if(window.screen.availWidth < 768) window.scrollBy(0,600)
     }
 
     sendJoinRequest = (groupId, index) => {

@@ -1,23 +1,6 @@
 import React, { Component } from 'react';
 import Typography from '@material-ui/core/Typography';
 
-
-const samples = [
-  {
-    message: 'x has agreed to join u from kgp to ccu vx has agreed to join u from kgp to ccu',
-    time: '15 min ago'
-  },
-  {
-    message: 'x has agreed to join u from kgp to ccu',
-    time: '15 min ago'
-  },
-  {
-    message: 'x has agreed to join u from kgp to ccu',
-    time: '15 min ago'
-  },
-  
-]
-
 export default class Example extends Component {
   
   myFunction = () => {

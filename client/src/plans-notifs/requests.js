@@ -2,10 +2,8 @@ import React from 'react';
 import axios from 'axios';
 import ReceivedRequestCard from '../plans-notifs/recievedRequests';
 import SentRequestCard from '../plans-notifs/sentRequest';
-import Grid from '@material-ui/core/Grid';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import Container from '@material-ui/core/Container';
 
 
 export default class Requests extends React.Component {

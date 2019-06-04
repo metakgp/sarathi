@@ -5,10 +5,14 @@ import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import { withStyles } from '@material-ui/core/styles';
 
-const styles = theme => ({
+const width = () => { 
+  if(window.screen.availWidth < 768) return 275
+  else return 150
+}
+const styles = (theme,width) => ({
     formControl: {
       // margin: theme.spacing.unit,
-      minWidth: 150,
+      // minWidth: 150 ,
     },
     selectEmpty: {
       // marginTop: theme.spacing.unit * 2,
@@ -32,9 +36,10 @@ class MaterialSelect extends Component {
         
         return (
             <div style={{display: 'flex', justifyContent: 'center', margin: 10}}>
-              <FormControl className={classes.formControl}>
+              <FormControl className={classes.formControl} style = {{minWidth : width()}}>
                 <InputLabel >{this.props.dir}</InputLabel>
                 <Select
+                  autoWidth={true}
                   value={this.state.place}
                   onChange={this.handleChange}
                 >
