@@ -154,7 +154,7 @@ export default class Requests extends React.Component {
                             from = {item.group.from}
                             to = {item.group.to}
                             members = {item.group.membersCount}
-                            owner = {item.group.owner.name}
+                            owner = {item.group.owner}
                             cancel = {() => this.handleCancel(item._id, index)}
                             />
                         )
