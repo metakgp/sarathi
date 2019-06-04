@@ -4,6 +4,8 @@ var url = require('url');
 var models = require('../models/index').models;
 var passport = require('passport');
 var webpush = require('web-push');
+var axios = require('axios');
+var fs = require('fs');
 
 var utils = require('./util');
 
@@ -222,6 +224,18 @@ router.post('/subscribe', (req, res) => {
     else
       res.sendStatus(200);
   });
+});
+
+router.get('/get_picture', (req, res) => {
+  var file = fs.createWriteStream('./public/images/4567.jpg');
+  axios.get('http://graph.facebook.com/2177672832321382/picture?type=square', {
+    responseType: 'stream',
+  })
+  .then(response => {
+    response.data.pipe(file);
+    res.send("OK");
+  })
+  .catch(err => console.log(err));
 });
 
 async function disableRequestSentGroups(groups, userId) {
