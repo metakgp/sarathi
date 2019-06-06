@@ -79,7 +79,6 @@ router.post('/create_group', (req, res) => {
     from: req.body.from,
     to: req.body.to,
     owner: traveler,
-    members: [traveler],
     departure: req.body.departure,
     status: 'open',
   });
