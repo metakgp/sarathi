@@ -192,6 +192,7 @@ export default class Groups extends React.Component {
                         departure = {item.departure}
                         from = {item.from}
                         to = {item.to}
+                        owner = {item.owner}
                         status = {item.status}
                         members = {item.members}
                         leave = {() => this.openLeaveGroupDialog(() => 
@@ -209,6 +210,7 @@ export default class Groups extends React.Component {
                         from = {item.from}
                         to = {item.to}
                         status = {item.status}
+                        owner = {item.owner}
                         members = {item.members}
                         timeChange = {this.openDialog}
                         remove = {() => this.openGroupRemoveDialog(() => 

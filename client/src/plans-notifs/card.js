@@ -89,19 +89,28 @@ export default function SimpleCard (props) {
           </Grid>
       </Grid>
       <List style={{padding: 5}}>
+        <ListItem key={props.owner.fb_id}>
+          <ListItemAvatar>
+              <Avatar alt='Remy Sharp' src={'http://192.168.0.103:5000/images/' + props.owner.fb_id + '.jpg'} />
+          </ListItemAvatar>
+          <ListItemText primary={props.owner.name} secondary={
+              <React.Fragment>
+                  <Typography component='span' variant='body2'>Flight Time : {moment(props.owner.time).format('hh:mm a')}</Typography>
+              </React.Fragment>
+          }></ListItemText>
+          <Chip label='creator' color='primary' variant='outlined' />
+        </ListItem>
         {props.members.map((item, index) => {
-          const chip = index === 0 ? <Chip label='creator' color='primary'/> : '';
           return (
             <ListItem key={item.fb_id}>
-                <ListItemAvatar>
-                    <Avatar alt='Remy Sharp' src={'http://192.168.0.103:5000/images/' + item.fb_id + '.jpg'} />
-                </ListItemAvatar>
-                <ListItemText primary={item.name} secondary={
-                    <React.Fragment>
-                        <Typography component='span' variant='body2'>Flight Time : {moment(item.time).format('hh:mm a')}</Typography>
-                    </React.Fragment>
-                }></ListItemText>
-                {chip}
+              <ListItemAvatar>
+                  <Avatar alt='Remy Sharp' src={'http://192.168.0.103:5000/images/' + item.fb_id + '.jpg'} />
+              </ListItemAvatar>
+              <ListItemText primary={item.name} secondary={
+                  <React.Fragment>
+                      <Typography component='span' variant='body2'>Flight Time : {moment(item.time).format('hh:mm a')}</Typography>
+                  </React.Fragment>
+              }></ListItemText>
             </ListItem>
           )
         })}
