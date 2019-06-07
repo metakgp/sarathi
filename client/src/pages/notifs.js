@@ -18,7 +18,7 @@ export default class Notifications extends Component {
     }
 
     componentDidMount() {
-        axios.get('http://192.168.0.103:5000/user/my_notifications?fb_id=2177672832321382')
+        axios.get('/user/my_notifications?fb_id=2177672832321382')
         .then((res) => {
             this.setState({notifications: res.data.reverse()});
         })
@@ -39,13 +39,13 @@ export default class Notifications extends Component {
     handleNotifClick(notifId, groupId, index) {
         this.openFullScreenDialog();
         // get group info from the notification object 
-        axios.get('http://192.168.0.103:5000/group/' + groupId)
+        axios.get('/group/' + groupId)
         .then(res => {
             console.log(res.data);
             this.setState({showFullScreenDialog: true, dialogGroup: res.data});
 
             //change read status of notification object in the database
-            axios.post('http://192.168.0.103:5000/notification/read_notif', {
+            axios.post('/notification/read_notif', {
                 notifId: notifId,
             })
             .then(res => {
@@ -83,7 +83,7 @@ export default class Notifications extends Component {
                         <Grid item style={{display: 'flex', alignItems: 'center'}}>
                             <Avatar 
                             alt='Arib Alam' 
-                            src={'http://192.168.0.103:5000/images/' + item.subject.fb_id + '.jpg'}
+                            src={'/images/' + item.subject.fb_id + '.jpg'}
                             style={{height: 60, width: 60}} />
                         </Grid>
                         <Grid item xs style={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>

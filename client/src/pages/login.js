@@ -42,7 +42,7 @@ export default class LoginPage extends Component {
                 display: 'flex', 
                 justifyContent: 'center', 
                 alignItems: 'center',
-                backgroundImage: "url('http://192.168.0.103:5000/images/background.jpg')",
+                backgroundImage: "url('/images/background.jpg')",
                 backgroundPosition: '50% 50%',
                 // backgroundRepeat: 'no-repeat',
             }}>
@@ -65,7 +65,7 @@ export default class LoginPage extends Component {
                         align='center'>For sharing is caring :)</Typography> 
                     </Grid>
                     <Grid item style={{paddingTop: 40}}>
-                        <a href="http://192.168.0.103:5000/auth/facebook"
+                        <a href="/auth/facebook"
                         style={{
                             backgroundColor: '#3B5998',
                             color: 'white',

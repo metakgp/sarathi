@@ -7,7 +7,7 @@ export default function NotifCard(props) {
                 <Grid item style={{display: 'flex', alignItems: 'center'}}>
                     <Avatar 
                     alt='Arib Alam' 
-                    src='http://192.168.0.103:5000/images/user-image.png'
+                    src='/images/user-image.png'
                     style={{height: 60, width: 60}} />
                 </Grid>
                 <Grid item xs style={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>

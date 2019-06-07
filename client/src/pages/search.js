@@ -69,7 +69,7 @@ class Search extends Component{
         // console.log(this.state.fromPlace)
         // console.log(this.state.toPlace)
         var utcOffset = moment(this.state.time).utcOffset();
-        axios.get('http://192.168.0.103:5000',{
+        axios.get('/',{
             params: {
                 from : this.state.fromPlace,
                 to: this.state.toPlace,
@@ -88,7 +88,7 @@ class Search extends Component{
     }
 
     sendJoinRequest = (groupId, index) => {
-        axios.post('http://192.168.0.103:5000/request/join_request?fb_id=2177672832321382', {
+        axios.post('/request/join_request?fb_id=2177672832321382', {
             from: this.state.fromPlace,
             to: this.state.toPlace,
             time: this.state.time,
@@ -104,7 +104,7 @@ class Search extends Component{
     }
 
     createGroup = (groupInfo) => {
-        axios.post('http://192.168.0.103:5000/create_group', 
+        axios.post('/create_group', 
         Object.assign(groupInfo, {name: 'Arib Alam', fb_id: 2177672832321382}))
         .then((res) => {
             this.closeCreateGroupDialog();

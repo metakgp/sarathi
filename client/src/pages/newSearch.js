@@ -38,7 +38,7 @@ class NewSearch extends Component {
         // console.log(this.state.toPlace)
         // console.log(this.state.time)
 
-        axios.get('http://localhost:5000',{
+        axios.get('/',{
             params: {
                 from : this.state.fromPlace,
                 to: this.state.toPlace,
