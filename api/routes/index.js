@@ -112,23 +112,40 @@ router.post('/remove_group', (req, res) => {
     //   name: group.owner.name,
     // }
 
-    // utils.createAndSendNotification(message, subject, group, undefined, (err, notif) => {
-    //   for (var i = 0; i < group.members.length; i++) {
-    //     // send notif to each user and add notid if
-    //     models.User.findOneAndUpdate({fb_id: group.members[i].fb_id}, {$push: {'notifications': notif}},
+    // var promiseArray = [];
+    // for (var i = 0; i < group.members.length; i++) {
+    //   // find the user and remove the group from their joined groups list
+    //   utils.createNotification(message, subject, group)
+    //   .then(notification => {
+    //     models.User.findOneAndUpdate({fb_id: group.members[i].fb_id}, 
+    //     {$push: {'notifications': notification}},
     //     {$pull: {'joined_groups': group._id}})
     //     .exec((err, user) => {
     //       if (err)
     //         res.send(err);
     //       else {
-    //         webpush.sendNotification(JSON.parse(user.push_subscription), JSON.stringify(message))
-    //         .catch(err => console.log(err));
+    //         promiseArray.push(utils.sendNotification(user.push_subscription, message));
     //       }
     //     });
+    //   });
+    // }
+
+    // utils.createAndSendNotification(message, subject, group, undefined, (err, notif) => {
+    //   for (var i = 0; i < group.members.length; i++) {
+    //     // send notif to each user and add notid if
+    // models.User.findOneAndUpdate({fb_id: group.members[i].fb_id}, {$push: {'notifications': notif}},
+    // {$pull: {'joined_groups': group._id}})
+    // .exec((err, user) => {
+    //   if (err)
+    //     res.send(err);
+    //   else {
+    //     webpush.sendNotification(JSON.parse(user.push_subscription), JSON.stringify(message))
+    //     .catch(err => console.log(err));
     //   }
     // });
-
-    res.send(200);
+    //   }
+    // });
+    // Promise.all(promiseArray).then(values => res.send(200)).catch(err => console.log(err));
   });
 });
 
@@ -136,39 +153,71 @@ router.post('/leave_group', (req, res) => {
   // find the user from the database
   models.User.findOneAndUpdate({fb_id: req.query.fb_id}, {$pull: {'joined_groups': req.body.groupId}})
   .exec((err, user) => {
-     // find the group and remove that member
-     models.Group.findByIdAndUpdate(req.body.groupId, {$pull: {'members': {'fb_id': req.query.fb_id}}}, {new: true})
-     .exec((err, group) => {
-       
-      // create and send notifications to all the members
-      // const message = {
-      //   type: 'leave_group',
-      //   title: 'Left group',
-      //   body: user.name + " has left the group",
-      // };
+    // find the group and remove that member
+    models.Group.findByIdAndUpdate(req.body.groupId, {$pull: {'members': {'fb_id': req.query.fb_id}}}, {new: true})
+    .exec((err, group) => {
+      
+    // create and send notifications to all the members
+    // const message = {
+    //   type: 'leave_group',
+    //   title: 'Left group',
+    //   body: user.name + " has left the group",
+    // };
 
-      // const subject = {
-      //   fb_id: user.fb_id,
-      //   name: user.name,
-      // }
+    // const subject = {
+    //   fb_id: user.fb_id,
+    //   name: user.name,
+    // }
 
-      // utils.createAndSendNotification(message, subject, group, undefined, (err, notif) => {
-      // for (var i = 0; i < group.members.length; i++) {
-      //   // send notif to each user and add notid if
-      //   models.User.findOne({fb_id: group.members[i].fb_id})
-      //   .exec((err, user) => {
-      //     if (err)
-      //       res.send(err);
-      //     else {
-      //       webpush.sendNotification(JSON.parse(user.push_subscription), JSON.stringify(message))
-      //       .catch(err => console.log(err));
-      //     }
-      //   });
-      // }
-      // });
+    // var promiseArray = [];
+    
+    // // find the owner and add the notification
+    // utils.createNotification(message, subject, group)
+    // .then(notification => {
+    //   models.User.findOneAndUpdate({fb_id: group.owner.fb_id}, 
+    //   {$push: {'notifications': notification}})
+    //   .exec((err, user) => {
+    //     if (err)
+    //       res.send(err);
+    //     else {
+    //       promiseArray.push(utils.sendNotification(user.push_subscription, message));
+    //     }
+    //   });
+    // })
+    
+    // for (var i = 0; i < group.members.length; i++) {
+    //   // find the user and add the notif
+    //   utils.createNotification(message, subject, group)
+    //   .then(notification => {
+    //     models.User.findOneAndUpdate({fb_id: group.members[i].fb_id}, 
+    //     {$push: {'notifications': notification}})
+    //     .exec((err, user) => {
+    //       if (err)
+    //         res.send(err);
+    //       else {
+    //         promiseArray.push(utils.sendNotification(user.push_subscription, message));
+    //       }
+    //     });
+    //   });
+    // }
 
-      res.send(200);
-     });
+    // utils.createAndSendNotification(message, subject, group, undefined, (err, notif) => {
+    // for (var i = 0; i < group.members.length; i++) {
+    //   // send notif to each user and add notid if
+    //   models.User.findOne({fb_id: group.members[i].fb_id})
+    //   .exec((err, user) => {
+    //     if (err)
+    //       res.send(err);
+    //     else {
+    //       webpush.sendNotification(JSON.parse(user.push_subscription), JSON.stringify(message))
+    //       .catch(err => console.log(err));
+    //     }
+    //   });
+    // }
+    // });
+    
+    // Promise.all(promiseArray).then(values => res.send(200)).catch(err => res.send(err));
+    });
   });
 });
 

@@ -46,17 +46,15 @@ router.post('/join_request', (req, res) => {
                 res.send(500, err);
               else {
   
-                // // send request notication to this user (the owner of the group)
+                // send request notication to this user (the owner of the group)
                 // const message = JSON.stringify({
                 //   type: 'join_request',
                 //   title: 'Join Request',
                 //   body: user.name + " has sent a join request",
                 // });
-
-                // webpush.sendNotification(JSON.parse(owner.push_subscription), message)
-                // .catch(err => console.log(err))
-                // .then(() => res.sendStatus(200));
-                res.sendStatus(200);
+                
+                // utils.sendNotification(owner.push_subscription, message)
+                // .then(() => res.send(200)).catch(err => res.log(err));
               }
             });
           });
@@ -97,7 +95,6 @@ router.post('/approve_request', (req, res) => {
                       if (err)
                         res.send(500, err);
                       else {
-                        res.send(200);
                         // message to all the members of the group
                         // const message = {
                         //   type: 'approve_request',
@@ -109,6 +106,25 @@ router.post('/approve_request', (req, res) => {
                         //   fb_id: traveler.fb_id,
                         //   name: traveler.name,
                         // }
+                        
+                        // var promiseArray = [];
+                        // for (var i = 0; i < group.members.length; i++) {
+                        //   utils.createNotification(message, subject, group)
+                        //   .then(notification => {
+                        //     models.User.findOneAndUpdate({fb_id: group.owner.fb_id}, 
+                        //     {$push: {'notifications': notification}})
+                        //     .exec((err, user) => {
+                        //       if (err)
+                        //         res.send(err);
+                        //       else {
+                        //         promiseArray.push(utils.sendNotification(user.push_subscription, message));
+                        //       }
+                        //     });
+                        //   });
+                        // }
+
+                        // Promise.all(promiseArray).then(() => res.send(200))
+                        // .catch(err => res.send(err));
 
                         // utils.createAndSendNotification(message, subject, group, undefined, (err, notif) => {
                         //   message_string = JSON.stringify(message);
@@ -184,6 +200,10 @@ router.post('/reject_request', (req, res) => {
                         //     title: 'Request Update',
                         //     body: group.owner.name + " has rejected your request",
                         // };
+
+                        // utils.sendNotification(traveler.push_subscription, message)
+                        // .then(() => res.send(200))
+                        // .catch(err => res.send(err));
                         
                         // webpush.sendNotification(traveler.push_subscription, JSON.stringify(message))
                         // .catch(err => console.log(err))
@@ -220,6 +240,23 @@ router.post('/change_time', (req, res) => {
       //   fb_id: group.owner.fb_id,
       //   name: group.owner.name,
       // }
+
+      // for (var i = 0; i < group.members.length; i++) {
+      //   utils.createNotification(message, subject, group)
+      //   .then(notification => {
+      //     models.User.findOneAndUpdate({fb_id: group.owner.fb_id}, 
+      //       {$push: {'notifications': notification}})
+      //       .exec((err, user) => {
+      //         if (err)
+      //           res.send(err);
+      //         else {
+      //           promiseArray.push(utils.sendNotification(user.push_subscription, message));
+      //         }
+      //       });
+      //   });
+      // }
+
+      // Promise.all(promiseArray).then(() => res.send(200)).catch(err => res.send(err));
 
       // utils.createAndSendNotification(message, subject, group, undefined, (err, notif) => {
       //   for (var i = 0; i < group.members.length; i++) {
