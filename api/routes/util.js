@@ -1,6 +1,8 @@
 var models = require('../models/index').models;
+var webpush = require('web-push');
 
-function createAndSendNotification(message, subject, object, push_subscription, callback) {
+function createNotification(message, subject, object) {
+  return new Promise((resolve, reject) => {
     const notif = models.Notification({
       type: message.type,
       message: message.body,
@@ -12,17 +14,17 @@ function createAndSendNotification(message, subject, object, push_subscription, 
   
     notif.save((err, notification) => {
       if (err)
-        res.send(err);
-      else {
-        if (push_subscription) {
-          webpush.sendNotification(JSON.parse(push_subscription), JSON.stringify(message))
-          .catch(err => console.log(err));
-        }
-        callback(err, notification);
-      }
+        reject(err);
+      else
+        resolve(notification);
     });
-  }
+  });
+}
 
-const functions = {createAndSendNotification};
+function sendNotification(push_subscription, message) {
+  return webpush.sendNotification(JSON.parse(push_subscription), JSON.stringify(message));
+}
+
+const functions = {createNotification, sendNotification};
 
 module.exports = functions;
