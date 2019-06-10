@@ -32,7 +32,7 @@ export default class Groups extends React.Component {
     }
 
     componentDidMount() {
-        axios.get('/user/my_groups?fb_id=2177672832321382')
+        axios.get('/api/user/groups?fb_id=2177672832321382')
         .then(res => {
             this.setState({created_groups: res.data.created, joined_groups: res.data.joined})
         })
@@ -57,7 +57,7 @@ export default class Groups extends React.Component {
     }
 
     handleRemoveGroup = (groupId, index) => {
-        axios.post('/remove_group', {
+        axios.post('/api/group/remove_group', {
             groupId: groupId,
         })
         .then((res) => {
@@ -73,7 +73,7 @@ export default class Groups extends React.Component {
 
     handleTimeChange = (time) => {
         
-        axios.post('/request/change_time', {
+        axios.post('/api/request/change_time', {
             groupId: this.state.timeChangeGroup,
             departure: time,
         })
@@ -94,7 +94,7 @@ export default class Groups extends React.Component {
     }
 
     handleLeaveGroup = (groupId, index) => {
-        axios.post('/leave_group?fb_id=2177672832321382', {
+        axios.post('/api/group/leave_group?fb_id=2177672832321382', {
             groupId: groupId,
         })
         .then((res) => {
@@ -109,7 +109,7 @@ export default class Groups extends React.Component {
     }
 
     handleToggleStatus = (groupId, index) => {
-        axios.post('/group/toggle_status', {
+        axios.post('/api/group/toggle_status', {
             groupId: groupId,
             status: this.state.created_groups[index].status,
         })

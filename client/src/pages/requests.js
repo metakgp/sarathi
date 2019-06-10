@@ -22,7 +22,7 @@ export default class Requests extends React.Component {
     }
 
     componentDidMount() {
-        axios.get('/user/my_requests?fb_id=2177672832321333')
+        axios.get('/api/user/my_requests?fb_id=2177672832321333')
         .then(res => {
             console.log(res.data.sent);
             var receivedRequestArray = res.data.received.map(item => {
@@ -71,7 +71,7 @@ export default class Requests extends React.Component {
     }
 
     handleApprove = (requestId, index) => {
-        axios.post('/request/approve_request', {
+        axios.post('/api/request/approve_request', {
             requestId: requestId
         })
         .then((res) => {
@@ -86,7 +86,7 @@ export default class Requests extends React.Component {
     }
 
     handleReject = (requestId, index) => {
-        axios.post('/request/reject_request', {
+        axios.post('/api/request/reject_request', {
             requestId: requestId
         })
         .then((res) => {
@@ -100,7 +100,7 @@ export default class Requests extends React.Component {
     }
 
     handleCancel = (requestId, index) => {
-        axios.post('/request/cancel_request', {
+        axios.post('/api/request/cancel_request', {
             requestId: requestId
         })
         .then((res) => {

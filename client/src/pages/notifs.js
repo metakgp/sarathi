@@ -18,7 +18,7 @@ export default class Notifications extends Component {
     }
 
     componentDidMount() {
-        axios.get('/user/my_notifications?fb_id=2177672832321382')
+        axios.get('/api/user/notifications?fb_id=2177672832321382')
         .then((res) => {
             this.setState({notifications: res.data.reverse()});
         })
@@ -39,13 +39,13 @@ export default class Notifications extends Component {
     handleNotifClick(notifId, groupId, index) {
         this.openFullScreenDialog();
         // get group info from the notification object 
-        axios.get('/group/' + groupId)
+        axios.get('/api/group/' + groupId)
         .then(res => {
             console.log(res.data);
             this.setState({showFullScreenDialog: true, dialogGroup: res.data});
 
             //change read status of notification object in the database
-            axios.post('/notification/read_notif', {
+            axios.post('/api/notification/read_notif', {
                 notifId: notifId,
             })
             .then(res => {
@@ -105,11 +105,3 @@ export default class Notifications extends Component {
         );
     }
 }
-
-
-// join_request
-// approve_request
-
-// change_time
-// remove_group
-// leave_group
