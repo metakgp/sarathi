@@ -6,8 +6,13 @@ var passport = require('passport');
 var webpush = require('web-push');
 var axios = require('axios');
 var fs = require('fs');
+var path = require('path');
 
 var utils = require('./util');
+
+router.use((req, res) => {
+  res.sendFile(path.join(__dirname, '../client/build/index.html'));
+});
 
 router.get('/', async (req, res) => {
   models.Group.aggregate([

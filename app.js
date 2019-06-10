@@ -113,6 +113,9 @@ const options = {
 };
 app.use(express.static(path.join(__dirname, 'public'), options));
 
+if (process.env.NODE_ENV === 'production')
+  app.use(express.static('client/build'));
+
 function isLoggedIn(req, res, next) {
   if  (req.isAuthenticated())
     return next();
