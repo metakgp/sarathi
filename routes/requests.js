@@ -218,65 +218,6 @@ router.post('/reject_request', (req, res) => {
     });
 });
 
-router.get('/change_time', (req, res) => {
-  res.render('change_time.ejs');
-});
-
-router.post('/change_time', (req, res) => {
-  
-  models.Group.findByIdAndUpdate(req.body.groupId, {departure: new Date(req.body.departure)})
-  .exec((err, group) => {
-    if (err)
-      res.send(err);
-    else {
-      res.send(200);
-      // const message = {
-      //   type: 'change_time',
-      //   title: 'Time change',
-      //   body: group.owner.name + ' has changed the departure time'
-      // };
-
-      // const subject = {
-      //   fb_id: group.owner.fb_id,
-      //   name: group.owner.name,
-      // }
-
-      // for (var i = 0; i < group.members.length; i++) {
-      //   utils.createNotification(message, subject, group)
-      //   .then(notification => {
-      //     models.User.findOneAndUpdate({fb_id: group.owner.fb_id}, 
-      //       {$push: {'notifications': notification}})
-      //       .exec((err, user) => {
-      //         if (err)
-      //           res.send(err);
-      //         else {
-      //           promiseArray.push(utils.sendNotification(user.push_subscription, message));
-      //         }
-      //       });
-      //   });
-      // }
-
-      // Promise.all(promiseArray).then(() => res.send(200)).catch(err => res.send(err));
-
-      // utils.createAndSendNotification(message, subject, group, undefined, (err, notif) => {
-      //   for (var i = 0; i < group.members.length; i++) {
-      //     // send notif to each user and add notid if
-      //     models.User.findOneAndUpdate({fb_id: group.members[i].fb_id}, {$push: {'notifications': notif}})
-      //     .exec((err, user) => {
-      //       if (err)
-      //         res.send(err);
-      //       else {
-      //         webpush.sendNotification(JSON.parse(user.push_subscription), JSON.stringify(message))
-      //         .catch(err => console.log(err));
-      //       }
-      //     });
-      //   }
-      //   res.sendStatus(200);
-      // });
-    }
-  });
-});
-
 // rejects a request to join the group
 //TODO: update notification and send it to all members
 router.post('/cancel_request', (req, res) => {

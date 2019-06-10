@@ -5,7 +5,7 @@ router.get('/', (req, res) => {
     res.send({name: req.user.name, profile: req.user.profile}); 
 });
 
-router.get('/my_groups', (req, res) => {
+router.get('/groups', (req, res) => {
     models.User.findOne({fb_id: req.query.fb_id}).populate('created_groups')
     .populate('joined_groups')
     .exec((err, user) => {
@@ -21,7 +21,7 @@ router.get('/my_groups', (req, res) => {
     });
 });
 
-router.get('/my_requests', (req, res) => {
+router.get('/requests', (req, res) => {
     models.User.findOne({fb_id: req.query.fb_id})
     .populate({
         path: 'sent_requests',
@@ -48,7 +48,7 @@ router.get('/my_requests', (req, res) => {
     });
 });
 
-router.get('/my_notifications', (req, res) => {
+router.get('/notifications', (req, res) => {
     models.User.findOne({fb_id: req.query.fb_id}).populate('notifications')
     .exec((err, user) => {
         if (err)
