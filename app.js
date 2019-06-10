@@ -1,5 +1,6 @@
 var createError = require('http-errors');
 var express = require('express');
+var staticPageRouter = express.Router();
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
@@ -54,7 +55,7 @@ passport.use(new fbStrategy({
       })
       .then(response => {
         // fetch the user profile picture from fb api
-        var staticSourcePath = 'http://192.168.0.103:5000/images/' + profile.id + '.jpg';
+        var staticSourcePath = 'http://localhost:5000/images/' + profile.id + '.jpg';
         var filepath = './public/images/' + profile.id + '.jpg';
         var file = fs.createWriteStream(filepath);
         response.data.pipe(file);
@@ -90,6 +91,10 @@ webpush.setVapidDetails(
   config.privateKey
 );
 
+staticPageRouter.use((req, res) => {
+  res.sendFile(path.join(__dirname, '../client/build/index.html'));
+});
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -113,6 +118,7 @@ const options = {
 };
 app.use(express.static(path.join(__dirname, 'public'), options));
 
+// use the build folder created by react app when in production
 if (process.env.NODE_ENV === 'production')
   app.use(express.static('client/build'));
 
@@ -125,6 +131,7 @@ function isLoggedIn(req, res, next) {
 app.use('/user', userRouter);
 app.use('/request', requestsRouter);
 app.use('/', indexRouter);
+app.use('/', staticPageRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

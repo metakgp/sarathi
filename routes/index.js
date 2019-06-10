@@ -10,9 +10,9 @@ var path = require('path');
 
 var utils = require('./util');
 
-router.use((req, res) => {
-  res.sendFile(path.join(__dirname, '../client/build/index.html'));
-});
+// router.use((req, res) => {
+//   res.sendFile(path.join(__dirname, '../client/build/index.html'));
+// });
 
 router.get('/', async (req, res) => {
   models.Group.aggregate([
@@ -267,8 +267,8 @@ router.get('/auth/facebook', passport.authenticate("facebook"));
 // params - state-param : unique code to prevent csrf
 // 
 router.get('/auth/facebook/callback', passport.authenticate("facebook", {
-  successRedirect: 'http://192.168.0.1:3000/',
-  failureRedirect: '/logout',
+  successRedirect: '/',
+  failureRedirect: '/login',
 }));
 
 router.get('/logout', (req, res) => {
