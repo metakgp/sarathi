@@ -1,6 +1,5 @@
 var createError = require('http-errors');
 var express = require('express');
-var staticPageRouter = express.Router();
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
@@ -13,9 +12,12 @@ var cors = require('cors');
 var axios = require('axios');
 var fs = require('fs');
 
+var groupRouter = require('./routes/group');
+var authRouter = require('./routes/auth');
 var indexRouter = require('./routes/index');
 var requestsRouter = require('./routes/requests');
 var userRouter = require('./routes/user');
+var staticPageRouter = express.Router();
 
 var config = require('./config');
 var models = require('./models/index').models;
@@ -128,9 +130,13 @@ function isLoggedIn(req, res, next) {
   res.sendStatus(403);
 }
 
-app.use('/user', userRouter);
-app.use('/request', requestsRouter);
-app.use('/', indexRouter);
+app.use('/api/auth', authRouter);
+app.use('/api/group', groupRouter);
+app.use('/api/user', userRouter);
+app.use('/api/request', requestsRouter);
+app.use('/api', indexRouter);
+
+
 app.use('/', staticPageRouter);
 
 // catch 404 and forward to error handler
