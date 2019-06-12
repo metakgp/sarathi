@@ -164,6 +164,7 @@ class Search extends Component{
                     from = {item.from}
                     to = {item.to}
                     status = {item.status}
+                    owner = {item.owner}
                     members = {item.members}
                     join={() => this.sendJoinRequest(item._id, index)}
                     />
