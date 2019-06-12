@@ -97,6 +97,7 @@ router.post('/remove_group', (req, res) => {
     //   }
     // });
     // Promise.all(promiseArray).then(values => res.send(200)).catch(err => console.log(err));
+    res.send(200);
   });
 });
 
