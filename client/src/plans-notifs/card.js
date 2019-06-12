@@ -91,7 +91,7 @@ export default function SimpleCard (props) {
       <List style={{padding: 5}}>
         <ListItem key={props.owner.fb_id}>
           <ListItemAvatar>
-              <Avatar alt='Remy Sharp' src={'/images/' + props.owner.fb_id + '.jpg'} />
+              <Avatar alt='Remy Sharp' src={'http://localhost:5000/images/' + props.owner.fb_id + '.jpg'} />
           </ListItemAvatar>
           <ListItemText primary={props.owner.name} secondary={
               <React.Fragment>
