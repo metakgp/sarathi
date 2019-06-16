@@ -135,28 +135,29 @@ class Search extends Component{
             setTime =  {this.setTime}
             handleSearch = {this.handleSearch}
             />
+            {this.state.showCard ? 
             <div id='card' style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-            <div style={{height: this.state.contentSectionMargin, margin: 10}}></div>
-            { this.state.dataCards.length ?
-            this.state.dataCards.map((item, index) => {
-                return(
-                    <Card
-                    key={item._id}
-                    id={item._id} 
-                    width={this.state.contentSectionWidth}
-                    departure = {item.departure}
-                    from = {item.from}
-                    to = {item.to}
-                    status = {item.status}
-                    owner = {item.owner}
-                    members = {item.members}
-                    join={() => this.sendJoinRequest(item._id, index)}
-                    />
-                )
-            }) :
-            <EmptyMessage>No groups to show</EmptyMessage>
-            }
-            </div>
+                <div style={{height: this.state.contentSectionMargin, margin: 10}}></div>
+                { this.state.dataCards.length ?
+                this.state.dataCards.map((item, index) => {
+                    return(
+                        <Card
+                        key={item._id}
+                        id={item._id} 
+                        width={this.state.contentSectionWidth}
+                        departure = {item.departure}
+                        from = {item.from}
+                        to = {item.to}
+                        status = {item.status}
+                        owner = {item.owner}
+                        members = {item.members}
+                        join={() => this.sendJoinRequest(item._id, index)}
+                        />
+                    )
+                }) :
+                <EmptyMessage>No groups to show</EmptyMessage>
+                }
+            </div> : ''}
             <Fab 
             color="primary" 
             aria-label="Add" 
