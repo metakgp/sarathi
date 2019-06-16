@@ -10,6 +10,7 @@ import AddIcon from '@material-ui/icons/Add'
 import CreateGroupDialog from '../plans-notifs/CreateGroupDialog'
 import moment from 'moment'
 import EmptyMessage from '../plans-notifs/emptyMessage';
+import SearchPanel from '../searchComps/searchPanel';
 
 class Search extends Component{
     constructor(props){
@@ -41,7 +42,7 @@ class Search extends Component{
         const margin = document.getElementById('search_section').clientHeight;
         const width = window.innerWidth < 500 ? window.innerWidth : 500;
         this.setState({
-            contentSectionHeight: window.innerHeight - margin, 
+            contentSectionHeight: window.innerHeight - 46, 
             contentSectionWidth: width,
             contentSectionMargin: margin,
         });
@@ -124,33 +125,16 @@ class Search extends Component{
         
         return (
         <div>
-            <Paper id='search_section' style={{position: 'fixed', top: 46, left: 0, width: '100%', zIndex: 1}}>
-                <Grid container justify='center' >
-                    <Grid item xs={12} sm={6} lg={2}>
-                        <MaterialSelect 
-                        dir='FROM' 
-                        initialValue={this.state.fromPlace} 
-                        onPassData={this.setFromPlace} />
-                    </Grid>
-                    <Grid item xs={12} sm={6} lg={2}>
-                        <MaterialSelect 
-                        dir='TO' 
-                        initialValue={this.state.toPlace}
-                        onPassData = {this.setToPlace} />
-                    </Grid>
-                    <Grid item xs={12} sm={6} lg={3}>
-                        <MaterialDate label='Date of Departure' onPassData = {this.setDate} />
-                    </Grid>
-                    <Grid item xs={12} sm={6} lg={3}>
-                        <TimeSelect label='Time of Departure' onPassData = {this.setTime}  />
-                    </Grid>
-                    <Grid item xs={12} sm={12} lg={2}  style={{display: 'flex', alignItems: 'flex-end', justifyContent: 'center'}}>
-                        <Button onClick={this.handleSearch} color='primary' size='large' style={{margin: 5}}>
-                        Search
-                        </Button>
-                    </Grid>
-                </Grid>
-            </Paper>
+            <SearchPanel 
+            contentSectionHeight = {this.state.contentSectionHeight}
+            fromPlace = {this.state.fromPlace}
+            setFromPlace = {this.setFromPlace}
+            toPlace = {this.state.toPlace}
+            setToPlace = {this.setToPlace}
+            setDate = {this.setDate}
+            setTime =  {this.setTime}
+            handleSearch = {this.handleSearch}
+            />
             <div id='card' style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
             <div style={{height: this.state.contentSectionMargin, margin: 10}}></div>
             { this.state.dataCards.length ?
