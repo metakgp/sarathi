@@ -31,7 +31,17 @@ export default function SearchPanel(props) {
 
     return (
         <Paper id='search_section' style={{position: 'fixed', top: 46, left: 0, width: '100%', zIndex: 1}}>
-            <Grid container {...gridProps} >
+            {matches && props.collapse ? 
+            <Grid container direction='column' style={{padding: 5}} onClick={props.onClick}>
+                <Grid item>
+                    <Typography variant='body1'>KGP --> CCU</Typography>
+                </Grid>
+                <Grid item>
+                    <Typography variant='body1'>14th May | 05:30 am</Typography>
+                </Grid>
+            </Grid>
+            :
+            <Grid container {...gridProps}>
                 <Grid item xs={12} sm={6} lg={2}>
                     <MaterialSelect 
                     dir='FROM' 
@@ -45,17 +55,24 @@ export default function SearchPanel(props) {
                     onPassData = {props.setToPlace} />
                 </Grid>
                 <Grid item xs={12} sm={6} lg={3}>
-                    <MaterialDate label='Date of Departure' onPassData = {props.setDate} />
+                    <MaterialDate 
+                    label='Date of Departure' 
+                    onPassData = {props.setDate} 
+                    initialValue = {props.time} />
                 </Grid>
                 <Grid item xs={12} sm={6} lg={3}>
-                    <TimeSelect label='Time of Departure' onPassData = {props.setTime}  />
+                    <TimeSelect 
+                    label='Time of Departure' 
+                    onPassData = {props.setTime}
+                    initialValue = {props.time}
+                    />
                 </Grid>
                 <Grid item xs={12} sm={12} lg={2}  style={{display: 'flex', alignItems: 'flex-end', justifyContent: 'center'}}>
                     <Button onClick={props.handleSearch} color='primary' size='large' style={{margin: 5}}>
                     Search
                     </Button>
                 </Grid>
-            </Grid>
+            </Grid>}
         </Paper>
     );
 }
