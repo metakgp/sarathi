@@ -83,9 +83,6 @@ class Search extends Component{
             this.setState({dataCards: result, showCard: true});
         })
         .catch((err) => console.log(err)) 
-        
-        //scrolling down in phone
-        if(window.screen.availWidth < 768) window.scrollBy(0,600)
     }
 
     sendJoinRequest = (groupId, index) => {
