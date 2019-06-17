@@ -80,9 +80,10 @@ class Search extends Component{
         })
         .then((res) => {
             var result = res.data.data;
-            this.setState({dataCards: result, showCard: true});
+            this.setState({dataCards: result});
+            this.collapseSearchPanel();
         })
-        .catch((err) => console.log(err)) 
+        .catch((err) => console.log(err))
     }
 
     sendJoinRequest = (groupId, index) => {
@@ -118,6 +119,15 @@ class Search extends Component{
         this.setState({showCreateGroupDialog: false});
     }
 
+    collapseSearchPanel = () => {
+        this.setState({showCard: true});
+        this.updateContentDimensions();
+    }
+
+    expandSearchPanel = () => {
+        this.setState({showCard: false});
+    }
+
     render() {
         
         return (
@@ -128,9 +138,12 @@ class Search extends Component{
             setFromPlace = {this.setFromPlace}
             toPlace = {this.state.toPlace}
             setToPlace = {this.setToPlace}
+            time = {this.state.time}
             setDate = {this.setDate}
             setTime =  {this.setTime}
             handleSearch = {this.handleSearch}
+            collapse = {this.state.showCard}
+            onClick = {this.expandSearchPanel}
             />
             {this.state.showCard ? 
             <div id='card' style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
