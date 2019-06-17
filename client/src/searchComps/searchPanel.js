@@ -1,6 +1,5 @@
 import React from 'react';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-
 import MaterialSelect from '../searchComps/material-select'
 import MaterialDate from '../searchComps/materialDate'
 import TimeSelect from '../searchComps/time'
@@ -34,10 +33,12 @@ export default function SearchPanel(props) {
             {matches && props.collapse ? 
             <Grid container direction='column' style={{padding: 5}} onClick={props.onClick}>
                 <Grid item>
-                    <Typography variant='body1'>KGP --> CCU</Typography>
+                    <Typography variant='body1'>{props.fromPlace} to {props.toPlace}</Typography>
                 </Grid>
                 <Grid item>
-                    <Typography variant='body1'>14th May | 05:30 am</Typography>
+                    <Typography variant='body1'>
+                        {moment(props.time).format('Do MMMM')} | {moment(props.time).format('hh:mm a')}
+                    </Typography>
                 </Grid>
             </Grid>
             :
