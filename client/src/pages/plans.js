@@ -73,7 +73,7 @@ export default class Groups extends React.Component {
 
     handleTimeChange = (time) => {
         
-        axios.post('/api/request/change_time', {
+        axios.post('/api/group/change_time', {
             groupId: this.state.timeChangeGroup,
             departure: time,
         })

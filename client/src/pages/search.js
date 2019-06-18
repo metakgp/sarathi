@@ -103,7 +103,7 @@ class Search extends Component{
     }
 
     createGroup = (groupInfo) => {
-        axios.post('/api/create_group', 
+        axios.post('/api/group/create_group', 
         Object.assign(groupInfo, {name: 'Arib Alam', fb_id: 2177672832321382}))
         .then((res) => {
             this.closeCreateGroupDialog();
