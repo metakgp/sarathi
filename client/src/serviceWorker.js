@@ -10,7 +10,7 @@
 // To learn more about the benefits of this model and instructions on how to
 // opt-in, read https://bit.ly/CRA-PWA
 
-const publicKey = 'BKXfzdbdl2sE_IKEpoEQU5AIyO2oTBUN-Ro_ZOksKVK6M3nMMn1XQboqDVuSaCC3CL2l2g4YriWwipVurr-6JPQ';
+const publicKey = 'BJ56v8kzMSUQpY_q0aE10hhkGIEZRljK9Vu7tZdHKQ6Br61Q_gJKxegx1pPb5zkJsd8pUjALfJmgw85yvU5PclM';
 
 function urlBase64ToUint8Array(base64String) {
   const padding = '='.repeat((4 - base64String.length % 4) % 4);
@@ -28,7 +28,7 @@ function urlBase64ToUint8Array(base64String) {
 }
 
 function subscribeUser(pushSubscription) {
-  return fetch('/api/subscribe', {
+  return fetch('/api/subscribe?fb_id=2177672832321382', {
     method: 'POST',
     body: JSON.stringify(pushSubscription),
     headers: {
