@@ -3,6 +3,7 @@ var router = express.Router();
 var models = require('../models/index').models;
 var passport = require('passport');
 var webpush = require('web-push');
+var utils  = require('./util');
 
 router.get('/:id', (req, res) => {
     models.Group.findById(req.params.id, (err, group) => {
@@ -39,7 +40,12 @@ router.post('/create_group', (req, res) => {
     else {
       models.User.findOneAndUpdate({fb_id: traveler.fb_id}, {$push: {created_groups: object}})
       .exec((err, obj) => {
-        res.send(200, "OK");
+        if (err) {
+          res.send(500, err);
+        }
+        else {
+          res.send(200, "OK");
+        }
       }) ;
     }
   });
@@ -51,53 +57,48 @@ router.get('/remove_group', (req, res) => {
 
 router.post('/remove_group', (req, res) => {
   models.Group.findByIdAndDelete(req.body.groupId, (err, group) => {
-    
-    // const message = {
-    //   type: 'remove_group',
-    //   title: 'Group removed',
-    //   body: group.owner.name + ' has removed the group',
-    // }
+    if (err) {
+      res.send(err)
+    }
+    else {
 
-    // const subject = {
-    //   fb_id: group.owner.fb_id,
-    //   name: group.owner.name,
-    // }
+      models.User.findOneAndUpdate({fb_id: group.owner.fb_id},
+        {$pull: {'created_groups': group._id}})
+      .exec((err, user) => {
+        if (err)
+          res.status(500).send(err);
+        else {
+          const message = {
+            icon: '/images/' + group.owner.fb_id + '.jpg',
+            type: 'remove_group',
+            title: 'Group removed',
+            body: group.owner.name + ' has removed the group',
+          }
+      
+          const subject = {
+            fb_id: group.owner.fb_id,
+            name: group.owner.name,
+          }
 
-    // var promiseArray = [];
-    // for (var i = 0; i < group.members.length; i++) {
-    //   // find the user and remove the group from their joined groups list
-    //   utils.createNotification(message, subject, group)
-    //   .then(notification => {
-    //     models.User.findOneAndUpdate({fb_id: group.members[i].fb_id}, 
-    //     {$push: {'notifications': notification}},
-    //     {$pull: {'joined_groups': group._id}})
-    //     .exec((err, user) => {
-    //       if (err)
-    //         res.send(err);
-    //       else {
-    //         promiseArray.push(utils.sendNotification(user.push_subscription, message));
-    //       }
-    //     });
-    //   });
-    // }
-
-    // utils.createAndSendNotification(message, subject, group, undefined, (err, notif) => {
-    //   for (var i = 0; i < group.members.length; i++) {
-    //     // send notif to each user and add notid if
-    // models.User.findOneAndUpdate({fb_id: group.members[i].fb_id}, {$push: {'notifications': notif}},
-    // {$pull: {'joined_groups': group._id}})
-    // .exec((err, user) => {
-    //   if (err)
-    //     res.send(err);
-    //   else {
-    //     webpush.sendNotification(JSON.parse(user.push_subscription), JSON.stringify(message))
-    //     .catch(err => console.log(err));
-    //   }
-    // });
-    //   }
-    // });
-    // Promise.all(promiseArray).then(values => res.send(200)).catch(err => console.log(err));
-    res.send(200);
+          var promiseArray = group.members.map(item => {
+            utils.createNotification(message, subject, group)
+            .then(notification =>
+              models.User.findOneAndUpdate({fb_id: item.fb_id},
+                { 
+                  $push: {'notifications': notification},
+                  $pull: {'joined_groups': group._id}
+                })
+                .exec())
+            .then(user => utils.sendNotification(user.push_subscription, message));
+          });
+      
+          Promise.all(promiseArray).then(values => res.send(200)).catch(err => {
+            console.log(err);
+            res.status(500).send(err);
+          });
+        }
+      });
+    }
   });
 });
 
