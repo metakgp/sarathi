@@ -10,6 +10,33 @@
 // To learn more about the benefits of this model and instructions on how to
 // opt-in, read https://bit.ly/CRA-PWA
 
+const publicKey = 'BKXfzdbdl2sE_IKEpoEQU5AIyO2oTBUN-Ro_ZOksKVK6M3nMMn1XQboqDVuSaCC3CL2l2g4YriWwipVurr-6JPQ';
+
+function urlBase64ToUint8Array(base64String) {
+  const padding = '='.repeat((4 - base64String.length % 4) % 4);
+  const base64 = (base64String + padding)
+    .replace(/-/g, '+')
+    .replace(/_/g, '/');
+
+  const rawData = window.atob(base64);
+  const outputArray = new Uint8Array(rawData.length);
+
+  for (let i = 0; i < rawData.length; ++i) {
+    outputArray[i] = rawData.charCodeAt(i);
+  }
+  return outputArray;
+}
+
+function subscribeUser(pushSubscription) {
+  return fetch('/api/subscribe', {
+    method: 'POST',
+    body: JSON.stringify(pushSubscription),
+    headers: {
+        'content-type': 'application/json',
+    },
+  });
+}
+
 const isLocalhost = Boolean(
   window.location.hostname === 'localhost' ||
     // [::1] is the IPv6 localhost address.
@@ -21,7 +48,7 @@ const isLocalhost = Boolean(
 );
 
 export function register(config) {
-  if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
+  if ('serviceWorker' in navigator) {
     // The URL constructor is available in all browsers that support SW.
     const publicUrl = new URL(process.env.PUBLIC_URL, window.location.href);
     if (publicUrl.origin !== window.location.origin) {
@@ -32,7 +59,7 @@ export function register(config) {
     }
 
     window.addEventListener('load', () => {
-      const swUrl = `${process.env.PUBLIC_URL}/service-worker.js`;
+      const swUrl = `${process.env.PUBLIC_URL}/service-worker-custom.js`;
 
       if (isLocalhost) {
         // This is running on localhost. Let's check if a service worker still exists or not.
@@ -92,6 +119,19 @@ function registerValidSW(swUrl, config) {
           }
         };
       };
+
+      console.log("Registering push manager");
+      registration.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: urlBase64ToUint8Array(publicKey),
+      })
+      .then(pushSubscription => {
+        console.log("Registered push manager");
+        subscribeUser(pushSubscription)
+        .then(() => console.log("User subscribed"))
+        .catch(err => console.log(err));
+      })
+      .catch(err => console.log(err));
     })
     .catch(error => {
       console.error('Error during service worker registration:', error);
