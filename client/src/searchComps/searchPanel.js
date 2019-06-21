@@ -3,14 +3,9 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import MaterialSelect from '../searchComps/material-select'
 import MaterialDate from '../searchComps/materialDate'
 import TimeSelect from '../searchComps/time'
-import Card from '../plans-notifs/card';
-import axios from 'axios';
 import  '../styles/App.scss';
-import { Paper, Grid, Button, Fab, Typography } from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add'
-import CreateGroupDialog from '../plans-notifs/CreateGroupDialog'
+import { Paper, Grid, Button, Typography } from '@material-ui/core';
 import moment from 'moment'
-import EmptyMessage from '../plans-notifs/emptyMessage';
 
 
 export default function SearchPanel(props) {
