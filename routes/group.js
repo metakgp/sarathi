@@ -22,6 +22,7 @@ router.get('/create_group', (req, res) => {
 router.post('/create_group', (req, res) => {
   var traveler = {
     fb_id: req.body.fb_id,
+    profile: req.body.profile,
     name: req.body.name,
     from: req.body.from,
     to: req.body.to,

@@ -12,6 +12,7 @@ router.get('/join_request', (req, res) => {
 router.post('/join_request', (req, res) => {
     var traveler = {
       fb_id: req.query.fb_id,
+      profile: req.query.profile,
       name: req.query.name,
       from: req.body.from,
       to: req.body.to,
