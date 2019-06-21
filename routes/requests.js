@@ -48,6 +48,7 @@ router.post('/join_request', (req, res) => {
   
                 // send request notication to this user (the owner of the group)
                 const message = {
+                  icon: '/images/' + user.fb_id + '.jpg',
                   type: 'join_request',
                   title: 'Join Request',
                   body: user.name + " has sent a join request",
@@ -97,25 +98,46 @@ router.post('/approve_request', (req, res) => {
                       else {
                         
                         // message to all the members of the group
-                        const message = {
+                        const messageToMembers = {
+                          icon: '/images/' + traveler.fb_id + '.jpg',
                           type: 'approve_request',
                           title: 'Group Update',
                           body: traveler.name + " has joined the group",
                         };
 
-                        const subject = {
+                        const subjectToMembers = {
                           fb_id: traveler.fb_id,
                           name: traveler.name,
                         }
                         
                         var promiseArray = group.members.map(item => {
-                          utils.createNotification(message, subject, group)
+                          utils.createNotification(messageToMembers, subjectToMembers, group)
                           .then(notification =>
                             models.User.findOneAndUpdate({fb_id: item.fb_id},
                             {$push: {'notifications': notification}})
                             .exec())
-                          .then(user => utils.sendNotification(user.push_subscription, message));
+                          .then(user => utils.sendNotification(user.push_subscription, messageToMembers));
                         });
+
+                        // message to the traveler
+                        const messageToTraveler = {
+                          icon: '/images/' + group.owner.fb_id + '.jpg',
+                          type: 'approve_request',
+                          title: 'Request Update',
+                          body: group.owner.name + " has approved your request",
+                        };
+
+                        const subjectToTraveler = {
+                          fb_id: group.owner.fb_id,
+                          name: group.owner.name,
+                        }
+
+                        promiseArray.push(utils.createNotification(messageToTraveler, subjectToTraveler, group)
+                        .then(notification =>
+                          models.User.findOneAndUpdate({fb_id: traveler.fb_id},
+                          {$push: {'notifications': notification}})
+                          .exec())
+                        .then(user => utils.sendNotification(user.push_subscription, messageToTraveler)));
                 
                         Promise.all(promiseArray).then(values => res.send(200)).catch(err => {
                           console.log(err);
@@ -168,6 +190,7 @@ router.post('/reject_request', (req, res) => {
 
                         // message to the traveler
                         const message = {
+                            icon: '/images/' + group.owner.fb_id + '.jpg',
                             type: 'approve_request',
                             title: 'Request Update',
                             body: group.owner.name + " has rejected your request",
