@@ -125,12 +125,8 @@ function registerValidSW(swUrl, config) {
         userVisibleOnly: true,
         applicationServerKey: urlBase64ToUint8Array(publicKey),
       })
-      .then(pushSubscription => {
-        console.log("Registered push manager");
-        subscribeUser(pushSubscription)
-        .then(() => console.log("User subscribed"))
-        .catch(err => console.log(err));
-      })
+      .then(subscribeUser)
+      .then(console.log("push manager subscribed"))
       .catch(err => console.log(err));
     })
     .catch(error => {
