@@ -10,7 +10,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
-import {ListItemAvatar, Avatar, Grid, ListSubheader, Chip} from '@material-ui/core'
+import {ListItemAvatar, Avatar, Grid, ListSubheader, Chip, Link} from '@material-ui/core'
 import moment from 'moment'
 
 const Transition = React.forwardRef(function Transition(props, ref) {
