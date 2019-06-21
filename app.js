@@ -52,33 +52,22 @@ passport.use(new fbStrategy({
     
     if (!user) {
       console.log("User not found");
-      axios.get('http://graph.facebook.com/' + profile.id + '/picture?type=square', {
-        contentType: 'stream',
-      })
-      .then(response => {
-        // fetch the user profile picture from fb api
-        var staticSourcePath = 'http://localhost:5000/images/' + profile.id + '.jpg';
-        var filepath = './public/images/' + profile.id + '.jpg';
-        var file = fs.createWriteStream(filepath);
-        response.data.pipe(file);
-
-        // create and save the user model
-        var newUser = models.User({
-          name: profile.name.givenName + " " + profile.name.familyName,
-          fb_id: profile.id,
-          token: token,
-          profile: profile.profileUrl,
-          profilePic: staticSourcePath,
-        });
-        newUser.save((err, object) => {
-          if (err) {
-            console.log("Error creating new user");
-            return done(err);
-          }
-          console.log("Successfully created new user");
-          return done(null, object);
-        });
-      })
+      // create and save the user model
+      var newUser = models.User({
+        name: profile.name.givenName + " " + profile.name.familyName,
+        fb_id: profile.id,
+        token: token,
+        profile: profile.profileUrl,
+        profilePic: 'http://graph.facebook.com/' + staticSourcePath + '/picture?type=square',
+      });
+      newUser.save((err, object) => {
+        if (err) {
+          console.log("Error creating new user");
+          return done(err);
+        }
+        console.log("Successfully created new user");
+        return done(null, object);
+      });
     }
     else {
       console.log("User found. Returning the user");
@@ -93,9 +82,9 @@ webpush.setVapidDetails(
   config.privateKey
 );
 
-staticPageRouter.use((req, res) => {
-  res.sendFile(path.join(__dirname, './client/build/index.html'));
-});
+// staticPageRouter.use((req, res) => {
+//   res.sendFile(path.join(__dirname, './client/build/index.html'));
+// });
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
