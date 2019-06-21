@@ -30,7 +30,7 @@ export default function ReceivedRequestCard(props) {
             <div style={{padding: 10, display: 'flex', alignItems: 'center'}}>
                 <Avatar 
                 alt='Remy Sharp' 
-                src={'/images/' + props.traveler.fb_id + '.jpg'}
+                src={'http://graph.facebook.com/' + props.traveler.fb_id + '/picture?type=square'}
                 style={{margin: 10, height: 50, width: 50}}
                 />
                 <div style={{padding: 5}}>

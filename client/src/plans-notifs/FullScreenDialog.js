@@ -57,7 +57,7 @@ function FullScreenDialog(props) {
                     return (
                     <ListItem>
                         <ListItemAvatar>
-                            <Avatar alt='Remy Sharp' src={'http://localhost:5000/images/' + item.fb_id + '.jpg'} />
+                            <Avatar alt='Remy Sharp' src={'http://graph.facebook.com/' + item.fb_id + '/picture?type=square'} />
                         </ListItemAvatar>
                         <ListItemText primary={item.name} secondary={
                             <React.Fragment>
