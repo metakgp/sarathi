@@ -17,11 +17,11 @@ app.set('port', port);
 /*
   Create mongodb database connection
 */
-// mongoose.connect('mongodb+srv://aribalam:7hXr5t15WNgyRiN2@cluster0-dvc4o.mongodb.net/test?retryWrites=true&w=majority', 
-// {dbName: 'travelkgp', useNewUrlParser: true});
-
-mongoose.connect('mongodb://localhost:27017/', 
+mongoose.connect('mongodb+srv://aribalam:7hXr5t15WNgyRiN2@cluster0-dvc4o.mongodb.net/test?retryWrites=true&w=majority', 
 {dbName: 'travelkgp', useNewUrlParser: true});
+
+// mongoose.connect('mongodb://localhost:27017/', 
+// {dbName: 'travelkgp', useNewUrlParser: true});
 
 var connection = mongoose.connection;
 connection.on('error', console.error.bind(console, 'connection error:'));
