@@ -93,10 +93,12 @@ router.post('/test2', (req, res) => {
 
 router.post('/subscribe', (req, res) => {
   const pushSubscription = JSON.stringify(req.body);
-  models.User.findByIdAndUpdate(req.user.id, {push_subscription: pushSubscription})
+  models.User.findOneAndUpdate(req.query.fb_id, {push_subscription: pushSubscription})
   .exec((err) => {
-    if (err)
+    if (err) {
+      console.log(err);
       res.send(500, "Error updating user object for storing push subscription");
+    }
     else
       res.sendStatus(200);
   });
@@ -104,7 +106,7 @@ router.post('/subscribe', (req, res) => {
 
 router.get('/get_picture', (req, res) => {
   var file = fs.createWriteStream('./public/images/4567.jpg');
-  axios.get('http://graph.facebook.com/2177672832321382/picture?type=square', {
+  axios.get('http://graph.facebook.com/1234/picture?type=square', {
     responseType: 'stream',
   })
   .then(response => {
@@ -134,9 +136,15 @@ async function disableRequestSentGroups(groups, userId) {
 
 function disableJoinedOrCreatedGroups(groups, userId) {
   for (var i = 0; i < groups.length; i++) {
+    if (groups[i].owner.fb_id === userId) {
+      groups[i].status = 'joined';
+      continue;
+    }
     for (var j = 0; j < groups[i].members.length; j++) {
-      if (groups[i].members[j].fb_id === userId)
+      if (groups[i].members[j].fb_id === userId) {
         groups[i].status = 'joined';
+        break;
+      }
     }
   }
 
