@@ -65,7 +65,7 @@ export default class LoginPage extends Component {
                         align='center'>For sharing is caring :)</Typography> 
                     </Grid>
                     <Grid item style={{paddingTop: 40}}>
-                        <a href="/api/auth/facebook"
+                        <a href="http://localhost:5000/api/auth/facebook"
                         style={{
                             backgroundColor: '#3B5998',
                             color: 'white',
