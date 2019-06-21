@@ -112,6 +112,7 @@ router.post('/leave_group', (req, res) => {
       
       // create and send notifications to all the members
       const message = {
+        icon: '/images/' + user.fb_id + '.jpg',
         type: 'leave_group',
         title: 'Left group',
         body: user.name + " has left the group",
@@ -161,6 +162,7 @@ router.post('/toggle_status', (req, res) => {
         res.send(err);
       else {
         const message = {
+          icon: '/images/' + group.owner.fb_id + '.jpg',
           type: 'toggle_status',
           title: 'Status changed',
           body: group.owner.name + " has " + (newStatus === 'open'? 'reopened' : 'closed') 
@@ -202,6 +204,7 @@ router.post('/change_time', (req, res) => {
         res.send(err);
       else {
         const message = {
+          icon: '/images/' + group.owner.fb_id + '.jpg',
           type: 'change_time',
           title: 'Time change',
           body: group.owner.name + ' has changed the departure time'
