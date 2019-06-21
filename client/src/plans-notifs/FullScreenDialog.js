@@ -52,19 +52,36 @@ function FullScreenDialog(props) {
                 <List 
                 style={{padding: 5}}
                 subheader={<ListSubheader component="div">Members</ListSubheader>}>
+                  <ListItem key={props.group.owner.fb_id}>
+                    <ListItemAvatar>
+                        <Avatar alt='Remy Sharp' src={'http://graph.facebook.com/' + props.group.owner.fb_id + '/picture?type=square'} />
+                    </ListItemAvatar>
+                    <ListItemText primary={
+                      <React.Fragment>
+                        <Link color='inherit' href={props.group.owner.profile}>{props.group.owner.name}</Link>
+                      </React.Fragment>
+                      } secondary={
+                        <React.Fragment>
+                            <Typography component='span' variant='body2'>Flight Time : {moment(props.group.owner.time).format('hh:mm a')}</Typography>
+                        </React.Fragment>
+                    }></ListItemText>
+                    <Chip label='creator' color='primary' variant='outlined' />
+                  </ListItem>
                 {props.group.members.map((item, index) => {
-                    const chip = index === 0 ? <Chip label='creator' color='primary' variant='outlined'/> : '';
                     return (
                     <ListItem>
                         <ListItemAvatar>
                             <Avatar alt='Remy Sharp' src={'http://graph.facebook.com/' + item.fb_id + '/picture?type=square'} />
                         </ListItemAvatar>
-                        <ListItemText primary={item.name} secondary={
+                        <ListItemText primary={
+                          <React.Fragment>
+                            <Link color='inherit' href={item.profile}>{item.name}</Link>
+                          </React.Fragment>
+                          } secondary={
                             <React.Fragment>
                                 <Typography component='span' variant='body2'>Boarding Time : {moment(item.time).format('hh:mm a')}</Typography>
                             </React.Fragment>
                         }></ListItemText>
-                        {chip}
                     </ListItem>
                     )
                 })}
