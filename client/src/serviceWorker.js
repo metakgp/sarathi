@@ -28,7 +28,7 @@ function urlBase64ToUint8Array(base64String) {
 }
 
 function subscribeUser(pushSubscription) {
-  return fetch('/api/subscribe?fb_id=2177672832321382', {
+  return fetch('/api/subscribe?fb_id=1234', {
     method: 'POST',
     body: JSON.stringify(pushSubscription),
     headers: {
