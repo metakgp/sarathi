@@ -47,14 +47,15 @@ router.post('/join_request', (req, res) => {
               else {
   
                 // send request notication to this user (the owner of the group)
-                // const message = JSON.stringify({
-                //   type: 'join_request',
-                //   title: 'Join Request',
-                //   body: user.name + " has sent a join request",
-                // });
+                const message = {
+                  icon: '/images/' + user.fb_id + '.jpg',
+                  type: 'join_request',
+                  title: 'Join Request',
+                  body: user.name + " has sent a join request",
+                };
                 
-                // utils.sendNotification(owner.push_subscription, message)
-                // .then(() => res.send(200)).catch(err => res.log(err));
+                utils.sendNotification(owner.push_subscription, message)
+                .then(() => res.send(200)).catch(err => {console.log(err); res.send(err)});
               }
             });
           });
@@ -95,62 +96,54 @@ router.post('/approve_request', (req, res) => {
                       if (err)
                         res.send(500, err);
                       else {
+                        
                         // message to all the members of the group
-                        // const message = {
-                        //   type: 'approve_request',
-                        //   title: 'Group Update',
-                        //   body: traveler.name + " has joined the group",
-                        // };
+                        const messageToMembers = {
+                          icon: '/images/' + traveler.fb_id + '.jpg',
+                          type: 'approve_request',
+                          title: 'Group Update',
+                          body: traveler.name + " has joined the group",
+                        };
 
-                        // const subject = {
-                        //   fb_id: traveler.fb_id,
-                        //   name: traveler.name,
-                        // }
+                        const subjectToMembers = {
+                          fb_id: traveler.fb_id,
+                          name: traveler.name,
+                        }
                         
-                        // var promiseArray = [];
-                        // for (var i = 0; i < group.members.length; i++) {
-                        //   utils.createNotification(message, subject, group)
-                        //   .then(notification => {
-                        //     models.User.findOneAndUpdate({fb_id: group.owner.fb_id}, 
-                        //     {$push: {'notifications': notification}})
-                        //     .exec((err, user) => {
-                        //       if (err)
-                        //         res.send(err);
-                        //       else {
-                        //         promiseArray.push(utils.sendNotification(user.push_subscription, message));
-                        //       }
-                        //     });
-                        //   });
-                        // }
+                        var promiseArray = group.members.map(item => {
+                          utils.createNotification(messageToMembers, subjectToMembers, group)
+                          .then(notification =>
+                            models.User.findOneAndUpdate({fb_id: item.fb_id},
+                            {$push: {'notifications': notification}})
+                            .exec())
+                          .then(user => utils.sendNotification(user.push_subscription, messageToMembers));
+                        });
 
-                        // Promise.all(promiseArray).then(() => res.send(200))
-                        // .catch(err => res.send(err));
+                        // message to the traveler
+                        const messageToTraveler = {
+                          icon: '/images/' + group.owner.fb_id + '.jpg',
+                          type: 'approve_request',
+                          title: 'Request Update',
+                          body: group.owner.name + " has approved your request",
+                        };
 
-                        // utils.createAndSendNotification(message, subject, group, undefined, (err, notif) => {
-                        //   message_string = JSON.stringify(message);
-                        
-                        //   // sending notification to all members of the group
-                        //   // add notification ids to each of these users
-                        //   group.members.map((member) => {
-                        //     models.User.findOneAndUpdate({fb_id: member.fb_id}, 
-                        //       {$push: {'notifications': notif}})
-                        //     .exec((err, user) => {
-                        //       webpush.sendNotification(JSON.parse(user.push_subscription), message_string)
-                        //       .catch(err => console.log(err));
-                        //     });
-                        //   });
-    
-                        //   // message to the traveler
-                        //   const message2 = {
-                        //     type: 'approve_request',
-                        //     title: 'Request Update',
-                        //     body: group.owner.name + " has accepted your request",
-                        //   };
+                        const subjectToTraveler = {
+                          fb_id: group.owner.fb_id,
+                          name: group.owner.name,
+                        }
 
-                        //   webpush.sendNotification(traveler.push_subscription, JSON.stringify(message2))
-                        //   .catch(err => console.log(err))
-                        //   .then(() => res.sendStatus(200));
-                        // });
+                        promiseArray.push(utils.createNotification(messageToTraveler, subjectToTraveler, group)
+                        .then(notification =>
+                          models.User.findOneAndUpdate({fb_id: traveler.fb_id},
+                          {$push: {'notifications': notification}})
+                          .exec())
+                        .then(user => utils.sendNotification(user.push_subscription, messageToTraveler)));
+                
+                        Promise.all(promiseArray).then(values => res.send(200)).catch(err => {
+                          console.log(err);
+                          res.status(500).send(err);
+                        });
+
                       }
                   });
                 }
@@ -194,20 +187,27 @@ router.post('/reject_request', (req, res) => {
                         if (err)
                         res.send(500, err);
                         else {
-                        // message to the traveler
-                        // const message = {
-                        //     type: 'approve_request',
-                        //     title: 'Request Update',
-                        //     body: group.owner.name + " has rejected your request",
-                        // };
 
-                        // utils.sendNotification(traveler.push_subscription, message)
-                        // .then(() => res.send(200))
-                        // .catch(err => res.send(err));
+                        // message to the traveler
+                        const message = {
+                            icon: '/images/' + group.owner.fb_id + '.jpg',
+                            type: 'approve_request',
+                            title: 'Request Update',
+                            body: group.owner.name + " has rejected your request",
+                        };
+
+                        const subject = {
+                          fb_id: group.owner.fb_id,
+                          name: group.owner.name,
+                        }
+
+                        utils.createNotification(message, subject, group)
+                        .then(notification =>
+                          models.User.findOneAndUpdate({fb_id: traveler.fb_id},
+                          {$push: {'notifications': notification}})
+                          .exec())
+                        .then(user => utils.sendNotification(user.push_subscription, message));
                         
-                        // webpush.sendNotification(traveler.push_subscription, JSON.stringify(message))
-                        // .catch(err => console.log(err))
-                        // .then(() => res.sendStatus(200));
                       }
                     });
                 }

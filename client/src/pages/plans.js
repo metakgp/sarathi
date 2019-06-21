@@ -32,7 +32,7 @@ export default class Groups extends React.Component {
     }
 
     componentDidMount() {
-        axios.get('/api/user/groups?fb_id=2177672832321382')
+        axios.get('/api/user/groups?fb_id=1234')
         .then(res => {
             this.setState({created_groups: res.data.created, joined_groups: res.data.joined})
         })
@@ -94,7 +94,7 @@ export default class Groups extends React.Component {
     }
 
     handleLeaveGroup = (groupId, index) => {
-        axios.post('/api/group/leave_group?fb_id=2177672832321382', {
+        axios.post('/api/group/leave_group?fb_id=1234', {
             groupId: groupId,
         })
         .then((res) => {
