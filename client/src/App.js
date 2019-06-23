@@ -5,6 +5,8 @@ import Notifs from './pages/notifs'
 import Requests from './pages/requests'
 import LoginPage from './pages/login'
 import Logout from './pages/logout'
+import privacyPolicy from './pages/privacyPolicy';
+import termsOfUse from './pages/termsOfUse';
 import { BrowserRouter, Route, Redirect } from 'react-router-dom';
 import withAuth from './AuthWrapper'
 
@@ -28,6 +30,8 @@ class App extends Component {
                 <Route path='/requests' component={withAuth(Requests)} />
                 <Route path="/notifs" component={withAuth(Notifs)} />
                 <Route path='/loginRedirect' component={LoginRedirector} />
+                <Route path='/privacyPolicy' component={privacyPolicy} />
+                <Route path='/termsOfUse' component={termsOfUse} />
             </BrowserRouter>
         )
     }
