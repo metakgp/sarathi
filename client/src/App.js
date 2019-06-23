@@ -9,7 +9,6 @@ import { BrowserRouter, Route, Redirect } from 'react-router-dom';
 import withAuth from './AuthWrapper'
 
 function LoginRedirector(props) {
-    console.log("Inside redirector");
     const redirectUrl = window.localStorage.getItem('redirectUrl');
     window.localStorage.removeItem('redirectUrl');
     return (

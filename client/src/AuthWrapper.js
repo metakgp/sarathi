@@ -13,7 +13,6 @@ export default function withAuth(ComponentToProtect) {
     }
 
     componentDidMount() {
-      console.log("Inside withAuth");
       axios.get('/api/auth/status')
         .then(res => {
           if (res.status === 200) {

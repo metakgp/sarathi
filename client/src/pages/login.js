@@ -14,7 +14,6 @@ export default class LoginPage extends Component {
     }
 
     componentDidMount() {
-        console.log("Inside login");
         // saving the previous url to local storage and receiving any error messages associated with it
         const {from, message} = this.props.location.state || {from: {pathname: '/' }};
         if (from) {
