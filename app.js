@@ -52,33 +52,21 @@ passport.use(new fbStrategy({
     
     if (!user) {
       console.log("User not found");
-      axios.get('http://graph.facebook.com/' + profile.id + '/picture?type=square', {
-        contentType: 'stream',
-      })
-      .then(response => {
-        // fetch the user profile picture from fb api
-        var staticSourcePath = 'http://localhost:5000/images/' + profile.id + '.jpg';
-        var filepath = './public/images/' + profile.id + '.jpg';
-        var file = fs.createWriteStream(filepath);
-        response.data.pipe(file);
-
-        // create and save the user model
-        var newUser = models.User({
-          name: profile.name.givenName + " " + profile.name.familyName,
-          fb_id: profile.id,
-          token: token,
-          profile: profile.profileUrl,
-          profilePic: staticSourcePath,
-        });
-        newUser.save((err, object) => {
-          if (err) {
-            console.log("Error creating new user");
-            return done(err);
-          }
-          console.log("Successfully created new user");
-          return done(null, object);
-        });
-      })
+      // create and save the user model
+      var newUser = models.User({
+        name: profile.name.givenName + " " + profile.name.familyName,
+        fb_id: profile.id,
+        token: token,
+        profile: profile.profileUrl,
+      });
+      newUser.save((err, object) => {
+        if (err) {
+          console.log("Error creating new user");
+          return done(err);
+        }
+        console.log("Successfully created new user");
+        return done(null, object);
+      });
     }
     else {
       console.log("User found. Returning the user");
@@ -93,9 +81,9 @@ webpush.setVapidDetails(
   config.privateKey
 );
 
-staticPageRouter.use((req, res) => {
-  res.sendFile(path.join(__dirname, './client/build/index.html'));
-});
+// staticPageRouter.use((req, res) => {
+//   res.sendFile(path.join(__dirname, './client/build/index.html'));
+// });
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -124,11 +112,13 @@ app.use(express.static(path.join(__dirname, 'public'), options));
 if (process.env.NODE_ENV === 'production')
   app.use(express.static('client/build'));
 
-function isLoggedIn(req, res, next) {
-  if  (req.isAuthenticated())
-    return next();
-  res.sendStatus(403);
-}
+// function isLoggedIn(req, res, next) {
+//   if  (req.path === '/api/auth/login' || req.isAuthenticated())
+//     return next();
+//   res.sendStatus(403);
+// }
+
+// app.use(isLoggedIn);
 
 app.use('/api/auth', authRouter);
 app.use('/api/group', groupRouter);

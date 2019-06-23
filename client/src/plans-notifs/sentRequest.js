@@ -31,7 +31,7 @@ export default function SentRequestCard(props) {
                 <Divider variant='middle' />
                     <div style={{margin: 10}}>
                         <Chip
-                        avatar={<Avatar alt='Remy Sharp' src={'/images/' + props.owner.fb_id + '.jpg'} />} 
+                        avatar={<Avatar alt='Remy Sharp' src={'http://graph.facebook.com/' + props.owner.fb_id + '/picture?type=square'} />} 
                         label={'Owner: ' + props.owner.name} 
                         variant='outlined' />
                         <Chip label={props.members + ' members'} variant='outlined' style={{margin:5}} />

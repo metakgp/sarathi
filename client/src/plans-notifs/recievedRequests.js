@@ -4,7 +4,7 @@ import Chip from '@material-ui/core/Chip';
 import Typography from '@material-ui/core/Typography';
 
 import Avatar from '@material-ui/core/Avatar';
-import { CardActions, Divider } from '@material-ui/core';
+import { CardActions, Divider, Link } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import moment from 'moment';
 
@@ -30,11 +30,11 @@ export default function ReceivedRequestCard(props) {
             <div style={{padding: 10, display: 'flex', alignItems: 'center'}}>
                 <Avatar 
                 alt='Remy Sharp' 
-                src={'/images/' + props.traveler.fb_id + '.jpg'}
+                src={'http://graph.facebook.com/' + props.traveler.fb_id + '/picture?type=square'}
                 style={{margin: 10, height: 50, width: 50}}
                 />
                 <div style={{padding: 5}}>
-                    <Typography variant='h6'>{props.traveler.name}</Typography>
+                    <Typography><Link variant='h6' href={props.traveler.profile} >{props.traveler.name}</Link></Typography>
                     <Typography component='span' variant='body2'>
                         Flight Time: {moment(props.traveler.time).format('hh:mm a')}
                     </Typography>

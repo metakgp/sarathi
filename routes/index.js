@@ -105,7 +105,7 @@ router.post('/subscribe', (req, res) => {
 });
 
 router.get('/get_picture', (req, res) => {
-  var file = fs.createWriteStream('./public/images/4567.jpg');
+  var file = fs.createWriteStream('./publichttp://graph.facebook.com/4567/picture?type=square');
   axios.get('http://graph.facebook.com/1234/picture?type=square', {
     responseType: 'stream',
   })

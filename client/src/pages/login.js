@@ -8,11 +8,21 @@ export default class LoginPage extends Component {
         this.state = {
             contentHeight: 0,
             contentWidth: 0,
+            errorMessage: undefined,
         };
         this.updateContentDimensions = this.updateContentDimensions.bind(this);
     }
 
     componentDidMount() {
+        // saving the previous url to local storage and receiving any error messages associated with it
+        const {from, message} = this.props.location.state || {from: {pathname: '/' }};
+        if (from) {
+            const pathname = from.pathname;
+            window.localStorage.setItem('redirectUrl', pathname);
+        }
+        this.setState({errorMessage: message});
+
+        // removing navbar element and moving the main content div to top
         var bar = document.getElementById('navbar');
         if (bar != null)
             bar.remove();
@@ -39,13 +49,14 @@ export default class LoginPage extends Component {
         return (
             <div style={{
                 height: this.state.contentHeight, 
-                display: 'flex', 
+                display: 'flex',
+                flexDirection: 'column', 
                 justifyContent: 'center', 
                 alignItems: 'center',
                 backgroundImage: "url('/images/background.jpg')",
                 backgroundPosition: '50% 50%',
-                // backgroundRepeat: 'no-repeat',
             }}>
+                {this.state.errorMessage ? <Typography variant='h6' color='error'>{this.state.errorMessage}</Typography> : ''}
                 <Grid container 
                 direction='column' 
                 alignItems='center'
@@ -65,7 +76,7 @@ export default class LoginPage extends Component {
                         align='center'>For sharing is caring :)</Typography> 
                     </Grid>
                     <Grid item style={{paddingTop: 40}}>
-                        <a href="/api/auth/facebook"
+                        <a href="http://localhost:5000/api/auth/facebook"
                         style={{
                             backgroundColor: '#3B5998',
                             color: 'white',

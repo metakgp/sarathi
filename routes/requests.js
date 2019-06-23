@@ -12,6 +12,7 @@ router.get('/join_request', (req, res) => {
 router.post('/join_request', (req, res) => {
     var traveler = {
       fb_id: req.query.fb_id,
+      profile: req.query.profile,
       name: req.query.name,
       from: req.body.from,
       to: req.body.to,
@@ -48,7 +49,7 @@ router.post('/join_request', (req, res) => {
   
                 // send request notication to this user (the owner of the group)
                 const message = {
-                  icon: '/images/' + user.fb_id + '.jpg',
+                  icon: 'http://graph.facebook.com/' + user.fb_id + '/picture?type=square',
                   type: 'join_request',
                   title: 'Join Request',
                   body: user.name + " has sent a join request",
@@ -99,7 +100,7 @@ router.post('/approve_request', (req, res) => {
                         
                         // message to all the members of the group
                         const messageToMembers = {
-                          icon: '/images/' + traveler.fb_id + '.jpg',
+                          icon: 'http://graph.facebook.com/' + traveler.fb_id + '/picture?type=square',
                           type: 'approve_request',
                           title: 'Group Update',
                           body: traveler.name + " has joined the group",
@@ -121,7 +122,7 @@ router.post('/approve_request', (req, res) => {
 
                         // message to the traveler
                         const messageToTraveler = {
-                          icon: '/images/' + group.owner.fb_id + '.jpg',
+                          icon: 'http://graph.facebook.com/' + group.owner.fb_id + '/picture?type=square',
                           type: 'approve_request',
                           title: 'Request Update',
                           body: group.owner.name + " has approved your request",
@@ -190,7 +191,7 @@ router.post('/reject_request', (req, res) => {
 
                         // message to the traveler
                         const message = {
-                            icon: '/images/' + group.owner.fb_id + '.jpg',
+                            icon: 'http://graph.facebook.com/' + group.owner.fb_id + '/picture?type=square',
                             type: 'approve_request',
                             title: 'Request Update',
                             body: group.owner.name + " has rejected your request",

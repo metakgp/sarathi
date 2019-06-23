@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import { Button, ListItemAvatar, CardActions, Switch, FormControlLabel } from '@material-ui/core';
+import { Button, ListItemAvatar, CardActions, Switch, FormControlLabel, Link } from '@material-ui/core';
 import Avatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
 import moment from 'moment';
@@ -91,9 +91,13 @@ export default function SimpleCard (props) {
       <List style={{padding: 5}}>
         <ListItem key={props.owner.fb_id}>
           <ListItemAvatar>
-              <Avatar alt='Remy Sharp' src={'http://localhost:5000/images/' + props.owner.fb_id + '.jpg'} />
+              <Avatar alt='Remy Sharp' src={'http://graph.facebook.com/' + props.owner.fb_id + '/picture?type=square'} />
           </ListItemAvatar>
-          <ListItemText primary={props.owner.name} secondary={
+          <ListItemText primary={
+            <React.Fragment>
+              <Link color='inherit' href='http://www.google.com'>{props.owner.name}</Link>
+            </React.Fragment>
+            } secondary={
               <React.Fragment>
                   <Typography component='span' variant='body2'>Flight Time : {moment(props.owner.time).format('hh:mm a')}</Typography>
               </React.Fragment>
@@ -104,9 +108,13 @@ export default function SimpleCard (props) {
           return (
             <ListItem key={item.fb_id}>
               <ListItemAvatar>
-                  <Avatar alt='Remy Sharp' src={'/images/' + item.fb_id + '.jpg'} />
+                  <Avatar alt='Remy Sharp' src={'http://graph.facebook.com/' + item.fb_id + '/picture?type=square'} />
               </ListItemAvatar>
-              <ListItemText primary={item.name} secondary={
+              <ListItemText primary={
+                <React.Fragment>
+                  <Link color='inherit' href='http://www.google.com'>{item.name}</Link>
+                </React.Fragment>
+                } secondary={
                   <React.Fragment>
                       <Typography component='span' variant='body2'>Flight Time : {moment(item.time).format('hh:mm a')}</Typography>
                   </React.Fragment>
