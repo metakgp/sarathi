@@ -42,7 +42,7 @@ export default class Example extends Component {
                       </Typography>
                   </a>
                   { /*eslint-disable-next-line*/ }
-                  <a href="#">
+                  <a href="/logout">
                       <Typography variant="subtitle1">
                          Logout
                       </Typography>
