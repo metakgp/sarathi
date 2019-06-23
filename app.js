@@ -58,7 +58,6 @@ passport.use(new fbStrategy({
         fb_id: profile.id,
         token: token,
         profile: profile.profileUrl,
-        profilePic: 'http://graph.facebook.com/' + staticSourcePath + '/picture?type=square',
       });
       newUser.save((err, object) => {
         if (err) {
@@ -113,11 +112,13 @@ app.use(express.static(path.join(__dirname, 'public'), options));
 if (process.env.NODE_ENV === 'production')
   app.use(express.static('client/build'));
 
-function isLoggedIn(req, res, next) {
-  if  (req.isAuthenticated())
-    return next();
-  res.sendStatus(403);
-}
+// function isLoggedIn(req, res, next) {
+//   if  (req.path === '/api/auth/login' || req.isAuthenticated())
+//     return next();
+//   res.sendStatus(403);
+// }
+
+// app.use(isLoggedIn);
 
 app.use('/api/auth', authRouter);
 app.use('/api/group', groupRouter);
