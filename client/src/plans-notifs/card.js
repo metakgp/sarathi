@@ -95,7 +95,7 @@ export default function SimpleCard (props) {
           </ListItemAvatar>
           <ListItemText primary={
             <React.Fragment>
-              <Link color='inherit' href='http://www.google.com'>{props.owner.name}</Link>
+              <Link color='inherit' href={props.owner.profile}>{props.owner.name}</Link>
             </React.Fragment>
             } secondary={
               <React.Fragment>
@@ -112,7 +112,7 @@ export default function SimpleCard (props) {
               </ListItemAvatar>
               <ListItemText primary={
                 <React.Fragment>
-                  <Link color='inherit' href='http://www.google.com'>{item.name}</Link>
+                  <Link color='inherit' href={item.profile}>{item.name}</Link>
                 </React.Fragment>
                 } secondary={
                   <React.Fragment>
