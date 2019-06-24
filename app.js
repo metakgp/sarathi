@@ -51,7 +51,7 @@ passport.use(new fbStrategy({
     }
     
     if (!user) {
-      console.log("User not found");
+      console.log(profile);
       // create and save the user model
       var newUser = models.User({
         name: profile.name.givenName + " " + profile.name.familyName,
