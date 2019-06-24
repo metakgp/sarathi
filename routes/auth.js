@@ -9,8 +9,8 @@ router.get('/facebook', passport.authenticate("facebook"));
 // params - state-param : unique code to prevent csrf
 // 
 router.get('/facebook/callback', passport.authenticate("facebook", {
-  successRedirect: 'http://localhost:3000/loginRedirect',
-  failureRedirect: 'http://localhost:3000/login',
+  successRedirect: 'https://travelkgp.herokuapp.com//loginRedirect',
+  failureRedirect: 'https://travelkgp.herokuapp.com//login',
 }));
 
 router.get('/logout', (req, res) => {
