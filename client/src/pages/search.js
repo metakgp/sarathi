@@ -72,7 +72,6 @@ class Search extends Component{
                 from : this.state.fromPlace,
                 to: this.state.toPlace,
                 time: moment(this.state.time).add(utcOffset).format(),
-                fb_id: 12345,
             }
         })
         .then((res) => {
@@ -84,7 +83,7 @@ class Search extends Component{
     }
 
     sendJoinRequest = (groupId, index) => {
-        axios.post('/api/request/join_request?fb_id=12345', {
+        axios.post('/api/request/join_request', {
             from: this.state.fromPlace,
             to: this.state.toPlace,
             time: this.state.time,
@@ -100,8 +99,7 @@ class Search extends Component{
     }
 
     createGroup = (groupInfo) => {
-        axios.post('/api/group/create_group', 
-        Object.assign(groupInfo, {name: 'Arib Alam', fb_id: 1234}))
+        axios.post('/api/group/create_group', groupInfo)
         .then((res) => {
             this.closeCreateGroupDialog();
         })

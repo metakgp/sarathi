@@ -11,9 +11,9 @@ router.get('/join_request', (req, res) => {
 // sends a join request to the owner of the group
 router.post('/join_request', (req, res) => {
     var traveler = {
-      fb_id: req.query.fb_id,
-      profile: req.query.profile,
-      name: req.query.name,
+      fb_id: req.user.fb_id,
+      profile: req.user.profile,
+      name: req.user.name,
       from: req.body.from,
       to: req.body.to,
       time: new Date(req.body.time),
@@ -35,7 +35,7 @@ router.post('/join_request', (req, res) => {
           res.send(500, err);
         else {  
           // add those requests to the users concerned
-          models.User.findOneAndUpdate({fb_id: req.query.fb_id}, {$push: {sent_requests: request}})
+          models.User.findOneAndUpdate({fb_id: req.user.fb_id}, {$push: {sent_requests: request}})
           .exec((err, user) => {
             if (err) {
               res.send(500, err);

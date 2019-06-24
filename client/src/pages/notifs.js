@@ -18,7 +18,7 @@ export default class Notifications extends Component {
     }
 
     componentDidMount() {
-        axios.get('/api/user/notifications?fb_id=1234')
+        axios.get('/api/user/notifications')
         .then((res) => {
             this.setState({notifications: res.data.reverse()});
         })

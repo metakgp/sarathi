@@ -31,8 +31,8 @@ router.get('/', async (req, res) => {
       // 1. user is sent a join request
       // 2. user is a member already
       // 3. group is closed
-      groups = await disableRequestSentGroups(groups, req.query.fb_id);
-      groups = disableJoinedOrCreatedGroups(groups, req.query.fb_id);
+      groups = await disableRequestSentGroups(groups, req.user.fb_id);
+      groups = disableJoinedOrCreatedGroups(groups, req.user.fb_id);
 
       // given sorted results, we need to paginate the data
       var result = [];
@@ -93,7 +93,7 @@ router.post('/test2', (req, res) => {
 
 router.post('/subscribe', (req, res) => {
   const pushSubscription = JSON.stringify(req.body);
-  models.User.findOneAndUpdate(req.query.fb_id, {push_subscription: pushSubscription})
+  models.User.findOneAndUpdate(req.user.fb_id, {push_subscription: pushSubscription})
   .exec((err) => {
     if (err) {
       console.log(err);

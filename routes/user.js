@@ -6,7 +6,7 @@ router.get('/', (req, res) => {
 });
 
 router.get('/groups', (req, res) => {
-    models.User.findOne({fb_id: req.query.fb_id}).populate('created_groups')
+    models.User.findOne({fb_id: req.user.fb_id}).populate('created_groups')
     .populate('joined_groups')
     .exec((err, user) => {
         if (err)
@@ -22,7 +22,7 @@ router.get('/groups', (req, res) => {
 });
 
 router.get('/requests', (req, res) => {
-    models.User.findOne({fb_id: req.query.fb_id})
+    models.User.findOne({fb_id: req.user.fb_id})
     .populate({
         path: 'sent_requests',
         populate: {
@@ -49,7 +49,7 @@ router.get('/requests', (req, res) => {
 });
 
 router.get('/notifications', (req, res) => {
-    models.User.findOne({fb_id: req.query.fb_id}).populate('notifications')
+    models.User.findOne({fb_id: req.user.fb_id}).populate('notifications')
     .exec((err, user) => {
         if (err)
             res.send(err);

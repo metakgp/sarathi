@@ -21,9 +21,9 @@ router.get('/create_group', (req, res) => {
 // creates a group for the user
 router.post('/create_group', (req, res) => {
   var traveler = {
-    fb_id: req.body.fb_id,
-    profile: req.body.profile,
-    name: req.body.name,
+    fb_id: req.user.fb_id,
+    profile: req.user.profile,
+    name: req.user.name,
     from: req.body.from,
     to: req.body.to,
     time: new Date(req.body.boardingTime),
@@ -105,10 +105,10 @@ router.post('/remove_group', (req, res) => {
 
 router.post('/leave_group', (req, res) => {
   // find the user from the database
-  models.User.findOneAndUpdate({fb_id: req.query.fb_id}, {$pull: {'joined_groups': req.body.groupId}})
+  models.User.findOneAndUpdate({fb_id: req.user.fb_id}, {$pull: {'joined_groups': req.body.groupId}})
   .exec((err, user) => {
     // find the group and remove that member
-    models.Group.findByIdAndUpdate(req.body.groupId, {$pull: {'members': {'fb_id': req.query.fb_id}}}, {new: true})
+    models.Group.findByIdAndUpdate(req.body.groupId, {$pull: {'members': {'fb_id': req.user.fb_id}}}, {new: true})
     .exec((err, group) => {
       
       // create and send notifications to all the members
