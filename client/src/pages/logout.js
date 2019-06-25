@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import {Redirect} from 'react-router-dom';
 
+import {unregisterPushManager} from '../registerPush';
+
 export default class Logout extends Component {
 
     state = {
@@ -8,10 +10,13 @@ export default class Logout extends Component {
     }
 
     componentWillMount() {
-        console.log("Inside logout");
-        fetch('/api/auth/logout')
+
+        // unregister push manager and logout
+        unregisterPushManager()
+        .then(() => fetch('/api/auth/logout'))
         .then(res => this.setState({loading: false}))
         .catch(err => this.setState({loading: false}));
+
     }
 
     render() {
