@@ -28,7 +28,10 @@ const userSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Notification'
     }],
-    push_subscription: String,
+    push_subscription: [{
+        type: String,
+        unique: true,
+    }],
     profilePic: String,
 });
 

@@ -78,42 +78,27 @@ router.post('/notification/read_notif', (req, res) => {
   });
 });
 
-// test route for service worker registration
-router.get('/test', (req, res) => {
-  res.render('index.ejs');
-});
-
-// Test route for push messages
-router.post('/test2', (req, res) => {
-  const pushSubscription = JSON.parse(req.user.push_subscription);
-  const message = JSON.stringify({title: 'Notification', body: 'Hey! Arib'});
-  webpush.sendNotification(pushSubscription, message).catch(err => console.log(err))
-  .then(() => res.sendStatus(200));
+router.post('/unsubscribe', (req, res) => {
+  const pushSubscription = JSON.stringify(req.body);
+  models.User.findOneAndUpdate({fb_id: req.user.fb_id}, {$pull: {push_subscription: pushSubscription}}).exec()
+  .then(() => res.send(200))
+  .catch(() => {
+    console.log(err);
+    res.status(500).send(err);
+  }); 
 });
 
 router.post('/subscribe', (req, res) => {
   const pushSubscription = JSON.stringify(req.body);
-  models.User.findOneAndUpdate(req.user.fb_id, {push_subscription: pushSubscription})
+  models.User.findOneAndUpdate({fb_id: req.user.fb_id}, {$push: {push_subscription: pushSubscription}})
   .exec((err) => {
     if (err) {
       console.log(err);
-      res.send(500, "Error updating user object for storing push subscription");
+      res.send(500, err);
     }
     else
       res.sendStatus(200);
   });
-});
-
-router.get('/get_picture', (req, res) => {
-  var file = fs.createWriteStream('./publichttp://graph.facebook.com/4567/picture?type=square');
-  axios.get('http://graph.facebook.com/1234/picture?type=square', {
-    responseType: 'stream',
-  })
-  .then(response => {
-    response.data.pipe(file);
-    res.send("OK");
-  })
-  .catch(err => console.log(err));
 });
 
 async function disableRequestSentGroups(groups, userId) {

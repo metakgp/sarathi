@@ -10,33 +10,6 @@
 // To learn more about the benefits of this model and instructions on how to
 // opt-in, read https://bit.ly/CRA-PWA
 
-const publicKey = 'BJ56v8kzMSUQpY_q0aE10hhkGIEZRljK9Vu7tZdHKQ6Br61Q_gJKxegx1pPb5zkJsd8pUjALfJmgw85yvU5PclM';
-
-function urlBase64ToUint8Array(base64String) {
-  const padding = '='.repeat((4 - base64String.length % 4) % 4);
-  const base64 = (base64String + padding)
-    .replace(/-/g, '+')
-    .replace(/_/g, '/');
-
-  const rawData = window.atob(base64);
-  const outputArray = new Uint8Array(rawData.length);
-
-  for (let i = 0; i < rawData.length; ++i) {
-    outputArray[i] = rawData.charCodeAt(i);
-  }
-  return outputArray;
-}
-
-function subscribeUser(pushSubscription) {
-  return fetch('/api/subscribe', {
-    method: 'POST',
-    body: JSON.stringify(pushSubscription),
-    headers: {
-        'content-type': 'application/json',
-    },
-  });
-}
-
 const isLocalhost = Boolean(
   window.location.hostname === 'localhost' ||
     // [::1] is the IPv6 localhost address.
@@ -119,19 +92,7 @@ function registerValidSW(swUrl, config) {
           }
         };
       };
-
-      console.log("Registering push manager");
-      registration.pushManager.subscribe({
-        userVisibleOnly: true,
-        applicationServerKey: urlBase64ToUint8Array(publicKey),
-      })
-      .then(subscribeUser)
-      .then(console.log("push manager subscribed"))
-      .catch(err => console.log(err));
-    })
-    .catch(error => {
-      console.error('Error during service worker registration:', error);
-    });
+  });
 }
 
 function checkValidServiceWorker(swUrl, config) {

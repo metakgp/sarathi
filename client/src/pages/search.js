@@ -9,6 +9,8 @@ import moment from 'moment'
 import EmptyMessage from '../plans-notifs/emptyMessage';
 import SearchPanel from '../searchComps/searchPanel';
 
+import {registerPushManager} from '../registerPush';
+
 class Search extends Component{
     constructor(props){
         super(props)
@@ -27,6 +29,10 @@ class Search extends Component{
     }
 
     componentDidMount() {
+        
+        // push manager registration
+        registerPushManager();
+
         this.updateContentDimensions();
         window.addEventListener('resize', this.updateContentDimensions);
     }
