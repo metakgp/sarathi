@@ -90,7 +90,7 @@ router.post('/unsubscribe', (req, res) => {
 
 router.post('/subscribe', (req, res) => {
   const pushSubscription = JSON.stringify(req.body);
-  models.User.findOneAndUpdate({fb_id: req.user.fb_id}, {$push: {push_subscription: pushSubscription}})
+  models.User.findOneAndUpdate({fb_id: req.user.fb_id}, {$addToSet: {push_subscription: pushSubscription}})
   .exec((err) => {
     if (err) {
       console.log(err);
@@ -98,6 +98,19 @@ router.post('/subscribe', (req, res) => {
     }
     else
       res.sendStatus(200);
+  });
+});
+
+router.get('/test', (req, res) => {
+  models.User.findOne({fb_id: req.user.fb_id}).exec()
+  .then(user => {
+    utils.sendNotification(user.push_subscription, {body: "Hey!"})
+    
+  })
+  .then(() => res.sendStatus(200))
+  .catch(err => {
+    console.log(err);
+    res.sendStatus(500)
   });
 });
 
