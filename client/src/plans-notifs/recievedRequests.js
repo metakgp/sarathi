@@ -22,7 +22,7 @@ export default function ReceivedRequestCard(props) {
                 <Chip label={moment(props.departure).format('hh:mm a')} 
                 variant='outlined' 
                 style={{margin:5}} />
-                <Chip label={props.members + ' members'} 
+                <Chip label={(props.members + 1) + ' members'} 
                 variant='outlined' 
                 style={{margin:5}} />
             </div>
