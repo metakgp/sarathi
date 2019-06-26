@@ -23,7 +23,7 @@ function createNotification(message, subject, object) {
 
 function sendNotification(push_subscriptions, message) {
   var promiseArray = push_subscriptions.map(subscription => {
-    webpush.sendNotification(subscription, JSON.stringify(message));
+    webpush.sendNotification(JSON.parse(subscription), JSON.stringify(message));
   })
   
   return Promise.all(promiseArray);
