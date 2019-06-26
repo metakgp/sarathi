@@ -36,7 +36,7 @@ export default function ReceivedRequestCard(props) {
                 <div style={{padding: 5}}>
                     <Typography><Link variant='h6' href={props.traveler.profile} >{props.traveler.name}</Link></Typography>
                     <Typography component='span' variant='body2'>
-                        Flight Time: {moment(props.traveler.time).format('hh:mm a')}
+                        Boarding Time: {moment(props.traveler.time).format('hh:mm a')}
                     </Typography>
                 </div>
             </div>

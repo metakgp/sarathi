@@ -62,7 +62,7 @@ function FullScreenDialog(props) {
                       </React.Fragment>
                       } secondary={
                         <React.Fragment>
-                            <Typography component='span' variant='body2'>Flight Time : {moment(props.group.owner.time).format('hh:mm a')}</Typography>
+                            <Typography component='span' variant='body2'>Boarding Time : {moment(props.group.owner.time).format('hh:mm a')}</Typography>
                         </React.Fragment>
                     }></ListItemText>
                     <Chip label='creator' color='primary' variant='outlined' />

@@ -99,7 +99,7 @@ export default function SimpleCard (props) {
             </React.Fragment>
             } secondary={
               <React.Fragment>
-                  <Typography component='span' variant='body2'>Flight Time : {moment(props.owner.time).format('hh:mm a')}</Typography>
+                  <Typography component='span' variant='body2'>Boarding Time : {moment(props.owner.time).format('hh:mm a')}</Typography>
               </React.Fragment>
           }></ListItemText>
           <Chip label='creator' color='primary' variant='outlined' />
@@ -116,7 +116,7 @@ export default function SimpleCard (props) {
                 </React.Fragment>
                 } secondary={
                   <React.Fragment>
-                      <Typography component='span' variant='body2'>Flight Time : {moment(item.time).format('hh:mm a')}</Typography>
+                      <Typography component='span' variant='body2'>Boarding Time : {moment(item.time).format('hh:mm a')}</Typography>
                   </React.Fragment>
               }></ListItemText>
             </ListItem>
