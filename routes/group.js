@@ -6,12 +6,9 @@ var webpush = require('web-push');
 var utils  = require('./util');
 
 router.get('/:id', (req, res) => {
-    models.Group.findById(req.params.id, (err, group) => {
-      if (err)
-        res.send(err)
-      else
-        res.send(group);
-    });
+  models.Group.findById(req.params.id).exec()
+  .then(group => res.status(200).send(group))
+  .catch(err => res.status(500).send(err));
 });
 
 router.get('/create_group', (req, res) => {
@@ -19,7 +16,8 @@ router.get('/create_group', (req, res) => {
 });
 
 // creates a group for the user
-router.post('/create_group', (req, res) => {
+router.post('/create_group', async (req, res) => {
+  
   var traveler = {
     fb_id: req.user.fb_id,
     profile: req.user.profile,
@@ -29,167 +27,157 @@ router.post('/create_group', (req, res) => {
     time: new Date(req.body.boardingTime),
   };
   var grp = models.Group({
-    from: req.body.from,
-    to: req.body.to,
+    from: traveler.from,
+    to: traveler.to,
     owner: traveler,
     departure: req.body.departure,
     status: 'open',
   });
-  grp.save((err, object) => {
-    if (err)
-      res.send(500, err);
-    else {
-      models.User.findOneAndUpdate({fb_id: traveler.fb_id}, {$push: {created_groups: object}})
-      .exec((err, obj) => {
-        if (err) {
-          res.send(500, err);
-        }
-        else {
-          res.send(200, "OK");
-        }
-      }) ;
-    }
-  });
+
+  grp.save()
+  .then(group => models.User.findOneAndUpdate({fb_id: traveler.fb_id}, {$push: {created_groups: group}}).exec())
+  .then(() => res.sendStatus(200))
+  .catch(err => {
+    console.log(err);
+    res.status(500).send(err);
+  })
+
 });
 
 router.get('/remove_group', (req, res) => {
   res.render('remove_group.ejs');
 });
 
-router.post('/remove_group', (req, res) => {
-  models.Group.findByIdAndDelete(req.body.groupId, (err, group) => {
-    if (err) {
-      res.send(err)
+router.post('/remove_group', async (req, res) => {
+
+  try {
+    var group = await models.Group.findByIdAndDelete(req.body.groupId).exec();
+    var owner = await models.User.findOneAndUpdate({fb_id: group.owner.fb_id}, {$pull: {'created_groups': group._id}}).exec();
+
+    const message = {
+      icon: 'http://graph.facebook.com/' + owner.fb_id + '/picture?type=square',
+      type: 'remove_group',
+      title: 'Group removed',
+      body: owner.name + ' has removed the group',
     }
-    else {
 
-      models.User.findOneAndUpdate({fb_id: group.owner.fb_id},
-        {$pull: {'created_groups': group._id}})
-      .exec((err, user) => {
-        if (err)
-          res.status(500).send(err);
-        else {
-          const message = {
-            icon: 'http://graph.facebook.com/' + group.owner.fb_id + '/picture?type=square',
-            type: 'remove_group',
-            title: 'Group removed',
-            body: group.owner.name + ' has removed the group',
-          }
-      
-          const subject = {
-            fb_id: group.owner.fb_id,
-            name: group.owner.name,
-          }
-
-          var promiseArray = group.members.map(item => {
-            utils.createNotification(message, subject, group)
-            .then(notification =>
-              models.User.findOneAndUpdate({fb_id: item.fb_id},
-                { 
-                  $push: {'notifications': notification},
-                  $pull: {'joined_groups': group._id}
-                })
-                .exec())
-            .then(user => utils.sendNotification(user.push_subscription, message));
-          });
-      
-          Promise.all(promiseArray).then(values => res.send(200)).catch(err => {
-            console.log(err);
-            res.status(500).send(err);
-          });
-        }
-      });
+    const subject = {
+      fb_id: owner.fb_id,
+      name: owner.name,
     }
-  });
-});
 
-router.post('/leave_group', (req, res) => {
-  // find the user from the database
-  models.User.findOneAndUpdate({fb_id: req.user.fb_id}, {$pull: {'joined_groups': req.body.groupId}})
-  .exec((err, user) => {
-    // find the group and remove that member
-    models.Group.findByIdAndUpdate(req.body.groupId, {$pull: {'members': {'fb_id': req.user.fb_id}}}, {new: true})
-    .exec((err, group) => {
+    var promiseArray = group.members.map(item => {
       
-      // create and send notifications to all the members
-      const message = {
-        icon: 'http://graph.facebook.com/' + user.fb_id + '/picture?type=square',
-        type: 'leave_group',
-        title: 'Left group',
-        body: user.name + " has left the group",
-      };
-
-      const subject = {
-        fb_id: user.fb_id,
-        name: user.name,
-      };
-
-      var promiseArray = group.members.map(item => {
-        utils.createNotification(message, subject, group)
-        .then(notification =>
-          models.User.findOneAndUpdate({fb_id: item.fb_id},
-          {$push: {'notifications': notification}})
-          .exec())
-        .then(user => utils.sendNotification(user.push_subscription, message));
-      });
-
-      promiseArray.push(
-        utils.createNotification(message, subject, group)
-        .then(notification =>
-          models.User.findOneAndUpdate({fb_id: group.owner.fb_id},
-          {$push: {'notifications': notification}})
-          .exec())
-        .then(user => utils.sendNotification(user.push_subscription, message))
-      );
-
-      Promise.all(promiseArray).then(values => res.send(200)).catch(err => {
-        console.log(err);
-        res.status(500).send(err);
-      });
+      utils.createNotification(message, subject, group)
+      .then(notification =>
+        models.User.findOneAndUpdate({fb_id: item.fb_id},
+          { 
+            $push: {'notifications': notification},
+            $pull: {'joined_groups': group._id}
+          })
+        .exec())
+      .then(user => utils.sendNotification(user.push_subscription, message));
 
     });
-  });
+
+    await Promise.all(promiseArray);
+    res.sendStatus(200);
+
+  }
+  catch(err) {
+    console.log(err);
+    res.status(500).send(err);
+  }
+
 });
 
-router.post('/toggle_status', (req, res) => {
+router.post('/leave_group', async (req, res) => {
+
+  try {
+    var user = await models.User.findOneAndUpdate({fb_id: req.user.fb_id}, {$pull: {'joined_groups': req.body.groupId}}).exec();
+    var group = await models.Group.findByIdAndUpdate(req.body.groupId, {$pull: {'members': {'fb_id': req.user.fb_id}}}, {new: true}).exec();
+
+    const message = {
+      icon: 'http://graph.facebook.com/' + user.fb_id + '/picture?type=square',
+      type: 'leave_group',
+      title: 'Left group',
+      body: user.name + " has left the group",
+    };
+
+    const subject = {
+      fb_id: user.fb_id,
+      name: user.name,
+    };
+
+    var promiseArray = group.members.map(item =>
+      utils.createNotification(message, subject, group)
+      .then(notification =>
+        models.User.findOneAndUpdate({fb_id: item.fb_id},
+        {$push: {'notifications': notification}})
+        .exec())
+      .then(user => utils.sendNotification(user.push_subscription, message))
+    );
+
+    promiseArray.push(
+      utils.createNotification(message, subject, group)
+      .then(notification =>
+        models.User.findOneAndUpdate({fb_id: group.owner.fb_id},
+        {$push: {'notifications': notification}})
+        .exec())
+      .then(user => utils.sendNotification(user.push_subscription, message))
+    );
+
+    await Promise.all(promiseArray);
+    res.sendStatus(200);
+  }
+  catch(err) {
+    console.log(err);
+    res.status(500).send(err);
+  }
+
+});
+
+router.post('/toggle_status', async (req, res) => {
+
+  try {
+
     if (req.body.status == 'open')
       var newStatus = 'closed';
     else
       var newStatus = 'open';
-  
-    models.Group.findByIdAndUpdate(req.body.groupId, {status: newStatus})
-    .exec((err, group) => {
-      if (err)
-        res.send(err);
-      else {
-        const message = {
-          icon: 'http://graph.facebook.com/' + group.owner.fb_id + '/picture?type=square',
-          type: 'toggle_status',
-          title: 'Status changed',
-          body: group.owner.name + " has " + (newStatus === 'open'? 'reopened' : 'closed') 
-          + " the group",
-        };
-  
-        const subject = {
-          fb_id: group.owner.fb_id,
-          name: group.owner.name,
-        };
 
-        var promiseArray = group.members.map(item => {
-          utils.createNotification(message, subject, group)
-          .then(notification =>
-            models.User.findOneAndUpdate({fb_id: item.fb_id},
-            {$push: {'notifications': notification}})
-            .exec())
-          .then(user => utils.sendNotification(user.push_subscription, message));
-        });
+    var group = await models.Group.findByIdAndUpdate(req.body.groupId, {status: newStatus}).exec();
 
-        Promise.all(promiseArray).then(values => res.send(newStatus)).catch(err => {
-          console.log(err);
-          res.status(500).send(err);
-        });
-      }
-    });
+    const message = {
+      icon: 'http://graph.facebook.com/' + group.owner.fb_id + '/picture?type=square',
+      type: 'toggle_status',
+      title: 'Status changed',
+      body: group.owner.name + " has " + (newStatus === 'open'? 'reopened' : 'closed') + " the group",
+    };
+
+
+    const subject = {
+      fb_id: group.owner.fb_id,
+      name: group.owner.name,
+    };
+
+    var promiseArray = group.members.map(item =>
+      utils.createNotification(message, subject, group)
+      .then(notification =>
+        models.User.findOneAndUpdate({fb_id: item.fb_id},
+        {$push: {'notifications': notification}})
+        .exec())
+      .then(user => utils.sendNotification(user.push_subscription, message))
+    );
+
+    await Promise.all(promiseArray);
+    res.sendStatus(200);
+  }
+  catch(err) {
+    console.log(err);
+    res.status(500).send(err);
+  }
+
 });
 
 
@@ -197,40 +185,39 @@ router.get('/change_time', (req, res) => {
     res.render('change_time.ejs');
 });
   
-router.post('/change_time', (req, res) => {
+router.post('/change_time', async (req, res) => {
     
-    models.Group.findByIdAndUpdate(req.body.groupId, {departure: new Date(req.body.departure)})
-    .exec((err, group) => {
-      if (err)
-        res.send(err);
-      else {
-        const message = {
-          icon: 'http://graph.facebook.com/' + group.owner.fb_id + '/picture?type=square',
-          type: 'change_time',
-          title: 'Time change',
-          body: group.owner.name + ' has changed the departure time'
-        };
-  
-        const subject = {
-          fb_id: group.owner.fb_id,
-          name: group.owner.name,
-        }
-  
-        var promiseArray = group.members.map(item => {
-          utils.createNotification(message, subject, group)
-          .then(notification =>
-            models.User.findOneAndUpdate({fb_id: item.fb_id},
-            {$push: {'notifications': notification}})
-            .exec())
-          .then(user => utils.sendNotification(user.push_subscription, message));
-        });
-  
-        Promise.all(promiseArray).then(values => res.send(200)).catch(err => {
-          console.log(err);
-          res.status(500).send(err);
-        });
-      }
-    });
+  try {
+    var group = await models.Group.findByIdAndUpdate(req.body.groupId, {departure: new Date(req.body.departure)}).exec();
+    const message = {
+      icon: 'http://graph.facebook.com/' + group.owner.fb_id + '/picture?type=square',
+      type: 'change_time',
+      title: 'Time change',
+      body: group.owner.name + ' has changed the departure time'
+    };
+
+    const subject = {
+      fb_id: group.owner.fb_id,
+      name: group.owner.name,
+    }
+
+    var promiseArray = group.members.map(item =>
+      utils.createNotification(message, subject, group)
+      .then(notification =>
+        models.User.findOneAndUpdate({fb_id: item.fb_id},
+        {$push: {'notifications': notification}})
+        .exec())
+      .then(user => utils.sendNotification(user.push_subscription, message))
+    );
+
+    await Promise.all(promiseArray);
+    res.sendStatus(200);
+  }
+  catch(err) {
+    console.log(err);
+    res.status(500).send(err);
+  }
+
 });
 
 module.exports = router;
