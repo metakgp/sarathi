@@ -12,17 +12,12 @@ router.post('/join_request', async (req, res) => {
 
   try {
     var traveler = {
-      // fb_id: req.user.fb_id,
-      // profile: req.user.profile,
-      // name: req.user.name,
-      // from: req.body.from,
-      // to: req.body.to,
-      // time: new Date(req.body.time),
-      fb_id: 12345,
-      name: "Abu Zar Ali",
-      from: new Date(),
-      to: new Date(),
-      time: new Date()
+      fb_id: req.user.fb_id,
+      profile: req.user.profile,
+      name: req.user.name,
+      from: req.body.from,
+      to: req.body.to,
+      time: new Date(req.body.time),
     };
 
     var group = await models.Group.findById(req.body.groupId).exec();
