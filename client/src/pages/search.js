@@ -44,10 +44,11 @@ class Search extends Component{
     updateContentDimensions() {
         const margin = document.getElementById('search_section').clientHeight;
         const width = window.innerWidth < 500 ? window.innerWidth : 500;
+        const navBarHeight = document.getElementById('appBar').clientHeight;
         this.setState({
-            contentSectionHeight: window.innerHeight - 46, 
+            contentSectionHeight: window.innerHeight - navBarHeight, 
             contentSectionWidth: width,
-            contentSectionMargin: margin,
+            contentSectionMargin: margin + navBarHeight,
         });
     }
     

@@ -25,8 +25,10 @@ export default class Groups extends React.Component {
             closeStatusCallback: undefined,
             timeChangeGroup: '',
             timeChangeDeparture: new Date(),
+            contentSectionMargin: 0,
             contentSectionHeight: 0,
             contentSectionWidth: 0,
+            appBarHeight: 0,
         }
         this.updateContentDimensions = this.updateContentDimensions.bind(this);
     }
@@ -49,7 +51,14 @@ export default class Groups extends React.Component {
 
     updateContentDimensions() {
         const width = window.innerWidth < 500 ? window.innerWidth : 500;
-        this.setState({contentSectionHeight: window.innerHeight - 48 - 46, contentSectionWidth: width});
+        const appBarHeight = document.getElementById('appBar').clientHeight;
+        const contentSectionMargin = 48 + appBarHeight;
+        this.setState({
+            contentSectionMargin: contentSectionMargin,
+            contentSectionHeight: window.innerHeight - contentSectionMargin, 
+            contentSectionWidth: width, 
+            appBarHeight: appBarHeight
+        });
     }
 
     handleTabChange = (event, value) => {
@@ -176,11 +185,11 @@ export default class Groups extends React.Component {
                 textColor='primary' 
                 indicatorColor='primary' 
                 centered
-                style={{position: 'fixed', top: '46px', width: '100%', zIndex: 1}}>
+                style={{position: 'fixed', top: this.state.appBarHeight, width: '100%', zIndex: 1}}>
                     <Tab label='Created' />
                     <Tab label='Joined' />
                 </Tabs>
-                <div style={{position: 'relative', top: '48px', height: this.state.contentSectionHeight, overflow: 'auto'}}>
+                <div style={{position: 'relative', top: this.state.contentSectionMargin, height: this.state.contentSectionHeight, overflow: 'auto'}}>
                 <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
                     {this.state.value ?
                         this.state.joined_groups.length ?

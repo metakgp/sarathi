@@ -33,7 +33,8 @@ export default class Notifications extends Component {
 
     updateContentSectionDimensions() {
         const width = window.innerWidth < 500 ? window.innerWidth : 500;
-        this.setState({contentSectionHeight: window.innerHeight - 46, contentSectionWidth: width});
+        const appBarHeight = document.getElementById('appBar').clientHeight;
+        this.setState({contentSectionHeight: window.innerHeight - appBarHeight, contentSectionWidth: width});
     }
 
     handleNotifClick(notifId, groupId, index) {
