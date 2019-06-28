@@ -19,15 +19,6 @@ export default function NavigationBar() {
   
   const [open, setOpen] = useState(false)
 
-  // myFunction = () => {
-  //   var x = document.getElementById("myTopnav");
-  //   if (x.className === "topnav") {
-  //     x.className += " responsive";
-  //   } else {
-  //     x.className = "topnav";
-  //   }
-  // }
-
   const closeDrawer = () => {
     setOpen(false);
   };
