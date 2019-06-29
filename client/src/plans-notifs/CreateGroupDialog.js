@@ -103,7 +103,10 @@ class CreateGroupDialog extends Component {
               onPassData={this.setTime} />
             </Grid>
             <Grid item xs={12}>
-              <TimeSelect label='Time of Boarding (optional)' initialValue={this.state.boardingTime} />
+              <TimeSelect 
+              label='Time of Boarding (optional)' 
+              initialValue={this.state.boardingTime}
+              onPassData={this.setBoardingTime} />
             </Grid>
             <Grid item xs={12} style={{display: 'flex', justifyContent: 'center', margin: 20}}>
               <Button 
