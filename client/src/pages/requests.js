@@ -19,6 +19,7 @@ export default class Requests extends React.Component {
             contentSectionMargin: 0,
             contentSectionHeight: 0,
             contentSectionWidth: 0,
+            actionsDisabled: false,
         }
         this.updateContentSectionHeight = this.updateContentSectionHeight.bind(this);
     }
@@ -80,6 +81,7 @@ export default class Requests extends React.Component {
     }
 
     handleApprove = (requestId, index) => {
+        this.setState({actionsDisabled: true})
         axios.post('/api/request/approve_request', {
             requestId: requestId
         })
@@ -87,38 +89,43 @@ export default class Requests extends React.Component {
             var newArray = [...this.state.received_requests];
             this.updateMembers(newArray, index);
             newArray.splice(index, 1);
-            this.setState({received_requests: newArray});
+            this.setState({received_requests: newArray, actionsDisabled: false});
         })
         .catch((err) => {
             console.log(err);
+            this.setState({actionsDisabled: false});
         });
     }
 
     handleReject = (requestId, index) => {
+        this.setState({actionsDisabled: true});
         axios.post('/api/request/reject_request', {
             requestId: requestId
         })
         .then((res) => {
             var newArray = [...this.state.received_requests];
             newArray.splice(index, 1);
-            this.setState({received_requests: newArray});    
+            this.setState({received_requests: newArray, actionsDisabled: false});    
         })
         .catch((err) => {
             console.log(err)
+            this.setState({actionsDisabled: false});
         });
     }
 
     handleCancel = (requestId, index) => {
+        this.setState({actionsDisabled: true});
         axios.post('/api/request/cancel_request', {
             requestId: requestId
         })
         .then((res) => {
             var newArray = [...this.state.sent_requests];
             newArray.splice(index, 1);
-            this.setState({sent_requests: newArray});    
+            this.setState({sent_requests: newArray, actionsDisabled: false});    
         })
         .catch((err) => {
             console.log(err)
+            this.setState({actionsDisabled: false});
         });
     }
 
@@ -145,13 +152,14 @@ export default class Requests extends React.Component {
                                 key={item._id}
                                 id={item._id} 
                                 width={this.state.contentSectionWidth}
-                                departure = {item.group.departure}
+                                departure = {item.group.departure}true
                                 from = {item.group.from}
                                 to = {item.group.to}
                                 members = {item.group.membersCount}
                                 traveler = {item.traveler} 
                                 approve = {() => this.handleApprove(item._id, index)}
                                 reject = {() => this.handleReject(item._id, index)}
+                                disabled={this.state.actionsDisabled}
                                 />)
                             :
                                 <EmptyMessage>No requests received</EmptyMessage>
@@ -168,6 +176,7 @@ export default class Requests extends React.Component {
                                 members = {item.group.membersCount}
                                 owner = {item.group.owner}
                                 cancel = {() => this.handleCancel(item._id, index)}
+                                disabled={this.state.actionsDisabled}
                                 />)
                             :
                                 <EmptyMessage>No requests sent</EmptyMessage>
