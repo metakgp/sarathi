@@ -9,6 +9,7 @@ export default class Notifications extends Component {
         super(props);
         this.state = {
             notifications: [],
+            contentSectionMargin: 0,
             contentSectionHeight: 0,
             contentSectionWidth: 0,
             showFullScreenDialog: false,
@@ -34,7 +35,11 @@ export default class Notifications extends Component {
     updateContentSectionDimensions() {
         const width = window.innerWidth < 500 ? window.innerWidth : 500;
         const appBarHeight = document.getElementById('appBar').clientHeight;
-        this.setState({contentSectionHeight: window.innerHeight - appBarHeight, contentSectionWidth: width});
+        this.setState({
+            contentSectionHeight: window.innerHeight - appBarHeight, 
+            contentSectionWidth: width,
+            contentSectionMargin: appBarHeight
+        });
     }
 
     handleNotifClick(notifId, groupId, index) {
@@ -70,7 +75,7 @@ export default class Notifications extends Component {
 
     render() {
         return (
-            <div>
+            <div style={{marginTop: this.state.contentSectionMargin}}>
             <List style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
             <div>
             {this.state.notifications.map((item, index) =>
