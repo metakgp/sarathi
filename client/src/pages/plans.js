@@ -3,6 +3,7 @@ import axios from 'axios';
 import Card from '../plans-notifs/card';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import Snackbar from '@material-ui/core/Snackbar';
 import PickersDialog from '../plans-notifs/PickersDialog';
 import ConfirmDialog from '../plans-notifs/confirmDialog';
 
@@ -12,6 +13,11 @@ import EmptyMessage from '../plans-notifs/emptyMessage';
 const closeStatusMessage = 'You should close the group only when you dont want to add more members to it. No person can request to join a closed group.'
 const removeGroupMessage = 'This will remove the group and all its members permanently.'
 const leaveGroupMessage = 'You will no longer be a part of this group and receieve updates regarding this group'
+
+const groupRemovedMessage = 'Group removed';
+const changedTimeMessage = 'Departure time changed';
+const leftGroupMessage = 'Group left';
+const networkErrorMessage = 'Something went wrong. Please check your network connection'
 
 export default class Groups extends React.Component {
     constructor(props) {
@@ -33,6 +39,7 @@ export default class Groups extends React.Component {
             contentSectionHeight: 0,
             contentSectionWidth: 0,
             appBarHeight: 0,
+            snackBarMessage: undefined,
         }
         this.updateContentDimensions = this.updateContentDimensions.bind(this);
     }
@@ -43,7 +50,7 @@ export default class Groups extends React.Component {
             this.setState({created_groups: res.data.created, joined_groups: res.data.joined})
         })
         .catch(err => {
-            console.log(err.data);
+            console.log(err);
         });
         this.updateContentDimensions();
         window.addEventListener('resize', this.updateContentDimensions);
@@ -76,10 +83,11 @@ export default class Groups extends React.Component {
         .then((res) => {
             var newArray = [...this.state.created_groups];
             newArray.splice(index, 1);
-            this.setState({created_groups: newArray});
+            this.setState({created_groups: newArray, snackBarMessage: groupRemovedMessage});
         })
         .catch((err) => {
             console.log(err);
+            this.setState({snackBarMessage: networkErrorMessage});
         });
         this.closeGroupRemoveDialog();
     }
@@ -98,11 +106,11 @@ export default class Groups extends React.Component {
                     break;
                 }
             }
-            this.setState({created_groups: newArray});
+            this.setState({created_groups: newArray, snackBarMessage: changedTimeMessage});
         })
         .catch((err) => {
             console.log(err);
-            // display dialog box
+            this.setState({snackBarMessage: networkErrorMessage});
         });
     }
 
@@ -113,10 +121,11 @@ export default class Groups extends React.Component {
         .then((res) => {
             var newArray = [...this.state.joined_groups];
             newArray.splice(index, 1);
-            this.setState({joined_groups: newArray});
+            this.setState({joined_groups: newArray, snackBarMessage: leftGroupMessage});
         })
         .catch((err) => {
             console.log(err);
+            this.setState({snackBarMessage: networkErrorMessage});
         });
         this.closeLeaveGroupDialog();
     }
@@ -235,6 +244,15 @@ export default class Groups extends React.Component {
                     }
                 </div>
                 </div>
+                <Snackbar
+                open={this.state.snackBarMessage}
+                onClose={this.snackBarOnClose}
+                autoHideDuration={6000}
+                ContentProps={{
+                    'aria-describedby': 'message-id',
+                }}
+                message={<span id="message-id">{this.state.snackBarMessage}</span>}
+                />
                 <PickersDialog
                 initialTime={this.state.timeChangeDeparture} 
                 open={this.state.showTimeDialog} 
