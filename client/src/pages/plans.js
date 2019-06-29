@@ -9,6 +9,10 @@ import ConfirmDialog from '../plans-notifs/confirmDialog';
 import EmptyMessage from '../plans-notifs/emptyMessage';
 
 
+const closeStatusMessage = 'You should close the group only when you dont want to add more members to it. No person can request to join a closed group.'
+const removeGroupMessage = 'This will remove the group and all its members permanently.'
+const leaveGroupMessage = 'You will no longer be a part of this group and receieve updates regarding this group'
+
 export default class Groups extends React.Component {
     constructor(props) {
         super(props);
@@ -240,18 +244,18 @@ export default class Groups extends React.Component {
                 open={this.state.showGroupRemoveDialog}
                 onClose={this.closeGroupRemoveDialog}
                 onConfirm={this.state.groupRemoveCallback}
-                body='This will remove the group and all its members'
+                body={removeGroupMessage}
                 />
                 <ConfirmDialog
                 open={this.state.showGroupLeaveDialog}
                 onClose={this.closeLeaveGroupDialog}
                 onConfirm={this.state.groupLeaveCallback}
-                body='You will no longer be a member of this group' />
+                body={leaveGroupMessage} />
                 <ConfirmDialog
                 open={this.state.showCloseStatusDialog}
                 onClose={this.closeCloseStatusDialog}
                 onConfirm={this.state.closeStatusCallback}
-                body='No further requests to this group will be received' />      
+                body={closeStatusMessage} />      
             </div>
         )
     }
