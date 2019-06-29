@@ -12,6 +12,8 @@ import SearchPanel from '../searchComps/searchPanel';
 import {registerPushManager} from '../registerPush';
 import { Snackbar } from '@material-ui/core';
 
+const networkErrorMessage = 'Something went wrong. Please check your network connection'
+
 class Search extends Component{
     constructor(props){
         super(props)
@@ -25,7 +27,7 @@ class Search extends Component{
             contentSectionWidth: 0,
             contentSectionMargin: 0,
             showCreateGroupDialog: false,
-            snackBarOpen: true,
+            snackBarMessage: undefined,
             disableAction: false,
         }
         this.updateContentDimensions = this.updateContentDimensions.bind(this);
@@ -89,7 +91,10 @@ class Search extends Component{
             this.setState({dataCards: result});
             this.collapseSearchPanel();
         })
-        .catch((err) => console.log(err))
+        .catch((err) => {
+            console.log(err);
+            this.setState({snackBarMessage: networkErrorMessage});
+        })
     }
 
     sendJoinRequest = (groupId, index) => {
@@ -106,7 +111,7 @@ class Search extends Component{
             this.setState({dataCards: newArray, disableAction: false});
         }).catch((err) => {
             console.log(err);
-            this.setState({disableAction: false});
+            this.setState({disableAction: false, snackBarMessage: networkErrorMessage});
         });
     }
 
@@ -115,7 +120,10 @@ class Search extends Component{
         .then((res) => {
             this.closeCreateGroupDialog();
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+            console.log(err);
+            this.setState({snackBarMessage: networkErrorMessage});
+        })
     }
 
     openCreateGroupDialog = () => {
@@ -136,7 +144,7 @@ class Search extends Component{
     }
 
     snackBarOnClose = () => {
-        this.setState({snackBarOnClose: false});
+        this.setState({snackBarMessage: undefined});
     }
 
     render() {
@@ -187,6 +195,16 @@ class Search extends Component{
             style={{margin: 10, position: 'fixed', bottom: 10, right: 10}}>
                 <AddIcon />
             </Fab>
+            <Snackbar
+            open={this.state.snackBarMessage}
+            onClose={this.snackBarOnClose}
+            autoHideDuration={6000}
+            ContentProps={{
+                'aria-describedby': 'message-id',
+            }}
+            message={<span id="message-id">{this.state.snackBarMessage}</span>}
+            style={{bottom: 100}}
+            />
             <CreateGroupDialog 
             open={this.state.showCreateGroupDialog}
             onClose={this.closeCreateGroupDialog} 
