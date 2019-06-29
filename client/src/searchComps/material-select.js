@@ -45,8 +45,8 @@ class MaterialSelect extends Component {
                 >
                   <MenuItem value='KGP'>KGP</MenuItem>
                   <MenuItem value='CCU'>CCU Kolkata Airport</MenuItem>
-                  <MenuItem value='railway-station'>Railway Station-KGP</MenuItem>
-                  <MenuItem value='howrah'>Howrah</MenuItem>
+                  <MenuItem value='KGP Railway Station'>KGP Railway Station</MenuItem>
+                  <MenuItem value='Howrah'>Howrah</MenuItem>
                 </Select>
               </FormControl>
   
