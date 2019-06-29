@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Navbar from './searchComps/respNav'
+import Navbar from './searchComps/navBar'
 import * as serviceWorker from './serviceWorker';
 import App from './App';
 //import { BrowserRouter as Router,Route } from 'react-router-dom';
