@@ -10,6 +10,7 @@ import EmptyMessage from '../plans-notifs/emptyMessage';
 import SearchPanel from '../searchComps/searchPanel';
 
 import {registerPushManager} from '../registerPush';
+import { Snackbar } from '@material-ui/core';
 
 class Search extends Component{
     constructor(props){
@@ -24,6 +25,8 @@ class Search extends Component{
             contentSectionWidth: 0,
             contentSectionMargin: 0,
             showCreateGroupDialog: false,
+            snackBarOpen: true,
+            disableAction: false,
         }
         this.updateContentDimensions = this.updateContentDimensions.bind(this);
     }
@@ -90,6 +93,7 @@ class Search extends Component{
     }
 
     sendJoinRequest = (groupId, index) => {
+        this.setState({disableAction: true});
         axios.post('/api/request/join_request', {
             from: this.state.fromPlace,
             to: this.state.toPlace,
@@ -99,9 +103,10 @@ class Search extends Component{
             console.log(res.data);
             var newArray = [...this.state.dataCards];
             newArray[index].status = 'request_sent';
-            this.setState({dataCards: newArray});
+            this.setState({dataCards: newArray, disableAction: false});
         }).catch((err) => {
             console.log(err);
+            this.setState({disableAction: false});
         });
     }
 
@@ -128,6 +133,10 @@ class Search extends Component{
 
     expandSearchPanel = () => {
         this.setState({showCard: false});
+    }
+
+    snackBarOnClose = () => {
+        this.setState({snackBarOnClose: false});
     }
 
     render() {
@@ -164,6 +173,7 @@ class Search extends Component{
                         owner = {item.owner}
                         members = {item.members}
                         join={() => this.sendJoinRequest(item._id, index)}
+                        disabled={this.state.disableAction}
                         />
                     )
                 }) :

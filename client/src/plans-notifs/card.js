@@ -39,7 +39,7 @@ export default function SimpleCard (props) {
     }
 
     buttonHTML.push(<Button
-    disabled={buttonDisabled} 
+    disabled={buttonDisabled || props.disabled} 
     onClick={props.join}>
     {buttonText}
     </Button>)
