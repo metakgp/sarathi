@@ -188,6 +188,10 @@ export default class Groups extends React.Component {
         this.setState({showCloseStatusDialog: false, closeStatusCallback: undefined});
     }
 
+    snackBarOnClose = () => {
+        this.setState({snackBarMessage: undefined});
+    }
+
     render() {
         
         return (

@@ -135,6 +135,10 @@ export default class Requests extends React.Component {
         });
     }
 
+    snackBarOnClose = () => {
+        this.setState({snackBarMessage: undefined});
+    }
+
     render() {
         
         return (
