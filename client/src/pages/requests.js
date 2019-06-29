@@ -5,7 +5,12 @@ import SentRequestCard from '../plans-notifs/sentRequest';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import EmptyMessage from '../plans-notifs/emptyMessage';
+import Snackbar from '@material-ui/core/Snackbar';
 
+const approvedMessage = 'Request Approved. The user has been added to your group';
+const rejectMessage = 'Request Rejected';
+const cancelMessage = 'Request Cancelled';
+const networkErrorMessage = 'Something went wrong. Please check your network connection'
 
 export default class Requests extends React.Component {
     constructor(props) {
@@ -20,6 +25,7 @@ export default class Requests extends React.Component {
             contentSectionHeight: 0,
             contentSectionWidth: 0,
             actionsDisabled: false,
+            snackbarMessage: undefined,
         }
         this.updateContentSectionHeight = this.updateContentSectionHeight.bind(this);
     }
@@ -89,11 +95,11 @@ export default class Requests extends React.Component {
             var newArray = [...this.state.received_requests];
             this.updateMembers(newArray, index);
             newArray.splice(index, 1);
-            this.setState({received_requests: newArray, actionsDisabled: false});
+            this.setState({received_requests: newArray, actionsDisabled: false, snackBarMessage: approvedMessage});
         })
         .catch((err) => {
             console.log(err);
-            this.setState({actionsDisabled: false});
+            this.setState({actionsDisabled: false, snackBarMessage: networkErrorMessage});
         });
     }
 
@@ -105,11 +111,11 @@ export default class Requests extends React.Component {
         .then((res) => {
             var newArray = [...this.state.received_requests];
             newArray.splice(index, 1);
-            this.setState({received_requests: newArray, actionsDisabled: false});    
+            this.setState({received_requests: newArray, actionsDisabled: false, snackBarMessage: rejectMessage});    
         })
         .catch((err) => {
             console.log(err)
-            this.setState({actionsDisabled: false});
+            this.setState({actionsDisabled: false, snackBarMessage: networkErrorMessage});
         });
     }
 
@@ -121,11 +127,11 @@ export default class Requests extends React.Component {
         .then((res) => {
             var newArray = [...this.state.sent_requests];
             newArray.splice(index, 1);
-            this.setState({sent_requests: newArray, actionsDisabled: false});    
+            this.setState({sent_requests: newArray, actionsDisabled: false, snackBarMessage: cancelMessage});    
         })
         .catch((err) => {
             console.log(err)
-            this.setState({actionsDisabled: false});
+            this.setState({actionsDisabled: false, snackBarMessage: networkErrorMessage});
         });
     }
 
@@ -183,6 +189,15 @@ export default class Requests extends React.Component {
                         }
                     </div>
                 </div>
+                <Snackbar
+                open={this.state.snackBarMessage}
+                onClose={this.snackBarOnClose}
+                autoHideDuration={6000}
+                ContentProps={{
+                    'aria-describedby': 'message-id',
+                }}
+                message={<span id="message-id">{this.state.snackBarMessage}</span>}
+                />
             </div>
         )
     }
