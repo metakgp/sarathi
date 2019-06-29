@@ -15,6 +15,8 @@ export default class Requests extends React.Component {
             received_requests: [],
             value: 0,
             count: true,
+            appBarHeight: 0,
+            contentSectionMargin: 0,
             contentSectionHeight: 0,
             contentSectionWidth: 0,
         }
@@ -48,7 +50,14 @@ export default class Requests extends React.Component {
 
     updateContentSectionHeight() {
         const width = window.innerWidth < 500 ? window.innerWidth : 500;
-        this.setState({contentSectionHeight: window.innerHeight - 46 - 48, contentSectionWidth: width});
+        const appBarHeight = document.getElementById('appBar').clientHeight;
+        const margin = 48 + appBarHeight;
+        this.setState({
+            contentSectionHeight: window.innerHeight - margin, 
+            contentSectionWidth: width, 
+            contentSectionMargin: margin,
+            appBarHeight: appBarHeight,
+        });
     }
 
     // updates all the member's (of the same group) count by 1
@@ -123,11 +132,11 @@ export default class Requests extends React.Component {
                 textColor='primary' 
                 indicatorColor='primary' 
                 centered
-                style={{position: 'fixed', top: '46px', width: '100%', zIndex: 1}}>
+                style={{position: 'fixed', top: this.state.appBarHeight, width: '100%', zIndex: 1}}>
                     <Tab label='Sent' />
                     <Tab label='Received' />
                 </Tabs>
-                <div style={{position: 'relative', top: '48px', height: this.state.contentSectionHeight, overflow: 'auto'}}>
+                <div style={{position: 'relative', top: this.state.contentSectionMargin, height: this.state.contentSectionHeight, overflow: 'auto'}}>
                     <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center',}}>    
                         {this.state.value ? 
                             this.state.received_requests.length ?

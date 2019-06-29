@@ -23,8 +23,10 @@ export default function SearchPanel(props) {
         justify: 'center',
     };
 
+    const appBarHeight = document.getElementById('appBar').clientHeight;
+
     return (
-        <Paper id='search_section' style={{position: 'fixed', top: 46, left: 0, width: '100%', zIndex: 1}}>
+        <Paper id='search_section' style={{position: 'fixed', top: appBarHeight, left: 0, width: '100%', zIndex: 1}}>
             {matches && props.collapse ? 
             <Grid container direction='column' style={{padding: 5}} onClick={props.onClick}>
                 <Grid item>
