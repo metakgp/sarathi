@@ -38,7 +38,7 @@ export default function SentRequestCard(props) {
                         <Chip label='open' variant='outlined' style={{margin:5}} />
                     </div>
             <CardActions>
-                <Button onClick={props.cancel}>Cancel request</Button>
+                <Button onClick={props.cancel} disabled={props.disabled}>Cancel request</Button>
             </CardActions>
         </Card>
     )
