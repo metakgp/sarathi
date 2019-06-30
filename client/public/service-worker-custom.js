@@ -1,6 +1,6 @@
 self.addEventListener('push', event => {
     const message = event.data.json();
-    message.badge = '/favicon-32x32.png';
+    message.badge = 'https://travelkgp.herokuapp.com/images/badge.png';
     self.registration.showNotification(message.title, message);
 });
 
