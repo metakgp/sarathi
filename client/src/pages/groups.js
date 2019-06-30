@@ -140,7 +140,10 @@ export default class Groups extends React.Component {
             newArray[index].status = res.data;
             this.setState({created_groups: newArray});
         })
-        .catch(err => console.log(err));
+        .catch(err => {
+            console.log(err);
+            this.setState({snackBarMessage: networkErrorMessage});
+        });
         this.closeCloseStatusDialog();
     }
 
@@ -224,7 +227,7 @@ export default class Groups extends React.Component {
                         leave = {() => this.openLeaveGroupDialog(() => 
                         this.handleLeaveGroup(item._id, index))} 
                         />) :
-                        <EmptyMessage>No groups joined</EmptyMessage>
+                        <EmptyMessage primary='No groups joined' />
                     :
                         this.state.created_groups.length ?
                         this.state.created_groups.map((item, index) => 
@@ -244,7 +247,10 @@ export default class Groups extends React.Component {
                         statusToggle={() => this.onToggleStatus(item.status, () =>
                         this.handleToggleStatus(item._id, index))}
                         />) :
-                        <EmptyMessage>No groups created</EmptyMessage>
+                        <EmptyMessage 
+                        primary='No groups created'
+                        secondary='You can create a group from the main page'
+                        />
                     }
                 </div>
                 </div>

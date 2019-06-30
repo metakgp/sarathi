@@ -185,7 +185,9 @@ class Search extends Component{
                         />
                     )
                 }) :
-                <EmptyMessage>No groups to show</EmptyMessage>
+                <EmptyMessage
+                primary='No groups to show' 
+                secondary='Try adjusting the time or create a new group by clicking the button at bottom right corner' />
                 }
             </div> : ''}
             <Fab 

@@ -3,6 +3,7 @@ import axios from 'axios'
 import {List, Grid, ListItem, Avatar, Typography, Divider} from '@material-ui/core'
 import moment from 'moment'
 import FullScreenDialog from '../displays/FullScreenDialog'
+import EmptyMessage from '../displays/emptyMessage'
 
 export default class Notifications extends Component {
     constructor(props) {
@@ -78,29 +79,33 @@ export default class Notifications extends Component {
             <div style={{marginTop: this.state.contentSectionMargin}}>
             <List style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
             <div>
-            {this.state.notifications.map((item, index) =>
-            <div style={{width: this.state.contentSectionWidth}}>
-                <ListItem 
-                button={!item.read}
-                alignItems="flex-start" 
-                onClick={() => this.handleNotifClick(item._id, item.object_id, index)} 
-                style={item.read ? {backgroundColor: '#efefef'} : {}}>
-                    <Grid container spacing={2}>
-                        <Grid item style={{display: 'flex', alignItems: 'center'}}>
-                            <Avatar 
-                            alt='Arib Alam' 
-                            src={'https://graph.facebook.com/' + item.subject.fb_id + '/picture?type=square'}
-                            style={{height: 60, width: 60}} />
+            {this.state.notifications.length ?
+                this.state.notifications.map((item, index) =>
+                <div style={{width: this.state.contentSectionWidth}}>
+                    <ListItem 
+                    button={!item.read}
+                    alignItems="flex-start" 
+                    onClick={() => this.handleNotifClick(item._id, item.object_id, index)} 
+                    style={item.read ? {backgroundColor: '#efefef'} : {}}>
+                        <Grid container spacing={2}>
+                            <Grid item style={{display: 'flex', alignItems: 'center'}}>
+                                <Avatar 
+                                alt='Arib Alam' 
+                                src={'https://graph.facebook.com/' + item.subject.fb_id + '/picture?type=square'}
+                                style={{height: 60, width: 60}} />
+                            </Grid>
+                            <Grid item xs style={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
+                                <Typography variant='body1'>{item.message}</Typography>
+                                <Typography variant='caption'>{moment(item.created_on).fromNow()}</Typography>
+                            </Grid>
                         </Grid>
-                        <Grid item xs style={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
-                            <Typography variant='body1'>{item.message}</Typography>
-                            <Typography variant='caption'>{moment(item.created_on).fromNow()}</Typography>
-                        </Grid>
-                    </Grid>
-                </ListItem>
-                <Divider />
-            </div>
-            )}
+                    </ListItem>
+                    <Divider />
+                </div>
+                )
+            :
+                <EmptyMessage primary='No Notifications' />
+            }
             </div>
             </List>
             <FullScreenDialog 

@@ -172,7 +172,7 @@ export default class Requests extends React.Component {
                                 disabled={this.state.actionsDisabled}
                                 />)
                             :
-                                <EmptyMessage>No requests received</EmptyMessage>
+                                <EmptyMessage primary='No requests received' />
                         : 
                             this.state.sent_requests.length ?
                             this.state.sent_requests.map((item, index) => 
@@ -189,7 +189,7 @@ export default class Requests extends React.Component {
                                 disabled={this.state.actionsDisabled}
                                 />)
                             :
-                                <EmptyMessage>No requests sent</EmptyMessage>
+                                <EmptyMessage primary='No requests sent' />
                         }
                     </div>
                 </div>
