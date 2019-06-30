@@ -42,10 +42,13 @@ router.post('/join_request', async (req, res) => {
     var [owner, traveler] = await Promise.all(promiseArray);
 
     const message = {
-      icon: 'http://graph.facebook.com/' + traveler.fb_id + '/picture?type=square',
+      icon: 'https://graph.facebook.com/' + traveler.fb_id + '/picture?type=square',
       type: 'join_request',
       title: 'Join Request',
       body: traveler.name + " has requested to join your group",
+      data: {
+        urlToOpen: '/requests'
+      }
     };
     
     await utils.sendNotification(owner.push_subscription, message)
@@ -83,10 +86,13 @@ router.post('/approve_request', async (req, res) => {
 
     // message to all the members of the group
     const messageToMembers = {
-      icon: 'http://graph.facebook.com/' + traveler.fb_id + '/picture?type=square',
+      icon: 'https://graph.facebook.com/' + traveler.fb_id + '/picture?type=square',
       type: 'approve_request',
       title: 'Group Update',
       body: traveler.name + " has joined the group",
+      data: {
+        urlToOpen: '/notifs'
+      }
     };
 
     const subjectToMembers = {
@@ -104,10 +110,13 @@ router.post('/approve_request', async (req, res) => {
 
     // message to the traveler
     const messageToTraveler = {
-      icon: 'http://graph.facebook.com/' + owner.fb_id + '/picture?type=square',
+      icon: 'https://graph.facebook.com/' + owner.fb_id + '/picture?type=square',
       type: 'approve_request',
       title: 'Request Update',
       body: owner.name + " has approved your request to join the group",
+      data: {
+        urlToOpen: '/notifs'
+      }
     };
 
     const subjectToTraveler = {
@@ -157,10 +166,13 @@ router.post('/reject_request', async (req, res) => {
 
     // message to the traveler
     const message = {
-        icon: 'http://graph.facebook.com/' + owner.fb_id + '/picture?type=square',
+        icon: 'https://graph.facebook.com/' + owner.fb_id + '/picture?type=square',
         type: 'approve_request',
         title: 'Request Update',
         body: owner.name + " has rejected your request to join the group",
+        data: {
+          urlToOpen: '/notifs'
+        }
     };
 
     const subject = {

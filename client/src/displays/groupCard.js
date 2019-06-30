@@ -91,7 +91,7 @@ export default function SimpleCard (props) {
       <List style={{padding: 5}}>
         <ListItem key={props.owner.fb_id}>
           <ListItemAvatar>
-              <Avatar alt='Remy Sharp' src={'http://graph.facebook.com/' + props.owner.fb_id + '/picture?type=square'} />
+              <Avatar alt='Remy Sharp' src={'https://graph.facebook.com/' + props.owner.fb_id + '/picture?type=square'} />
           </ListItemAvatar>
           <ListItemText primary={
             <React.Fragment>
@@ -108,7 +108,7 @@ export default function SimpleCard (props) {
           return (
             <ListItem key={item.fb_id}>
               <ListItemAvatar>
-                  <Avatar alt='Remy Sharp' src={'http://graph.facebook.com/' + item.fb_id + '/picture?type=square'} />
+                  <Avatar alt='Remy Sharp' src={'https://graph.facebook.com/' + item.fb_id + '/picture?type=square'} />
               </ListItemAvatar>
               <ListItemText primary={
                 <React.Fragment>

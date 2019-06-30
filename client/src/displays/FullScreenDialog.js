@@ -54,7 +54,7 @@ function FullScreenDialog(props) {
                 subheader={<ListSubheader component="div">Members</ListSubheader>}>
                   <ListItem key={props.group.owner.fb_id}>
                     <ListItemAvatar>
-                        <Avatar alt='Remy Sharp' src={'http://graph.facebook.com/' + props.group.owner.fb_id + '/picture?type=square'} />
+                        <Avatar alt='Remy Sharp' src={'https://graph.facebook.com/' + props.group.owner.fb_id + '/picture?type=square'} />
                     </ListItemAvatar>
                     <ListItemText primary={
                       <React.Fragment>
@@ -71,7 +71,7 @@ function FullScreenDialog(props) {
                     return (
                     <ListItem>
                         <ListItemAvatar>
-                            <Avatar alt='Remy Sharp' src={'http://graph.facebook.com/' + item.fb_id + '/picture?type=square'} />
+                            <Avatar alt='Remy Sharp' src={'https://graph.facebook.com/' + item.fb_id + '/picture?type=square'} />
                         </ListItemAvatar>
                         <ListItemText primary={
                           <React.Fragment>
