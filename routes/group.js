@@ -180,7 +180,7 @@ router.post('/toggle_status', async (req, res) => {
     );
 
     await Promise.all(promiseArray);
-    res.sendStatus(newStatus);
+    res.status(200).send(newStatus);
   }
   catch(err) {
     console.log(err);
