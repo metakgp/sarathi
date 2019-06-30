@@ -1,5 +1,5 @@
 import React,{ Component } from 'react';
-import Card from '../displays/card';
+import Card from '../displays/groupCard';
 import axios from 'axios';
 import  '../styles/App.scss';
 import Fab from '@material-ui/core/Fab';

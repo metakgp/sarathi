@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import Search from './pages/search'
-import Plans from './pages/plans'
+import Groups from './pages/groups'
 import Notifs from './pages/notifs'
 import Requests from './pages/requests'
 import LoginPage from './pages/login'
@@ -26,7 +26,7 @@ class App extends Component {
                 <Route path = '/login' component={LoginPage} />
                 <Route path = '/logout' component={Logout} />
                 <Route exact path="/" component={withAuth(Search)} />
-                <Route path ="/groups" component={withAuth(Plans)} />
+                <Route path ="/groups" component={withAuth(Groups)} />
                 <Route path='/requests' component={withAuth(Requests)} />
                 <Route path="/notifs" component={withAuth(Notifs)} />
                 <Route path='/loginRedirect' component={LoginRedirector} />
