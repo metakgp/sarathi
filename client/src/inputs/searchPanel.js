@@ -1,8 +1,8 @@
 import React from 'react';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import MaterialSelect from '../searchComps/material-select'
-import MaterialDate from '../searchComps/materialDate'
-import TimeSelect from '../searchComps/time'
+import MaterialSelect from './select'
+import MaterialDate from './datePicker'
+import TimeSelect from './timePicker'
 import  '../styles/App.scss';
 import { Paper, Grid, Button, Typography } from '@material-ui/core';
 import moment from 'moment'
