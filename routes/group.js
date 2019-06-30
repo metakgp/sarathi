@@ -55,10 +55,13 @@ router.post('/remove_group', async (req, res) => {
     var owner = await models.User.findOneAndUpdate({fb_id: group.owner.fb_id}, {$pull: {'created_groups': group._id}}).exec();
 
     const message = {
-      icon: 'http://graph.facebook.com/' + owner.fb_id + '/picture?type=square',
+      icon: 'https://graph.facebook.com/' + owner.fb_id + '/picture?type=square',
       type: 'remove_group',
       title: 'Group removed',
       body: owner.name + ' has removed the group',
+      data: {
+        urlToOpen: '/notifs'
+      }
     }
 
     const subject = {
@@ -98,10 +101,13 @@ router.post('/leave_group', async (req, res) => {
     var group = await models.Group.findByIdAndUpdate(req.body.groupId, {$pull: {'members': {'fb_id': req.user.fb_id}}}, {new: true}).exec();
 
     const message = {
-      icon: 'http://graph.facebook.com/' + user.fb_id + '/picture?type=square',
+      icon: 'https://graph.facebook.com/' + user.fb_id + '/picture?type=square',
       type: 'leave_group',
       title: 'Left group',
       body: user.name + " has left the group",
+      data: {
+        urlToOpen: '/notifs'
+      }
     };
 
     const subject = {
@@ -149,10 +155,13 @@ router.post('/toggle_status', async (req, res) => {
     var group = await models.Group.findByIdAndUpdate(req.body.groupId, {status: newStatus}).exec();
 
     const message = {
-      icon: 'http://graph.facebook.com/' + group.owner.fb_id + '/picture?type=square',
+      icon: 'https://graph.facebook.com/' + group.owner.fb_id + '/picture?type=square',
       type: 'toggle_status',
       title: 'Status changed',
       body: group.owner.name + " has " + (newStatus === 'open'? 'reopened' : 'closed') + " the group",
+      data: {
+        urlToOpen: '/notifs'
+      }
     };
 
 
@@ -190,10 +199,13 @@ router.post('/change_time', async (req, res) => {
   try {
     var group = await models.Group.findByIdAndUpdate(req.body.groupId, {departure: new Date(req.body.departure)}).exec();
     const message = {
-      icon: 'http://graph.facebook.com/' + group.owner.fb_id + '/picture?type=square',
+      icon: 'https://graph.facebook.com/' + group.owner.fb_id + '/picture?type=square',
       type: 'change_time',
       title: 'Time change',
-      body: group.owner.name + ' has changed the departure time'
+      body: group.owner.name + ' has changed the departure time',
+      data: {
+        urlToOpen: '/notifs'
+      }
     };
 
     const subject = {
