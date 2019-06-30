@@ -1,12 +1,12 @@
 import React,{ Component } from 'react';
-import Card from '../plans-notifs/card';
+import Card from '../displays/card';
 import axios from 'axios';
 import  '../styles/App.scss';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add'
-import CreateGroupDialog from '../plans-notifs/CreateGroupDialog'
+import CreateGroupDialog from '../displays/CreateGroupDialog'
 import moment from 'moment'
-import EmptyMessage from '../plans-notifs/emptyMessage';
+import EmptyMessage from '../displays/emptyMessage';
 import SearchPanel from '../inputs/searchPanel';
 
 import {registerPushManager} from '../registerPush';

@@ -1,10 +1,10 @@
 import React from 'react';
 import axios from 'axios';
-import ReceivedRequestCard from '../plans-notifs/receivedRequestCard';
-import SentRequestCard from '../plans-notifs/sentRequestCard';
+import ReceivedRequestCard from '../displays/receivedRequestCard';
+import SentRequestCard from '../displays/sentRequestCard';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import EmptyMessage from '../plans-notifs/emptyMessage';
+import EmptyMessage from '../displays/emptyMessage';
 import Snackbar from '@material-ui/core/Snackbar';
 
 const approvedMessage = 'Request Approved. The user has been added to your group';

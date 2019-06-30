@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import axios from 'axios'
 import {List, Grid, ListItem, Avatar, Typography, Divider} from '@material-ui/core'
 import moment from 'moment'
-import FullScreenDialog from '../plans-notifs/FullScreenDialog'
+import FullScreenDialog from '../displays/FullScreenDialog'
 
 export default class Notifications extends Component {
     constructor(props) {
