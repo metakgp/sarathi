@@ -1,6 +1,5 @@
-import React, { Component, useState } from 'react';
-import Typography from '@material-ui/core/Typography';
-import {AppBar, Toolbar, Link, Grid, Drawer, IconButton, Button, List, ListItem} from '@material-ui/core'
+import React, { useState } from 'react';
+import {AppBar, Toolbar, Link, Drawer, IconButton, List, ListItem} from '@material-ui/core'
 import MenuIcon from '@material-ui/icons/Menu';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
