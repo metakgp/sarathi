@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import Card from '../displays/card';
+import Card from '../displays/groupCard';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Snackbar from '@material-ui/core/Snackbar';
