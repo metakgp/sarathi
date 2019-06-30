@@ -4,7 +4,7 @@ self.addEventListener('push', event => {
 });
 
 self.addEventListener('notificationclick', event => {
-    const urlToOpen = new URL(event.notification.urlToOpen, self.location.origin).href;
+    const urlToOpen = new URL(event.notification.data.urlToOpen, self.location.origin).href;
 
     const promiseChain = clients.matchAll({
     type: 'window',
