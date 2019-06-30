@@ -36,6 +36,8 @@ class PickerDialog extends Component {
                         value={this.state.time} 
                         onChange={this.setTime} 
                         />
+                    </MuiPickersUtilsProvider>
+                    <MuiPickersUtilsProvider utils={MomentUtils}>
                         <TimePicker label='Select time' variant='inline'
                         value={this.state.time}
                         onChange={this.setTime}

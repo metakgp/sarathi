@@ -7,7 +7,7 @@ import AddIcon from '@material-ui/icons/Add'
 import CreateGroupDialog from '../plans-notifs/CreateGroupDialog'
 import moment from 'moment'
 import EmptyMessage from '../plans-notifs/emptyMessage';
-import SearchPanel from '../searchComps/searchPanel';
+import SearchPanel from '../inputs/searchPanel';
 
 import {registerPushManager} from '../registerPush';
 import { Snackbar } from '@material-ui/core';

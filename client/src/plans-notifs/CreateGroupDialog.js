@@ -8,9 +8,9 @@ import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
 import { Grid,  Button} from '@material-ui/core'
 
-import MaterialSelect from '../searchComps/material-select'
-import DateSelect from '../searchComps/materialDate'
-import TimeSelect from '../searchComps/time'
+import MaterialSelect from '../inputs/select'
+import DateSelect from '../inputs/datePicker'
+import TimeSelect from '../inputs/timePicker'
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
