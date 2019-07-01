@@ -58,4 +58,39 @@ router.get('/notifications', (req, res) => {
     });
 });
 
+router.get('/unread_notif_count', (req, res) => {
+    models.User.findOne({fb_id: req.user.fb_id}).populate('notifications').exec()
+    .then(user => {
+        var count = user.notifications.filter(item => !item.read).length;
+        res.status(200).send(count + "");
+    })
+    .catch(err => {
+        console.log(err);
+        res.sendStatus(500);
+    })
+});
+
+router.get('/groups_count', (req, res) => {
+    models.User.findOne({fb_id: req.user.fb_id}).populate('created_groups')
+    .populate('joined_groups').exec()
+    .then(user => {
+        res.status(200).send((user.created_groups.length + user.joined_groups.length) + "");
+    })
+    .catch(err => {
+        console.log(err);
+        res.sendStatus(500);
+    })
+});
+
+router.get('/requests_count', (req, res) => {
+    models.User.findOne({fb_id: req.user.fb_id}).populate('sent_requests').populate('received_requests').exec()
+    .then(user => {
+        res.status(200).send((user.sent_requests.length + user.received_requests.length) + "");
+    })
+    .catch(err => {
+        console.log(err);
+        res.sendStatus(500);
+    })
+});
+
 module.exports = router;
