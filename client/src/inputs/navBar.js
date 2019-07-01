@@ -1,14 +1,16 @@
-import React, { useState } from 'react';
-import {AppBar, Toolbar, Link, Drawer, IconButton, List, ListItem} from '@material-ui/core'
+import React, { useState, useEffect } from 'react';
+import {AppBar, Toolbar, Link, Drawer, IconButton, List, ListItem, Badge} from '@material-ui/core'
 import MenuIcon from '@material-ui/icons/Menu';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 function ListItemLink(props) {
   return (
     <ListItem>
-      <Link variant='h4' color='inherit' underline='none' style={{marginRight: 10}} href={props.href}>
-        {props.children}
-      </Link>
+      <Badge color='secondary' badgeContent={props.badgeCount}>
+        <Link variant='h4' color='inherit' underline='none' style={{marginRight: 10}} href={props.href}>
+          {props.children}
+        </Link>
+      </Badge>
     </ListItem>
   )
 }
@@ -28,6 +30,10 @@ export default function NavigationBar() {
 
   const matches = useMediaQuery('(max-width: 768px)');
   
+  useEffect(() => {
+    // make api calls here to get badge counts
+  }, []);
+  
   return (
     <div style={{flexGrow: 1}}>
     <AppBar id='appBar'>
@@ -41,39 +47,44 @@ export default function NavigationBar() {
               </IconButton>
             :
               <div>
-                <Link variant='button' color='inherit' underline='none' style={{marginRight: 20}} href='/groups'>
-                  Groups
-                </Link>
-                <Link variant='button' color='inherit' underline='none' style={{marginRight: 20}} href='/requests'>
+              <Badge color='secondary' badgeContent={1}>
+                    <Link variant='button' color='inherit' underline='none' style={{marginRight: 10, marginLeft: 20}} href='/groups'>
+                    Groups
+                    </Link>
+              </Badge>
+              <Badge color='secondary' badgeContent={1}>
+                  <Link variant='button' color='inherit' underline='none' style={{marginRight: 10, marginLeft: 20}} href='/requests'>
                   Requests
-                </Link>
-                <Link variant='button' color='inherit' underline='none' style={{marginRight: 20}} href='/notifs'>
+                  </Link>
+              </Badge>
+              <Badge color='secondary' badgeContent={1}>
+                  <Link variant='button' color='inherit' underline='none' style={{marginRight: 10, marginLeft: 20}} href='/notifs'>
                   Notifications
-                </Link>
-                <Link variant='button' color='inherit' underline='none' style={{marginRight: 20}} href='/logout'>
-                  Logout
-                </Link>
+                  </Link>
+              </Badge>
+              <Link variant='button' color='inherit' underline='none' style={{marginRight: 10, marginLeft: 20}} href='/logout'>
+              Logout
+              </Link>
               </div>
           }
         </Toolbar>
-    </AppBar>
-    { matches ?
+        { matches ?
         <Drawer
           anchor='right'
           open={open}
           onClose={closeDrawer}
         >
           <List>
-            <ListItemLink href='\groups'>
+            <ListItemLink href='\groups' badgeCount={1}>
               Groups
             </ListItemLink>
-            <ListItemLink href='\requests'>
+            <ListItemLink href='\requests' badgeCount={1}>
               Requests
             </ListItemLink>
-            <ListItemLink href='\notifs'>
+            <ListItemLink href='\notifs' badgeCount={0}>
               Notifications
             </ListItemLink>
-            <ListItemLink href='\logout'>
+            <ListItemLink href='\logout' badgeCount={0}>
               Logout
             </ListItemLink>
           </List>
@@ -81,7 +92,7 @@ export default function NavigationBar() {
       :
         ''
     }
-    
+    </AppBar>
     </div>
   );
 }

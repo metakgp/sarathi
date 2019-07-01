@@ -6,6 +6,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import EmptyMessage from '../displays/emptyMessage';
 import Snackbar from '@material-ui/core/Snackbar';
+import Badge from '@material-ui/core/Badge';
 
 const approvedMessage = 'Request Approved. The user has been added to your group';
 const rejectMessage = 'Request Rejected';
@@ -150,8 +151,16 @@ export default class Requests extends React.Component {
                 indicatorColor='primary' 
                 centered
                 style={{position: 'fixed', top: this.state.appBarHeight, width: '100%', zIndex: 1}}>
-                    <Tab label='Sent' />
-                    <Tab label='Received' />
+                    <Tab label={
+                        <Badge color='secondary' badgeContent={4} style={{paddingRight: 10}}>
+                            Sent
+                        </Badge>
+                    } />
+                    <Tab label={
+                        <Badge color='secondary' badgeContent={4} style={{paddingRight: 10}}>
+                            Received
+                        </Badge>
+                    } />
                 </Tabs>
                 <div style={{position: 'relative', top: this.state.contentSectionMargin, height: this.state.contentSectionHeight, overflow: 'auto'}}>
                     <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center',}}>    
