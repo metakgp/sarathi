@@ -20,7 +20,7 @@ router.get('/', async (req, res) => {
     {$addFields: {
       'duration': {$abs: {$subtract: ['$departure', new Date(req.query.time)]}},
     }},
-    {$match: {'duration': {$lte: 86400000}}},
+    {$match: {'duration': {$lte: 172800000}}},
     {$sort: {'duration': 1}},
   ]).exec(async (err, groups) => {
     if (err)
@@ -51,13 +51,13 @@ router.get('/', async (req, res) => {
         result = groups.slice(0, batchSize);
 
       const page_details = {
-        base: '/',
+        base: '/api',
       };
 
       // add next key for paging
       if (result.length) {
         page_details.next = url.format({
-          pathname: '/',
+          pathname: '/api',
           query: Object.assign(req.query, {after: result[result.length - 1]._id.toString()}),
         });
       }
@@ -104,8 +104,7 @@ router.post('/subscribe', (req, res) => {
 router.get('/test', (req, res) => {
   models.User.findOne({fb_id: req.user.fb_id}).exec()
   .then(user => {
-    utils.sendNotification(user.push_subscription, {body: "Hey!"})
-    
+    utils.sendNotification(user.push_subscription, {icon:'./icon.png', body: "Hey!"})
   })
   .then(() => res.sendStatus(200))
   .catch(err => {
