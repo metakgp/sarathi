@@ -10,7 +10,7 @@ import EmptyMessage from '../displays/emptyMessage';
 import SearchPanel from '../inputs/searchPanel';
 
 import {registerPushManager} from '../registerPush';
-import { Snackbar } from '@material-ui/core';
+import { Snackbar, Typography, Link } from '@material-ui/core';
 
 const networkErrorMessage = 'Something went wrong. Please check your network connection'
 
@@ -29,6 +29,7 @@ class Search extends Component{
             showCreateGroupDialog: false,
             snackBarMessage: undefined,
             disableAction: false,
+            nextUrl: undefined,
         }
         this.updateContentDimensions = this.updateContentDimensions.bind(this);
     }
@@ -85,8 +86,10 @@ class Search extends Component{
             }
         })
         .then((res) => {
+            console.log(res.data);
+            console.log(res.data.paging.next);
             var result = res.data.data;
-            this.setState({dataCards: result});
+            this.setState({dataCards: result, nextUrl: res.data.paging.next});
             this.collapseSearchPanel();
         })
         .catch((err) => {
@@ -122,6 +125,19 @@ class Search extends Component{
             console.log(err);
             this.setState({snackBarMessage: networkErrorMessage});
         })
+    }
+
+    loadMoreGroups = () => {
+        axios.get(this.state.nextUrl)
+        .then(res => {
+            var newArray = [...this.state.dataCards];
+            newArray.push(...res.data.data);
+            this.setState({dataCards: newArray, nextUrl: res.data.paging.next});
+        })
+        .catch(err => {
+            console.log(err);
+            this.setState({snackBarMessage: networkErrorMessage});
+        });
     }
 
     openCreateGroupDialog = () => {
@@ -166,26 +182,31 @@ class Search extends Component{
             <div id='card' style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
                 <div style={{height: this.state.contentSectionMargin, margin: 10}}></div>
                 { this.state.dataCards.length ?
-                this.state.dataCards.map((item, index) => {
-                    return(
-                        <Card
-                        key={item._id}
-                        id={item._id} 
-                        width={this.state.contentSectionWidth}
-                        departure = {item.departure}
-                        from = {item.from}
-                        to = {item.to}
-                        status = {item.status}
-                        owner = {item.owner}
-                        members = {item.members}
-                        join={() => this.sendJoinRequest(item._id, index)}
-                        disabled={this.state.disableAction}
-                        />
-                    )
-                }) :
-                <EmptyMessage
-                primary='No groups to show' 
-                secondary='Try adjusting the time or create a new group by clicking the button at bottom right corner' />
+                    this.state.dataCards.map((item, index) => {
+                        return(
+                            <Card
+                            key={item._id}
+                            id={item._id} 
+                            width={this.state.contentSectionWidth}
+                            departure = {item.departure}
+                            from = {item.from}
+                            to = {item.to}
+                            status = {item.status}
+                            owner = {item.owner}
+                            members = {item.members}
+                            join={() => this.sendJoinRequest(item._id, index)}
+                            disabled={this.state.disableAction}
+                            />
+                        )
+                    })
+                :
+                    <EmptyMessage
+                    primary='No groups to show' 
+                    secondary='Try adjusting the time or create a new group by clicking the button at bottom right corner' />
+                }
+                {
+                    this.state.nextUrl ?
+                    <Link variant='body1' color='inherit' onClick={this.loadMoreGroups}>Load more groups</Link> : ''
                 }
             </div> : ''}
             <Fab 
