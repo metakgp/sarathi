@@ -6,6 +6,7 @@ import Tab from '@material-ui/core/Tab';
 import Snackbar from '@material-ui/core/Snackbar';
 import PickersDialog from '../displays/PickersDialog';
 import ConfirmDialog from '../displays/confirmDialog';
+import Badge from '@material-ui/core/Badge';
 
 import EmptyMessage from '../displays/emptyMessage';
 
@@ -206,8 +207,16 @@ export default class Groups extends React.Component {
                 indicatorColor='primary' 
                 centered
                 style={{position: 'fixed', top: this.state.appBarHeight, width: '100%', zIndex: 1}}>
-                    <Tab label='Created' />
-                    <Tab label='Joined' />
+                    <Tab label={
+                        <Badge color='secondary' badgeContent={this.state.created_groups.length} style={{paddingRight: 10}}>
+                            Created
+                        </Badge>
+                    } />
+                    <Tab label={
+                        <Badge color='secondary' badgeContent={this.state.joined_groups.length} style={{paddingRight: 10}}>
+                            Joined
+                        </Badge>
+                    } />
                 </Tabs>
                 <div style={{position: 'relative', top: this.state.contentSectionMargin, height: this.state.contentSectionHeight, overflow: 'auto'}}>
                 <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
