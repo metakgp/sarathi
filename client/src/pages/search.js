@@ -13,6 +13,7 @@ import {registerPushManager} from '../registerPush';
 import { Snackbar, Typography, Link } from '@material-ui/core';
 
 const networkErrorMessage = 'Something went wrong. Please check your network connection'
+const groupCreatedMessage = 'Group created. Navigate to groups from the drawer to see it'
 
 class Search extends Component{
     constructor(props){
@@ -145,7 +146,7 @@ class Search extends Component{
     }
 
     closeCreateGroupDialog = () => {
-        this.setState({showCreateGroupDialog: false});
+        this.setState({showCreateGroupDialog: false, snackBarMessage: groupCreatedMessage});
     }
 
     collapseSearchPanel = () => {
