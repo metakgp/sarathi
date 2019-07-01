@@ -48,7 +48,7 @@ export default function NavigationBar() {
       setNotifCount(notifs);
     }
     fetchData();
-  }, []);
+  });
   
   return (
     <div style={{flexGrow: 1}}>
