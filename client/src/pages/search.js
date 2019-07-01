@@ -76,8 +76,6 @@ class Search extends Component{
     }
     
     handleSearch = () => {
-        // console.log(this.state.fromPlace)
-        // console.log(this.state.toPlace)
         var utcOffset = moment(this.state.time).utcOffset();
         axios.get('/api',{
             params: {
