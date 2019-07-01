@@ -208,12 +208,12 @@ export default class Groups extends React.Component {
                 centered
                 style={{position: 'fixed', top: this.state.appBarHeight, width: '100%', zIndex: 1}}>
                     <Tab label={
-                        <Badge color='secondary' badgeContent={4} style={{paddingRight: 10}}>
+                        <Badge color='secondary' badgeContent={this.state.created_groups.length} style={{paddingRight: 10}}>
                             Created
                         </Badge>
                     } />
                     <Tab label={
-                        <Badge color='secondary' badgeContent={4} style={{paddingRight: 10}}>
+                        <Badge color='secondary' badgeContent={this.state.joined_groups.length} style={{paddingRight: 10}}>
                             Joined
                         </Badge>
                     } />

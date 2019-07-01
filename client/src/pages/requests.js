@@ -115,7 +115,7 @@ export default class Requests extends React.Component {
             this.setState({received_requests: newArray, actionsDisabled: false, snackBarMessage: rejectMessage});    
         })
         .catch((err) => {
-            console.log(err)
+            console.log(err);
             this.setState({actionsDisabled: false, snackBarMessage: networkErrorMessage});
         });
     }
@@ -152,12 +152,12 @@ export default class Requests extends React.Component {
                 centered
                 style={{position: 'fixed', top: this.state.appBarHeight, width: '100%', zIndex: 1}}>
                     <Tab label={
-                        <Badge color='secondary' badgeContent={4} style={{paddingRight: 10}}>
+                        <Badge color='secondary' badgeContent={this.state.sent_requests.length} style={{paddingRight: 10}}>
                             Sent
                         </Badge>
                     } />
                     <Tab label={
-                        <Badge color='secondary' badgeContent={4} style={{paddingRight: 10}}>
+                        <Badge color='secondary' badgeContent={this.state.received_requests.length} style={{paddingRight: 10}}>
                             Received
                         </Badge>
                     } />
