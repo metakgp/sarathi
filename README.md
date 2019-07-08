@@ -26,8 +26,23 @@ TravelKGP Web app aims at solving all the above problems by -
 <b>Frontend:</b> ReactJS
 
 ## Features
-1. Searching for groups and joining one.
-2. Creating groups
-3. Approving/rejecting requests
-4. Changing status/time of groups
-5. Reading notifications
+1. Searching for groups matched by the journey details entered by the user
+
+![Demo](https://github.com/aribalam/TravelKGP/blob/assets/group_search.gif)
+
+2. Creating a group for a given journey
+
+![Demo](https://github.com/aribalam/TravelKGP/blob/assets/create_group.gif)
+
+3. Approving or rejecting requests by a user to join a group
+
+![Demo](https://github.com/aribalam/TravelKGP/blob/assets/approve_request.gif)
+
+4. Changing the status or the departure time of the group by the creator
+
+![Demo](https://github.com/aribalam/TravelKGP/blob/assets/change_status.gif)
+
+5. Reading notifications recieved regarding updates of the group
+
+![Demo](https://github.com/aribalam/TravelKGP/blob/assets/notifications.gif)
+
