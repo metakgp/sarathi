@@ -46,3 +46,24 @@ TravelKGP Web app aims at solving all the above problems by -
 
 ![Demo](https://github.com/aribalam/TravelKGP/blob/assets/notifications.gif)
 
+## Installation
+
+1. Clone the repository <br>
+`git clone https://github.com/aribalam/TravelKGP.git`
+
+2. Install dependencies <br>
+`cd TravelKGP` <br>
+`npm install` <br>
+`cd client && npm install`
+
+3. Create a new Facebook developer app. Find the procedure [here](https://developers.facebook.com/docs/apps/).
+
+4. Add the following properties to `config.js` in the root directory
+```
+{
+  ...
+  appId: <your-facebook-app-id>
+}
+```
+
+
