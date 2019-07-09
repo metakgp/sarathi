@@ -48,6 +48,8 @@ TravelKGP Web app aims at solving all the above problems by -
 
 ## Installation
 
+<b>Make sure MongoDB is installed and its running in your machine.</b>
+
 1. Clone the repository <br>
 `git clone https://github.com/aribalam/TravelKGP.git`
 
@@ -58,12 +60,28 @@ TravelKGP Web app aims at solving all the above problems by -
 
 3. Create a new Facebook developer app. Find the procedure [here](https://developers.facebook.com/docs/apps/).
 
-4. Add the following properties to `config.js` in the root directory
+4. Generate webpush VAPID keys and copy the private and public keys<br>
+`./node_modules/.bin/web-push generate-vapid-keys`
+
+5. Add the following properties to `config.js` in the root directory
 ```
 {
   ...
   appId: <your-facebook-app-id>
+  appSecret: <your-facebook-app-secret>
+  publicKey: <webpush-generated-public-keys>
+  privateKey: <web-push-generated-private-keys>
 }
 ```
+
+6. Add your webpush public key in `client/src/registerPush.js`<br>
+`const vapidPublicKey = <webpush-generated-public-key>`
+
+7. Launch the servers. <br>
+`DEBUG=api:* npm start`<br>
+`cd client and npm start`
+
+The development server will be hosted in `http://localhost:3000/`
+The api server will be hosted in `http://localhost:5000/api/`
 
 
