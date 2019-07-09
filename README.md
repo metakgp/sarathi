@@ -81,7 +81,7 @@ TravelKGP Web app aims at solving all the above problems by -
 `DEBUG=api:* npm start`<br>
 `cd client and npm start`
 
-The development server will be hosted in `http://localhost:3000/`
+The development server will be hosted in `http://localhost:3000/`<br>
 The api server will be hosted in `http://localhost:5000/api/`
 
 
