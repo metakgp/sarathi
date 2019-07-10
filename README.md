@@ -7,6 +7,8 @@
 
 TravelKGP is a progressive web application intended to connect a group of people taking the same journey at the same time for sharing cabs.
 
+Maintained by [Arib Alam](https://www.github.com/aribalam)
+
 ## Motivation
 IIT Kharagpur has a facebook page named [Travel KGP!](https://www.facebook.com/groups/1808688549401165/) where students would post their journey details with a prospect of finding other students with similar journey to share rides. The process however was quite disorganized due to the following reasons
 
