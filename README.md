@@ -52,8 +52,9 @@ TravelKGP Web app aims at solving all the above problems by -
 
 <b>Make sure MongoDB is installed and its running in your machine.</b>
 
-1. Clone the repository <br>
-`git clone https://github.com/aribalam/TravelKGP.git`
+1. Clone the repository and switch to `develop` branch<br>
+`git clone https://github.com/aribalam/TravelKGP.git`<br>
+`git checkout develop`
 
 2. Install dependencies <br>
 `cd TravelKGP` <br>
