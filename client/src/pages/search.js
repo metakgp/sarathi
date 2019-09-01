@@ -215,7 +215,7 @@ class Search extends Component{
             color="primary" 
             aria-label="Add" 
             onClick={this.openCreateGroupDialog}
-            style={{margin: 10, position: 'fixed', bottom: 10, right: 10}}>
+            style={{margin: 10, position: 'fixed', bottom: 60, right: 10}}>
                 <AddIcon />
             </Fab>
             <Snackbar
