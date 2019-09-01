@@ -7,6 +7,7 @@ import Tab from '@material-ui/core/Tab';
 import EmptyMessage from '../displays/emptyMessage';
 import Snackbar from '@material-ui/core/Snackbar';
 import Badge from '@material-ui/core/Badge';
+import Footer from '../displays/footer'
 
 const approvedMessage = 'Request Approved. The user has been added to your group';
 const rejectMessage = 'Request Rejected';
@@ -211,6 +212,7 @@ export default class Requests extends React.Component {
                 }}
                 message={<span id="message-id">{this.state.snackBarMessage}</span>}
                 />
+                <Footer />
             </div>
         )
     }

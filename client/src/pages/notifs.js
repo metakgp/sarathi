@@ -4,6 +4,7 @@ import {List, Grid, ListItem, Avatar, Typography, Divider} from '@material-ui/co
 import moment from 'moment'
 import FullScreenDialog from '../displays/FullScreenDialog'
 import EmptyMessage from '../displays/emptyMessage'
+import Footer from '../displays/footer';
 
 export default class Notifications extends Component {
     constructor(props) {
@@ -112,6 +113,7 @@ export default class Notifications extends Component {
             open={this.state.showFullScreenDialog} 
             onClose={this.closeFullScreenDialog}
             group={this.state.dialogGroup} />
+            <Footer />
             </div>
         );
     }

@@ -11,6 +11,7 @@ import SearchPanel from '../inputs/searchPanel';
 
 import {registerPushManager} from '../registerPush';
 import { Snackbar, Typography, Link } from '@material-ui/core';
+import Footer from '../displays/footer';
 
 const networkErrorMessage = 'Something went wrong. Please check your network connection'
 const groupCreatedMessage = 'Group created. Navigate to groups from the drawer to see it'
@@ -233,6 +234,7 @@ class Search extends Component{
             initialValues={{from: this.state.fromPlace, to: this.state.toPlace, time: this.state.time}}   
             onSubmit={this.createGroup}
             />
+            <Footer />
         </div>
         )
     }
