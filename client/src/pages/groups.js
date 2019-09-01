@@ -65,9 +65,10 @@ export default class Groups extends React.Component {
         const width = window.innerWidth < 500 ? window.innerWidth : 500;
         const appBarHeight = document.getElementById('appBar').clientHeight;
         const contentSectionMargin = 48 + appBarHeight;
+        const footerHeight = document.getElementById('footer').clientHeight;
         this.setState({
             contentSectionMargin: contentSectionMargin,
-            contentSectionHeight: window.innerHeight - contentSectionMargin, 
+            contentSectionHeight: window.innerHeight - contentSectionMargin - footerHeight, 
             contentSectionWidth: width, 
             appBarHeight: appBarHeight
         });

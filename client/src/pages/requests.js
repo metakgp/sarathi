@@ -61,8 +61,9 @@ export default class Requests extends React.Component {
         const width = window.innerWidth < 500 ? window.innerWidth : 500;
         const appBarHeight = document.getElementById('appBar').clientHeight;
         const margin = 48 + appBarHeight;
+        const footerheight = document.getElementById('footer').clientHeight;
         this.setState({
-            contentSectionHeight: window.innerHeight - margin, 
+            contentSectionHeight: window.innerHeight - margin - footerheight, 
             contentSectionWidth: width, 
             contentSectionMargin: margin,
             appBarHeight: appBarHeight,

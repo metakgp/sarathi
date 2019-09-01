@@ -37,8 +37,9 @@ export default class Notifications extends Component {
     updateContentSectionDimensions() {
         const width = window.innerWidth < 500 ? window.innerWidth : 500;
         const appBarHeight = document.getElementById('appBar').clientHeight;
+        const footerHeight = document.getElementById('footer').clientHeight;
         this.setState({
-            contentSectionHeight: window.innerHeight - appBarHeight, 
+            contentSectionHeight: window.innerHeight - appBarHeight - footerHeight, 
             contentSectionWidth: width,
             contentSectionMargin: appBarHeight
         });
