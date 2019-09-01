@@ -180,42 +180,42 @@ class Search extends Component{
             collapse = {this.state.showCard}
             onClick = {this.expandSearchPanel}
             />
-            {this.state.showCard ? 
-            <div id='card' style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-                <div style={{height: this.state.contentSectionMargin, margin: 10}}></div>
-                { this.state.dataCards.length ?
-                    this.state.dataCards.map((item, index) => {
-                        return(
-                            <Card
-                            key={item._id}
-                            id={item._id} 
-                            width={this.state.contentSectionWidth}
-                            departure = {item.departure}
-                            from = {item.from}
-                            to = {item.to}
-                            status = {item.status}
-                            owner = {item.owner}
-                            members = {item.members}
-                            join={() => this.sendJoinRequest(item._id, index)}
-                            disabled={this.state.disableAction}
-                            />
-                        )
-                    })
-                :
-                    <EmptyMessage
-                    primary='No groups to show' 
-                    secondary='Try adjusting the time or create a new group by clicking the button at bottom right corner' />
-                }
-                {
-                    this.state.nextUrl ?
-                    <Link variant='body1' color='inherit' onClick={this.loadMoreGroups}>Load more groups</Link> : ''
-                }
-            </div> : ''}
+                {this.state.showCard ? 
+                <div id='card' style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+                    <div style={{height: this.state.contentSectionMargin, margin: 10}}></div>
+                    { this.state.dataCards.length ?
+                        this.state.dataCards.map((item, index) => {
+                            return(
+                                <Card
+                                key={item._id}
+                                id={item._id} 
+                                width={this.state.contentSectionWidth}
+                                departure = {item.departure}
+                                from = {item.from}
+                                to = {item.to}
+                                status = {item.status}
+                                owner = {item.owner}
+                                members = {item.members}
+                                join={() => this.sendJoinRequest(item._id, index)}
+                                disabled={this.state.disableAction}
+                                />
+                            )
+                        })
+                    :
+                        <EmptyMessage
+                        primary='No groups to show' 
+                        secondary='Try adjusting the time or create a new group by clicking the button at bottom right corner' />
+                    }
+                    {
+                        this.state.nextUrl ?
+                        <Link variant='body1' color='inherit' onClick={this.loadMoreGroups}>Load more groups</Link> : ''
+                    }
+                </div> : ''}
             <Fab 
             color="primary" 
             aria-label="Add" 
             onClick={this.openCreateGroupDialog}
-            style={{margin: 10, position: 'fixed', bottom: 60, right: 10}}>
+            style={{margin: 10, position: 'fixed', bottom: 80, right: 10}}>
                 <AddIcon />
             </Fab>
             <Snackbar
