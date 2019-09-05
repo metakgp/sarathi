@@ -11,6 +11,7 @@ import SearchPanel from '../inputs/searchPanel';
 
 import {registerPushManager} from '../registerPush';
 import { Snackbar, Typography, Link } from '@material-ui/core';
+import Footer from '../displays/footer';
 
 const networkErrorMessage = 'Something went wrong. Please check your network connection'
 const groupCreatedMessage = 'Group created. Navigate to groups from the drawer to see it'
@@ -27,10 +28,12 @@ class Search extends Component{
             contentSectionHeight: 0,
             contentSectionWidth: 0,
             contentSectionMargin: 0,
+            navBarHeight: 0,
             showCreateGroupDialog: false,
             snackBarMessage: undefined,
             disableAction: false,
             nextUrl: undefined,
+            footerHeight: 0,
         }
         this.updateContentDimensions = this.updateContentDimensions.bind(this);
     }
@@ -49,13 +52,16 @@ class Search extends Component{
     }
 
     updateContentDimensions() {
-        const margin = document.getElementById('search_section').clientHeight;
+        const searchHeight = document.getElementById('search_section').clientHeight;
         const width = window.innerWidth < 500 ? window.innerWidth : 500;
         const navBarHeight = document.getElementById('appBar').clientHeight;
+        const footerHeight = document.getElementById('footer').clientHeight;
         this.setState({
-            contentSectionHeight: window.innerHeight - navBarHeight, 
+            contentSectionHeight: window.innerHeight - navBarHeight - footerHeight, 
             contentSectionWidth: width,
-            contentSectionMargin: margin + navBarHeight,
+            contentSectionMargin: searchHeight,
+            footerHeight: footerHeight,
+            navBarHeight: navBarHeight,
         });
     }
     
@@ -166,55 +172,56 @@ class Search extends Component{
         
         return (
         <div>
-            <SearchPanel 
-            contentSectionHeight = {this.state.contentSectionHeight}
-            fromPlace = {this.state.fromPlace}
-            setFromPlace = {this.setFromPlace}
-            toPlace = {this.state.toPlace}
-            setToPlace = {this.setToPlace}
-            time = {this.state.time}
-            setDate = {this.setDate}
-            setTime =  {this.setTime}
-            handleSearch = {this.handleSearch}
-            collapse = {this.state.showCard}
-            onClick = {this.expandSearchPanel}
-            />
-            {this.state.showCard ? 
-            <div id='card' style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-                <div style={{height: this.state.contentSectionMargin, margin: 10}}></div>
-                { this.state.dataCards.length ?
-                    this.state.dataCards.map((item, index) => {
-                        return(
-                            <Card
-                            key={item._id}
-                            id={item._id} 
-                            width={this.state.contentSectionWidth}
-                            departure = {item.departure}
-                            from = {item.from}
-                            to = {item.to}
-                            status = {item.status}
-                            owner = {item.owner}
-                            members = {item.members}
-                            join={() => this.sendJoinRequest(item._id, index)}
-                            disabled={this.state.disableAction}
-                            />
-                        )
-                    })
-                :
-                    <EmptyMessage
-                    primary='No groups to show' 
-                    secondary='Try adjusting the time or create a new group by clicking the button at bottom right corner' />
-                }
-                {
-                    this.state.nextUrl ?
-                    <Link variant='body1' color='inherit' onClick={this.loadMoreGroups}>Load more groups</Link> : ''
-                }
-            </div> : ''}
+                <SearchPanel 
+                contentSectionHeight = {this.state.contentSectionHeight}
+                fromPlace = {this.state.fromPlace}
+                setFromPlace = {this.setFromPlace}
+                toPlace = {this.state.toPlace}
+                setToPlace = {this.setToPlace}
+                time = {this.state.time}
+                setDate = {this.setDate}
+                setTime =  {this.setTime}
+                handleSearch = {this.handleSearch}
+                collapse = {this.state.showCard}
+                onClick = {this.expandSearchPanel}
+                />
+                {this.state.showCard ? 
+                <div style={{position: 'relative', top: this.state.navBarHeight, height: this.state.contentSectionHeight, overflowX: 'hidden', overflowY: 'auto'}}>
+                <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+                    <div style={{height: this.state.contentSectionMargin, margin: 10}}></div>
+                    { this.state.dataCards.length ?
+                        this.state.dataCards.map((item, index) => {
+                            return(
+                                <Card
+                                key={item._id}
+                                id={item._id} 
+                                width={this.state.contentSectionWidth}
+                                departure = {item.departure}
+                                from = {item.from}
+                                to = {item.to}
+                                status = {item.status}
+                                owner = {item.owner}
+                                members = {item.members}
+                                join={() => this.sendJoinRequest(item._id, index)}
+                                disabled={this.state.disableAction}
+                                />
+                            )
+                        })
+                    :
+                        <EmptyMessage
+                        primary='No groups to show' 
+                        secondary='Try adjusting the time or create a new group by clicking the button at bottom right corner' />
+                    }
+                    {
+                        this.state.nextUrl ?
+                        <Link variant='body1' color='inherit' onClick={this.loadMoreGroups}>Load more groups</Link> : ''
+                    }
+                </div></div> : ''}
             <Fab 
             color="primary" 
             aria-label="Add" 
             onClick={this.openCreateGroupDialog}
-            style={{margin: 10, position: 'fixed', bottom: 10, right: 10}}>
+            style={{margin: 10, position: 'fixed', bottom: this.state.footerHeight + 10, right: 10}}>
                 <AddIcon />
             </Fab>
             <Snackbar
@@ -233,6 +240,7 @@ class Search extends Component{
             initialValues={{from: this.state.fromPlace, to: this.state.toPlace, time: this.state.time}}   
             onSubmit={this.createGroup}
             />
+            {/* <Footer /> */}
         </div>
         )
     }

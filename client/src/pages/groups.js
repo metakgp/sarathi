@@ -9,7 +9,7 @@ import ConfirmDialog from '../displays/confirmDialog';
 import Badge from '@material-ui/core/Badge';
 
 import EmptyMessage from '../displays/emptyMessage';
-
+import Footer from '../displays/footer';
 
 const closeStatusMessage = 'You should close the group only when you dont want to add more members to it. No person can request to join a closed group.'
 const removeGroupMessage = 'This will remove the group and all its members permanently.'
@@ -65,9 +65,10 @@ export default class Groups extends React.Component {
         const width = window.innerWidth < 500 ? window.innerWidth : 500;
         const appBarHeight = document.getElementById('appBar').clientHeight;
         const contentSectionMargin = 48 + appBarHeight;
+        const footerHeight = document.getElementById('footer').clientHeight;
         this.setState({
             contentSectionMargin: contentSectionMargin,
-            contentSectionHeight: window.innerHeight - contentSectionMargin, 
+            contentSectionHeight: window.innerHeight - contentSectionMargin - footerHeight, 
             contentSectionWidth: width, 
             appBarHeight: appBarHeight
         });
@@ -292,7 +293,8 @@ export default class Groups extends React.Component {
                 open={this.state.showCloseStatusDialog}
                 onClose={this.closeCloseStatusDialog}
                 onConfirm={this.state.closeStatusCallback}
-                body={closeStatusMessage} />      
+                body={closeStatusMessage} />  
+                <Footer />
             </div>
         )
     }
