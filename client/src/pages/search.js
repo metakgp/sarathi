@@ -126,7 +126,7 @@ class Search extends Component{
     createGroup = (groupInfo) => {
         axios.post('/api/group/create_group', groupInfo)
         .then((res) => {
-            this.closeCreateGroupDialog();
+            this.closeCreateGroupDialog(true);
         })
         .catch(err => {
             console.log(err);
@@ -151,8 +151,12 @@ class Search extends Component{
         this.setState({showCreateGroupDialog: true});
     }
 
-    closeCreateGroupDialog = () => {
-        this.setState({showCreateGroupDialog: false, snackBarMessage: groupCreatedMessage});
+    closeCreateGroupDialog = (success) => {
+        console.log("Closed...");
+        if (success)
+            this.setState({showCreateGroupDialog: false, snackBarMessage: groupCreatedMessage});
+        else
+            this.setState({showCreateGroupDialog: false});
     }
 
     collapseSearchPanel = () => {
@@ -236,7 +240,7 @@ class Search extends Component{
             />
             <CreateGroupDialog 
             open={this.state.showCreateGroupDialog}
-            onClose={this.closeCreateGroupDialog} 
+            onClose={() => this.closeCreateGroupDialog(false)} 
             initialValues={{from: this.state.fromPlace, to: this.state.toPlace, time: this.state.time}}   
             onSubmit={this.createGroup}
             />
