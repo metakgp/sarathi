@@ -5,6 +5,7 @@ import  '../styles/App.scss';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add'
 import CreateGroupDialog from '../displays/CreateGroupDialog'
+import AddLinkDialog from '../displays/addLinkDialog'
 import moment from 'moment'
 import EmptyMessage from '../displays/emptyMessage';
 import SearchPanel from '../inputs/searchPanel';
@@ -30,10 +31,12 @@ class Search extends Component{
             contentSectionMargin: 0,
             navBarHeight: 0,
             showCreateGroupDialog: false,
+            showAddLinkDialog: false,
             snackBarMessage: undefined,
             disableAction: false,
             nextUrl: undefined,
             footerHeight: 0,
+            userProfileLink: '',
         }
         this.updateContentDimensions = this.updateContentDimensions.bind(this);
     }
@@ -42,6 +45,8 @@ class Search extends Component{
         
         // push manager registration
         registerPushManager();
+
+        this.getUserProfileLink();
 
         this.updateContentDimensions();
         window.addEventListener('resize', this.updateContentDimensions);
@@ -228,6 +233,13 @@ class Search extends Component{
             style={{margin: 10, position: 'fixed', bottom: this.state.footerHeight + 10, right: 10}}>
                 <AddIcon />
             </Fab>
+            <Fab 
+            color="primary" 
+            aria-label="Add" 
+            onClick={this.openAddLinkDialog}
+            style={{margin: 10, position: 'fixed', bottom: this.state.footerHeight + 80, right: 10}}>
+                <AddIcon />
+            </Fab>
             <Snackbar
             open={this.state.snackBarMessage}
             onClose={this.snackBarOnClose}
@@ -243,6 +255,12 @@ class Search extends Component{
             onClose={() => this.closeCreateGroupDialog(false)} 
             initialValues={{from: this.state.fromPlace, to: this.state.toPlace, time: this.state.time}}   
             onSubmit={this.createGroup}
+            />
+            <AddLinkDialog 
+            open={this.state.showAddLinkDialog}
+            onClose={this.closeAddLinkDialog}
+            onSubmit={this.updateLink}
+            link={this.state.userProfileLink}
             />
             {/* <Footer /> */}
         </div>
