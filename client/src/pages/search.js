@@ -164,6 +164,36 @@ class Search extends Component{
             this.setState({showCreateGroupDialog: false});
     }
 
+    getUserProfileLink = () => {
+        axios.get("/api/user/get_link/")
+        .then(res => {
+            this.setState({userProfileLink: res.data});
+            if (res.data === "")
+              this.openAddLinkDialog();
+        })
+        .catch(err => console.log(err));
+    }
+  
+    updateLink = (link) => {
+        axios.post("/api/user/set_link/", {
+            link: this.state.userProfileLink,
+        })
+        .then(res => {
+            this.setState({userProfileLink: link});
+        })
+        .catch(err => console.log(err));
+        
+        this.closeAddLinkDialog()
+    }
+
+    openAddLinkDialog = () => {
+        this.setState({showAddLinkDialog: true});
+    }
+
+    closeAddLinkDialog = () => {
+        this.setState({showAddLinkDialog: false});
+    }
+
     collapseSearchPanel = () => {
         this.setState({showCard: true});
         this.updateContentDimensions();
