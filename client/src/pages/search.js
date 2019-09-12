@@ -176,7 +176,7 @@ class Search extends Component{
   
     updateLink = (link) => {
         axios.post("/api/user/set_link/", {
-            link: this.state.userProfileLink,
+            link: link,
         })
         .then(res => {
             this.setState({userProfileLink: link});
