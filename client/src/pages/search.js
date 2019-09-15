@@ -4,6 +4,7 @@ import axios from 'axios';
 import  '../styles/App.scss';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add'
+import LinkIcon from '@material-ui/icons/Link'
 import CreateGroupDialog from '../displays/CreateGroupDialog'
 import AddLinkDialog from '../displays/addLinkDialog'
 import moment from 'moment'
@@ -268,7 +269,7 @@ class Search extends Component{
             aria-label="Add" 
             onClick={this.openAddLinkDialog}
             style={{margin: 10, position: 'fixed', bottom: this.state.footerHeight + 80, right: 10}}>
-                <AddIcon />
+                <LinkIcon />
             </Fab>
             <Snackbar
             open={this.state.snackBarMessage}
