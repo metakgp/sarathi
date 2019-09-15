@@ -111,6 +111,17 @@ router.post('/set_link', (req, res) => {
         console.log(err);
         res.sendStatus(500);
     });
+});
+
+router.get('/show_profile_dialog', (req, res) => {
+    models.User.findOne({fb_id: req.user.fb_id}).exec()
+    .then(user => {
+        res.status(200).send(user.showProfileDialog);
+    })
+    .catch(err => {
+        console.log(err);
+        res.sendStatus(500);
+    });
 })
 
 module.exports = router;
