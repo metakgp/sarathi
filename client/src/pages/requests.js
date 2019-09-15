@@ -165,7 +165,7 @@ export default class Requests extends React.Component {
                     } />
                 </Tabs>
                 <div style={{position: 'relative', top: this.state.contentSectionMargin, height: this.state.contentSectionHeight, overflow: 'auto'}}>
-                    <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center',}}>    
+                    <div style={{display: 'flex', flexDirection: 'column-reverse', alignItems: 'center',}}>    
                         {this.state.value ? 
                             this.state.received_requests.length ?
                             this.state.received_requests.map((item, index) => 
