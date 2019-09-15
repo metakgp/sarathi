@@ -4,6 +4,7 @@ import axios from 'axios';
 import  '../styles/App.scss';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add'
+import LinkIcon from '@material-ui/icons/Link'
 import CreateGroupDialog from '../displays/CreateGroupDialog'
 import AddLinkDialog from '../displays/addLinkDialog'
 import moment from 'moment'
@@ -168,15 +169,18 @@ class Search extends Component{
         axios.get("/api/user/get_link/")
         .then(res => {
             this.setState({userProfileLink: res.data});
-            if (res.data === "")
-              this.openAddLinkDialog();
+            return axios.get('/api/user/show_profile_dialog')
+            .then(response => {
+                if (res.data === "" && response.data === true)
+                    this.openAddLinkDialog();
+            });
         })
         .catch(err => console.log(err));
     }
   
     updateLink = (link) => {
         axios.post("/api/user/set_link/", {
-            link: this.state.userProfileLink,
+            link: link,
         })
         .then(res => {
             this.setState({userProfileLink: link});
@@ -184,6 +188,17 @@ class Search extends Component{
         .catch(err => console.log(err));
         
         this.closeAddLinkDialog()
+    }
+
+    dontShowAgain = () => {
+        axios.post('/api/user/dont_show_profile_dialog', {
+            value: false,
+        })
+        .catch(() => {
+            this.setState({snackBarMessage: networkErrorMessage});
+        });
+
+        this.closeAddLinkDialog();
     }
 
     openAddLinkDialog = () => {
@@ -268,7 +283,7 @@ class Search extends Component{
             aria-label="Add" 
             onClick={this.openAddLinkDialog}
             style={{margin: 10, position: 'fixed', bottom: this.state.footerHeight + 80, right: 10}}>
-                <AddIcon />
+                <LinkIcon />
             </Fab>
             <Snackbar
             open={this.state.snackBarMessage}
@@ -290,6 +305,7 @@ class Search extends Component{
             open={this.state.showAddLinkDialog}
             onClose={this.closeAddLinkDialog}
             onSubmit={this.updateLink}
+            dontShowAgain={this.dontShowAgain}
             link={this.state.userProfileLink}
             />
             {/* <Footer /> */}

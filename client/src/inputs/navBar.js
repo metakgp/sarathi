@@ -37,15 +37,24 @@ export default function NavigationBar() {
 
   const getBadgeCounts = async () => {
 
-    var groups = (await axios.get('/api/user/groups_count')).data;
-    setGroupsCount(groups);
+    try {
+      var groups = (await axios.get('/api/user/groups_count')).data;
+      setGroupsCount(groups);
+    }
+    catch {}
 
-    var requests = (await axios.get('/api/user/requests_count')).data;
-    setRequestsCount(requests);
+    try {
+      var requests = (await axios.get('/api/user/requests_count')).data;
+      setRequestsCount(requests);
+    }
+    catch {}
 
-    var notifs = (await axios.get('/api/user/unread_notif_count')).data;
-    setNotifCount(notifs);
-
+    try {
+      var notifs = (await axios.get('/api/user/unread_notif_count')).data;
+      setNotifCount(notifs);
+    }
+    catch {}
+    
   };
   
   useEffect(() => {

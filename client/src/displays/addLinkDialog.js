@@ -34,6 +34,9 @@ export default class UpdateLinkDialog extends Component {
           />
         </DialogContent>
         <DialogActions>
+          <Button onClick={this.props.dontShowAgain} color="primary">
+            Dont show again
+          </Button>
           <Button onClick={() => this.props.onSubmit(this.state.link)} color="primary">
             Update
           </Button>
