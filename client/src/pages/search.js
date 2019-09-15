@@ -190,6 +190,17 @@ class Search extends Component{
         this.closeAddLinkDialog()
     }
 
+    dontShowAgain = () => {
+        axios.post('/api/user/dont_show_profile_dialog', {
+            value: false,
+        })
+        .catch(() => {
+            this.setState({snackBarMessage: networkErrorMessage});
+        });
+
+        this.closeAddLinkDialog();
+    }
+
     openAddLinkDialog = () => {
         this.setState({showAddLinkDialog: true});
     }
@@ -294,6 +305,7 @@ class Search extends Component{
             open={this.state.showAddLinkDialog}
             onClose={this.closeAddLinkDialog}
             onSubmit={this.updateLink}
+            dontShowAgain={this.dontShowAgain}
             link={this.state.userProfileLink}
             />
             {/* <Footer /> */}
