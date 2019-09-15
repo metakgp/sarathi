@@ -30,6 +30,10 @@ const userSchema = mongoose.Schema({
     }],
     push_subscription: [String],
     profilePic: String,
+    showProfileDialog: {
+        type: Boolean,
+        default: true,
+    }
 });
 
 const User = mongoose.model('User', userSchema);
