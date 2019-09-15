@@ -169,8 +169,11 @@ class Search extends Component{
         axios.get("/api/user/get_link/")
         .then(res => {
             this.setState({userProfileLink: res.data});
-            if (res.data === "")
-              this.openAddLinkDialog();
+            return axios.get('/api/user/show_profile_dialog')
+            .then(response => {
+                if (res.data === "" && response.data === true)
+                    this.openAddLinkDialog();
+            });
         })
         .catch(err => console.log(err));
     }
