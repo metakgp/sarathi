@@ -124,4 +124,15 @@ router.get('/show_profile_dialog', (req, res) => {
     });
 })
 
+router.post('/dont_show_profile_dialog', (req, res) => {
+    models.User.findOneAndUpdate({fb_id: req.user.fb_id}, {showProfileDialog: req.body.value}).exec()
+    .then(() => {
+        res.sendStatus(200);
+    })
+    .catch(err => {
+        console.log(err);
+        res.sendStatus(500);
+    });
+})
+
 module.exports = router;
