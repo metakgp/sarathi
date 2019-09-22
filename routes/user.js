@@ -93,4 +93,46 @@ router.get('/requests_count', (req, res) => {
     })
 });
 
+router.get('/get_link', (req, res) => {
+    models.User.findOne({fb_id: req.user.fb_id}).exec()
+    .then(user => {
+        res.status(200).send(user.profile);
+    })
+    .catch(err => {
+        console.log(err);
+        res.sendStatus(500);
+    });
+})
+
+router.post('/set_link', (req, res) => {
+    models.User.findOneAndUpdate({fb_id: req.user.fb_id}, {profile: req.body.link}).exec()
+    .then(() => res.sendStatus(200))
+    .catch(err => {
+        console.log(err);
+        res.sendStatus(500);
+    });
+});
+
+router.get('/show_profile_dialog', (req, res) => {
+    models.User.findOne({fb_id: req.user.fb_id}).exec()
+    .then(user => {
+        res.status(200).send(user.showProfileDialog);
+    })
+    .catch(err => {
+        console.log(err);
+        res.sendStatus(500);
+    });
+})
+
+router.post('/dont_show_profile_dialog', (req, res) => {
+    models.User.findOneAndUpdate({fb_id: req.user.fb_id}, {showProfileDialog: req.body.value}).exec()
+    .then(() => {
+        res.sendStatus(200);
+    })
+    .catch(err => {
+        console.log(err);
+        res.sendStatus(500);
+    });
+})
+
 module.exports = router;

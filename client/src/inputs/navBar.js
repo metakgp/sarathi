@@ -34,18 +34,35 @@ export default function NavigationBar() {
   };
 
   const matches = useMediaQuery('(max-width: 768px)');
+
+  const getBadgeCounts = async () => {
+
+    try {
+      var groups = (await axios.get('/api/user/groups_count')).data;
+      setGroupsCount(groups);
+    }
+    catch {}
+
+    try {
+      var requests = (await axios.get('/api/user/requests_count')).data;
+      setRequestsCount(requests);
+    }
+    catch {}
+
+    try {
+      var notifs = (await axios.get('/api/user/unread_notif_count')).data;
+      setNotifCount(notifs);
+    }
+    catch {}
+    
+  };
   
   useEffect(() => {
     async function fetchData() {
       
-      var groups = (await axios.get('/api/user/groups_count')).data;
-      setGroupsCount(groups);
+      getBadgeCounts();
+      setInterval(getBadgeCounts, 1000 * 60 * 2);
 
-      var requests = (await axios.get('/api/user/requests_count')).data;
-      setRequestsCount(requests);
-
-      var notifs = (await axios.get('/api/user/unread_notif_count')).data;
-      setNotifCount(notifs);
     }
     fetchData();
   });

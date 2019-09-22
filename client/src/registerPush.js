@@ -1,4 +1,6 @@
 
+const vapidPublicKey = 'BIYJJ-lY0hhaZserfasQL6RwXSNSP8KB5Qc662MwUEDqH-d6u6VQZi5O4IhrN8WFJ9FTvBiwNCaD1DxHaUODepE';
+
 const convertedVapidKey = urlBase64ToUint8Array(vapidPublicKey)
 
 function urlBase64ToUint8Array(base64String) {
