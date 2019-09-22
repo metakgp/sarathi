@@ -38,8 +38,8 @@ passport.deserializeUser((fb_id, done) => {
 });
 
 passport.use(new fbStrategy({
-  clientID: config.appId,
-  clientSecret: config.appSecret,
+  clientID: process.env.appId || config.appId,
+  clientSecret: process.env.appSecret || config.appSecret,
   callbackURL: config.callbackUrl,
   profileURL: config.profileURL,
   profileFields: config.profileFields,
@@ -76,8 +76,8 @@ passport.use(new fbStrategy({
 
 webpush.setVapidDetails(
   'mailto:aribalam64@gmail.com',
-  config.publicKey,
-  config.privateKey
+  process.env.publicKey || config.publicKey,
+  process.env.privateKey || config.privateKey
 );
 
 
