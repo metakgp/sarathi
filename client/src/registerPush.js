@@ -1,5 +1,5 @@
 
-const vapidPublicKey = process.env.REACT_APP_PUBLICKEY || 'BJ4RjqhLUXJEPL5-hBaA0oLoVdp7OC1SAcbjh4oYkqX0iercg40kmO8D2Z4RpRgnMJG2JJq54TMFLObT4dP0Rvg';
+const vapidPublicKey = 'BIYJJ-lY0hhaZserfasQL6RwXSNSP8KB5Qc662MwUEDqH-d6u6VQZi5O4IhrN8WFJ9FTvBiwNCaD1DxHaUODepE';
 
 const convertedVapidKey = urlBase64ToUint8Array(vapidPublicKey)
 
