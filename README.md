@@ -1,5 +1,5 @@
 
-# [TravelKGP](https://sarathi-kgp.herokuapp.com/)
+# [Sarathi](https://sarathi-kgp.herokuapp.com/)
 
 <h5 align="center">
 <img src="https://github.com/aribalam/TravelKGP/blob/master/logo.png"/>
