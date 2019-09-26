@@ -72,7 +72,7 @@ export default function NavigationBar() {
     <AppBar id='appBar'>
         <Toolbar>
           <Link variant='h4' color='inherit' underline='none' style={{flexGrow: 1}} href='/'>
-            Travel KGP
+            Sarathi
           </Link>
           { matches ?
               <IconButton edge="start" color="inherit" aria-label="Menu" onClick={openDrawer}>

@@ -69,11 +69,11 @@ export default class LoginPage extends Component {
                     backgroundColor: 'white',
                     }}>
                     <Grid item style={{paddingBottom: 40}}>
-                        <Typography variant='h3' align='center'>Travel KGP</Typography>
+                        <Typography variant='h3' align='center'>Sarathi</Typography>
                         <Typography 
                         variant='subtitle1' 
                         color='textSecondary'
-                        align='center'>For sharing is caring :)</Typography> 
+                        align='center'>The Charioteer for KGP</Typography> 
                     </Grid>
                     <Grid item style={{paddingTop: 40}}>
                         <a href="https://sarathi-kgp.herokuapp.com/api/auth/facebook"
