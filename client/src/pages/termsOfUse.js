@@ -8,7 +8,7 @@ export default function termsOfUse(props) {
             <p>Last updated: June 23, 2019</p>
 
 
-            <p>Please read these Terms of Service ("Terms", "Terms of Service") carefully before using the https://travelkgp.herokuapp.com/ website (the "Service") operated by TravelKGP ("us", "we", or "our").</p>
+            <p>Please read these Terms of Service ("Terms", "Terms of Service") carefully before using the https://sarathi-kgp.herokuapp.com/ website (the "Service") operated by TravelKGP ("us", "we", or "our").</p>
 
             <p>Your access to and use of the Service is conditioned on your acceptance of and compliance with these Terms. These Terms apply to all visitors, users and others who access or use the Service.</p>
 

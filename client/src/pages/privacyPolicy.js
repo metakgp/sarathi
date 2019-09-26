@@ -7,17 +7,17 @@ export default function privacyPolicy(props) {
 
             <p>Effective date: June 23, 2019</p>
 
-            <p>Travel KGP ("us", "we", or "our") operates the https://travelkgp.herokuapp.com/ website (hereinafter referred to as the "Service").</p>
+            <p>Travel KGP ("us", "we", or "our") operates the https://sarathi-kgp.herokuapp.com/ website (hereinafter referred to as the "Service").</p>
 
             <p>This page informs you of our policies regarding the collection, use, and disclosure of personal data when you use our Service and the choices you have associated with that data. The Privacy Policy  for Travel KGP has been created with the help of <a href="https://www.termsfeed.com/">TermsFeed</a>.</p>
 
-            <p>We use your data to provide and improve the Service. By using the Service, you agree to the collection and use of information in accordance with this policy. Unless otherwise defined in this Privacy Policy, the terms used in this Privacy Policy have the same meanings as in our Terms and Conditions, accessible from https://travelkgp.herokuapp.com/</p>
+            <p>We use your data to provide and improve the Service. By using the Service, you agree to the collection and use of information in accordance with this policy. Unless otherwise defined in this Privacy Policy, the terms used in this Privacy Policy have the same meanings as in our Terms and Conditions, accessible from https://sarathi-kgp.herokuapp.com/</p>
 
             <h2>Definitions</h2>
             <ul>
                 <li>
                     <p><strong>Service</strong></p>
-                            <p>Service is the https://travelkgp.herokuapp.com/ website operated by Travel KGP</p>
+                            <p>Service is the https://sarathi-kgp.herokuapp.com/ website operated by Travel KGP</p>
                         </li>
                 <li>
                     <p><strong>Personal Data</strong></p>
