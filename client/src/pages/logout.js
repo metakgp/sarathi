@@ -13,7 +13,12 @@ export default class Logout extends Component {
 
         // unregister push manager and logout
         unregisterPushManager()
-        .then(() => fetch('/api/auth/logout'))
+        .then(() => {
+            fetch('/api/auth/logout');
+            
+            // remove web token
+            window.localStorage.removeItem('auth-token');
+        })
         .then(res => this.setState({loading: false}))
         .catch(err => this.setState({loading: false}));
 

@@ -11,6 +11,7 @@ var webpush = require('web-push');
 var cors = require('cors');
 var axios = require('axios');
 var fs = require('fs');
+var jwt = require('jsonwebtoken');
 
 var groupRouter = require('./routes/group');
 var authRouter = require('./routes/auth');
@@ -114,22 +115,32 @@ app.use(express.static(path.join(__dirname, 'public'), options));
 if (process.env.NODE_ENV === 'production')
   app.use(express.static('client/build'));
 
-// function isLoggedIn(req, res, next) {
-//   if  (req.path === '/api/auth/login' || req.isAuthenticated())
-//     return next();
-//   res.sendStatus(403);
-// }
-
-// app.use(isLoggedIn);
-
 app.use('/api/auth', authRouter);
+
+app.use('/', staticPageRouter);
+
+// Middleware to decode jwt token received and attach it to the request
+app.use((req, res, next) => {
+
+  var token = req.headers['authorization'];
+
+  jwt.verify(token, process.env.jwtSecret || 'thisismysecret', (err, userData) => {
+    if (err) {
+      console.log(err);
+      res.sendStatus(403);
+    }
+    else {
+      req.user = userData;
+      next();
+    }
+  });
+  
+});
+
 app.use('/api/group', groupRouter);
 app.use('/api/user', userRouter);
 app.use('/api/request', requestsRouter);
 app.use('/api', indexRouter);
-
-
-app.use('/', staticPageRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
