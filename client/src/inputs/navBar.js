@@ -68,7 +68,7 @@ export default function NavigationBar() {
   });
   
   return (
-    <div style={{flexGrow: 1}}>
+    <div style={{flexGrow: 1}} id="navbar">
     <AppBar id='appBar'>
         <Toolbar>
           <Link variant='h4' color='inherit' underline='none' style={{flexGrow: 1}} href='/'>
