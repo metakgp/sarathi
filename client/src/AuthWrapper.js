@@ -13,7 +13,7 @@ export default function withAuth(ComponentToProtect) {
     }
 
     componentDidMount() {
-      axios.get('/api/auth/status')
+      axios.get('https://sarathi-kgp.herokuapp.com/api/auth/status')
         .then(res => {
           if (res.status === 200) {
             this.setState({ loading: false });
