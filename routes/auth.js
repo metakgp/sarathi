@@ -30,6 +30,22 @@ router.get('/login', (req, res) => {
   res.render('login.ejs', {user: req.user});
 });
 
+router.get('/status', (req, res) => {
+
+  console.log(req.user);
+
+  const token = req.headers['authorization'];
+  if (!token)
+    res.sendStatus(403);
+  
+  jwt.verify(token, process.env.jwtSecret || 'thisismysecret', (err, decoded) => {
+    if (err)
+      res.sendStatus(403);
+    else 
+      res.sendStatus(200);
+  })
+});
+
 
 
 module.exports = router;
