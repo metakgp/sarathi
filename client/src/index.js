@@ -10,13 +10,11 @@ import { join } from 'path';
 //import { BrowserRouter as Router,Route } from 'react-router-dom';
 // import { BrowserRouter, Route, Redirect } from 'react-router-dom'
 
-axios.interceptors.request.use((config) => {
-    config.url = join('https://sarathi-api.herokuapp.com', config.url);
-    return config;
-});
-
 // Set interceptors to add authorization headers
 axios.interceptors.request.use((config) => {
+
+    config.url = join('https://sarathi-api.herokuapp.com', config.url);
+
     var token = window.localStorage.getItem('auth-token');
     if (token)
         config.headers.authorization = token;
