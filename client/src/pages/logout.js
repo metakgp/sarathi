@@ -14,15 +14,19 @@ export default class Logout extends Component {
 
         // unregister push manager and logout
         unregisterPushManager()
-        .then(() => {
+        .then(() => axios.get('/api/auth/logout'))
+        .then(res => {
+            this.setState({loading: false});
+
+            // Remove token from local storage
+            window.localStorage.removeItem('auth-token');
+        })
+        .catch(err =>  {
+            this.setState({loading: false});
             
             // Remove token from local storage
             window.localStorage.removeItem('auth-token');
-            return axios.get('/api/auth/logout')
-        
-        })
-        .then(res => this.setState({loading: false}))
-        .catch(err => this.setState({loading: false}));
+        });
 
     }
 
