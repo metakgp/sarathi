@@ -56,16 +56,23 @@ export default function NavigationBar() {
     catch {}
     
   };
+
+  var badgeInterval = null;
   
   useEffect(() => {
     async function fetchData() {
-      
+
       getBadgeCounts();
-      // setInterval(getBadgeCounts, 1000 * 60 * 2);
+      badgeInterval = setInterval(getBadgeCounts, 1000 * 60 * 2);
 
     }
     fetchData();
-  });
+
+    return () => {
+      clearInterval(badgeInterval);
+    }
+
+  }, []);
   
   return (
     <div style={{flexGrow: 1}}>
