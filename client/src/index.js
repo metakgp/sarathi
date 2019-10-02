@@ -19,7 +19,7 @@ axios.interceptors.request.use((config) => {
     if (token)
         config.headers['Authorization'] = token;
     else
-        config.headers['Authorization'] = undefined;
+        config.headers['Authorization'] = null;
 
     return config;
 })
