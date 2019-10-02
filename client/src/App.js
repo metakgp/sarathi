@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+
 import Search from './pages/search'
 import Groups from './pages/groups'
 import Notifs from './pages/notifs'
@@ -7,11 +8,18 @@ import LoginPage from './pages/login'
 import Logout from './pages/logout'
 import privacyPolicy from './pages/privacyPolicy';
 import termsOfUse from './pages/termsOfUse';
-import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
-import withAuth from './AuthWrapper';
 import InvalidPage from './pages/invalidPage';
 
+import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
+import withAuth from './AuthWrapper';
+
 function LoginRedirector(props) {
+
+    // get web tokens and store it in local storage
+    const token = props.location.search.slice(1);
+    window.localStorage.setItem('auth-token', token);
+
+    // get redirection URL from local storage
     const redirectUrl = window.localStorage.getItem('redirectUrl');
     window.localStorage.removeItem('redirectUrl');
     return (
