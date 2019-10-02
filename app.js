@@ -15,7 +15,7 @@ const options = {
 // Include the build folder when in production
 if (process.env.NODE_ENV === 'production') {
 
-  app.use(express.static('client/build'), options);
+  app.use(express.static(path.join(__dirname, 'client/build')), options);
   router.use((req, res) => {
     res.sendFile(path.join(__dirname, './client/build/index.html'));
   });
