@@ -1,5 +1,6 @@
+import axios from 'axios'
 
-const vapidPublicKey = 'BIYJJ-lY0hhaZserfasQL6RwXSNSP8KB5Qc662MwUEDqH-d6u6VQZi5O4IhrN8WFJ9FTvBiwNCaD1DxHaUODepE';
+const vapidPublicKey = 'BDb8gE0qzhD68AYTCdqGN3hBMgvgDR_n67_LMmwCQVHmuLN9ACtCxsJF0vhJFvTvBU9AMBT6H4-4BeTJahUWR3A';
 
 const convertedVapidKey = urlBase64ToUint8Array(vapidPublicKey)
 
@@ -17,9 +18,10 @@ function urlBase64ToUint8Array(base64String) {
 }
 
 function subscribeUser(pushSubscription) {
-    return fetch('/api/subscribe', {
+    return axios({
+        url: '/api/subscribe',
         method: 'POST',
-        body: JSON.stringify(pushSubscription),
+        data: JSON.stringify(pushSubscription),
         headers: {
             'content-type': 'application/json',
         },
@@ -27,9 +29,10 @@ function subscribeUser(pushSubscription) {
 }
 
 function unsubscribeUser(pushSubscription) {
-    return fetch('/api/unsubscribe', {
+    return axios({
+        url: '/api/unsubscribe',
         method: 'POST',
-        body: JSON.stringify(pushSubscription),
+        data: JSON.stringify(pushSubscription),
         headers: {
             'content-type': 'application/json',
         },
