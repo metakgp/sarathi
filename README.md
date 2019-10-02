@@ -1,90 +1,68 @@
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-# [Sarathi](https://sarathi-kgp.herokuapp.com/)
+## Available Scripts
 
-<h5 align="center">
-<img src="https://github.com/aribalam/TravelKGP/blob/master/logo.png"/>
-</h5>
+In the project directory, you can run:
 
-TravelKGP is a progressive web application intended to connect a group of people taking the same journey at the same time for sharing cabs.
+### `npm start`
 
-Maintained by [Arib Alam](https://www.github.com/aribalam)
+Runs the app in the development mode.<br>
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-## Motivation
-IIT Kharagpur has a facebook page named [Travel KGP!](https://www.facebook.com/groups/1808688549401165/) where students would post their journey details with a prospect of finding other students with similar journey to share rides. The process however was quite disorganized due to the following reasons
+The page will reload if you make edits.<br>
+You will also see any lint errors in the console.
 
-1. The users were unable to search for posts matching with their travel timings. The only way was to scroll through all posts and look for the required one.
-2. The above point would lead to multiple posts for the same journey.
-3. There was no way to know whether the creator of the post is still open to accepting people without commenting on their posts asking about the status.
+### `npm test`
 
-TravelKGP Web app aims at solving all the above problems by - 
-1. Letting users search for groups matching their journey details as well have the option of creating a new one.
-2. Having a well defined procedure of joining groups through sending requests to its creators.
-3. Creating an option for changing the status of the group between open/closed to allow/deny users to join the group.
-4. Implementing push notifications to notify user regarding updates of their joined/created groups.
+Launches the test runner in the interactive watch mode.<br>
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-## Technology Stack
-<b>Backend:</b> NodeJS using the Express framework <br>
-<b>Database:</b> MongoDB connected to backend using mongoose driver <br>
-<b>Frontend:</b> ReactJS
+### `npm run build`
 
-## Features
-1. Searching for groups matched by the journey details entered by the user
+Builds the app for production to the `build` folder.<br>
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-![Demo](https://github.com/aribalam/TravelKGP/blob/assets/group_search.gif)
+The build is minified and the filenames include the hashes.<br>
+Your app is ready to be deployed!
 
-2. Creating a group for a given journey
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-![Demo](https://github.com/aribalam/TravelKGP/blob/assets/create_group.gif)
+### `npm run eject`
 
-3. Approving or rejecting requests by a user to join a group
+**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-![Demo](https://github.com/aribalam/TravelKGP/blob/assets/approve_request.gif)
+If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-4. Changing the status or the departure time of the group by the creator
+Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
-![Demo](https://github.com/aribalam/TravelKGP/blob/assets/change_status.gif)
+You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-5. Reading notifications recieved regarding updates of the group
+## Learn More
 
-![Demo](https://github.com/aribalam/TravelKGP/blob/assets/notifications.gif)
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-## Installation
+To learn React, check out the [React documentation](https://reactjs.org/).
 
-<b>Make sure MongoDB is installed and its running in your machine.</b>
+### Code Splitting
 
-1. Clone the repository and switch to `develop` branch<br>
-`git clone https://github.com/aribalam/TravelKGP.git`<br>
-`git checkout develop`
+This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
 
-2. Install dependencies <br>
-`cd TravelKGP` <br>
-`npm install` <br>
-`cd client && npm install`
+### Analyzing the Bundle Size
 
-3. Create a new Facebook developer app. Find the procedure [here](https://developers.facebook.com/docs/apps/).
+This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
 
-4. Generate webpush VAPID keys and copy the private and public keys<br>
-`./node_modules/.bin/web-push generate-vapid-keys`
+### Making a Progressive Web App
 
-5. Add the following properties to `config.js` in the root directory
-```
-{
-  ...
-  appId: <your-facebook-app-id>
-  appSecret: <your-facebook-app-secret>
-  publicKey: <webpush-generated-public-keys>
-  privateKey: <web-push-generated-private-keys>
-}
-```
+This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
 
-6. Add your webpush public key in `client/src/registerPush.js`<br>
-`const vapidPublicKey = <webpush-generated-public-key>`
+### Advanced Configuration
 
-7. Launch the servers. <br>
-`DEBUG=api:* npm start`<br>
-`cd client and npm start`
+This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
 
-The development server will be hosted in `http://localhost:3000/`<br>
-The api server will be hosted in `http://localhost:5000/api/`
+### Deployment
 
+This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
 
+### `npm run build` fails to minify
+
+This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
