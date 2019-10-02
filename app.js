@@ -45,7 +45,7 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500).send(err);
 });
 
-const port = process.env.port || 8000;
+const port = process.env.PORT || 8000;
 
 app.listen(port);
 
