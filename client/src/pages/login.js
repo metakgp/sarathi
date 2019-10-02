@@ -76,7 +76,7 @@ export default class LoginPage extends Component {
                         align='center'>The Charioteer for KGP</Typography> 
                     </Grid>
                     <Grid item style={{paddingTop: 40}}>
-                        <a href="http://sarathi.metakgp.org/api/auth/facebook"
+                        <a href="https://sarathi-api.herokuapp.com/api/auth/facebook"
                         style={{
                             backgroundColor: '#3B5998',
                             color: 'white',
