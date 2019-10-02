@@ -61,8 +61,8 @@ export default function NavigationBar() {
     async function fetchData() {
       
       getBadgeCounts();
-      setInterval(getBadgeCounts, 1000 * 60 * 2);
-
+      // setInterval(getBadgeCounts, 1000 * 60 * 2);
+      
     }
     fetchData();
   });
