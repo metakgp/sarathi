@@ -4,9 +4,25 @@ import Navbar from './inputs/navBar'
 import * as serviceWorker from './serviceWorker';
 import App from './App';
 import Footer from './displays/footer'
+import axios from 'axios'
+import { join } from 'path';
 //import { BrowserRouter as Router,Route } from 'react-router-dom';
 // import { BrowserRouter, Route, Redirect } from 'react-router-dom'
 
+axios.interceptors.request.use((config) => {
+
+    if (process.env.NODE_ENV === 'production') {
+        config.baseURL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000'
+    }
+
+    const token = window.localStorage.getItem('auth-token');
+    if (token)
+        config.headers['Authorization'] = token;
+    else
+        config.headers['Authorization'] = null;
+
+    return config;
+})
 
 ReactDOM.render(<Navbar />, document.getElementById('navbar'));
 ReactDOM.render(<App />, document.getElementById('root'));
