@@ -53,8 +53,8 @@ export default class LoginPage extends Component {
                 flexDirection: 'column', 
                 justifyContent: 'center', 
                 alignItems: 'center',
-                backgroundImage: "url('/images/background.jpg')",
-                backgroundPosition: '50% 50%',
+                backgroundImage: "url('/background.jpg')",
+                backgroundSize: 'cover',
             }}>
                 {this.state.errorMessage ? <Typography variant='h6' color='error'>{this.state.errorMessage}</Typography> : ''}
                 <Grid container 
@@ -76,7 +76,7 @@ export default class LoginPage extends Component {
                         align='center'>The Charioteer for KGP</Typography> 
                     </Grid>
                     <Grid item style={{paddingTop: 40}}>
-                        <a href="http://sarathi.metakgp.org/api/auth/facebook"
+                        <a href="http://localhost:5000/api/auth/facebook"
                         style={{
                             backgroundColor: '#3B5998',
                             color: 'white',
