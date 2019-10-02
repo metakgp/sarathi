@@ -99,8 +99,6 @@ class Search extends Component{
             }
         })
         .then((res) => {
-            console.log(res.data);
-            console.log(res.data.paging.next);
             var result = res.data.data;
             this.setState({dataCards: result, nextUrl: res.data.paging.next});
             this.collapseSearchPanel();
@@ -119,7 +117,6 @@ class Search extends Component{
             time: this.state.time,
             groupId: groupId,
         }).then((res) => {
-            console.log(res.data);
             var newArray = [...this.state.dataCards];
             newArray[index].status = 'request_sent';
             this.setState({dataCards: newArray, disableAction: false});
