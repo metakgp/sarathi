@@ -60,18 +60,23 @@ export function registerPushManager() {
 }
 
 export function unregisterPushManager() {
-    return navigator.serviceWorker.ready
-    .then(registration => {
-        
-        return registration.pushManager.getSubscription()
-        .then(subscription => {
+    if ('serviceWorker' in navigator) {
+        return navigator.serviceWorker.ready
+        .then(registration => {
+            
+            return registration.pushManager.getSubscription()
+            .then(subscription => {
 
-            return subscription.unsubscribe()
-            .then(() => unsubscribeUser(subscription))
+                return subscription.unsubscribe()
+                .then(() => unsubscribeUser(subscription))
+                .catch(err => console.log(err));
+
+            })
             .catch(err => console.log(err));
 
-        })
-        .catch(err => console.log(err));
-
-    })
+        });
+    }
+    else {
+        return Promise.reject('No service worker present');
+    }
 }
