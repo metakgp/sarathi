@@ -69,14 +69,14 @@ export default class LoginPage extends Component {
                     backgroundColor: 'white',
                     }}>
                     <Grid item style={{paddingBottom: 40}}>
-                        <Typography variant='h3' align='center'>Travel KGP</Typography>
+                        <Typography variant='h3' align='center'>Sarathi</Typography>
                         <Typography 
                         variant='subtitle1' 
                         color='textSecondary'
-                        align='center'>For sharing is caring :)</Typography> 
+                        align='center'>The Charioteer for KGP</Typography> 
                     </Grid>
                     <Grid item style={{paddingTop: 40}}>
-                        <a href="http://localhost:5000/api/auth/facebook"
+                        <a href="http://sarathi.metakgp.org/api/auth/facebook"
                         style={{
                             backgroundColor: '#3B5998',
                             color: 'white',

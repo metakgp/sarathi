@@ -10,7 +10,7 @@ router.get('/facebook', passport.authenticate("facebook"));
 // params - state-param : unique code to prevent csrf
 // 
 router.get('/facebook/callback', passport.authenticate("facebook", {
-  failureRedirect: 'http://localhost:3000/login',
+  failureRedirect: 'http://sarathi.metakgp.org/login',
   session: false
 }), (req, res) => {
 
@@ -18,7 +18,7 @@ router.get('/facebook/callback', passport.authenticate("facebook", {
   var token = jwt.sign({fb_id: req.user.fb_id}, process.env.jwtSecret || 'thisismysecret', {expiresIn: '1h'});
 
   // redirect to success page with token as url parameter
-  res.redirect('http://localhost:3000/loginRedirect?' + token);
+  res.redirect('http://sarathi.metakgp.org/loginRedirect?' + token);
 });
 
 router.get('/logout', (req, res) => {
