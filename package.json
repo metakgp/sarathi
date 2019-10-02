@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node app.js",
-    "heroku-postbuild": "cd client && npm install && npm run build"
+    "heroku-postbuild": "cd client && npm install && REACT_APP_API_BASE_URL=https://sarathi-api.herokuapp.com npm run build"
   },
   "dependencies": {
     "axios": "^0.19.0",
