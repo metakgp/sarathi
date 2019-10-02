@@ -12,7 +12,12 @@ import withAuth from './AuthWrapper';
 import InvalidPage from './pages/invalidPage';
 
 function LoginRedirector(props) {
+    
     const redirectUrl = window.localStorage.getItem('redirectUrl');
+
+    const token = props.location.search.slice(1);
+    window.localStorage.setItem('auth-token', token);
+    
     window.localStorage.removeItem('redirectUrl');
     return (
         <Redirect to={redirectUrl ? redirectUrl : '/'} />
