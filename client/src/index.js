@@ -12,7 +12,7 @@ import { join } from 'path';
 axios.interceptors.request.use((config) => {
 
     if (process.env.NODE_ENV === 'production') {
-        config.baseURL = 'http://localhost:5000'
+        config.baseURL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000'
     }
 
     const token = window.localStorage.getItem('auth-token');
