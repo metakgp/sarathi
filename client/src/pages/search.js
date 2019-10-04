@@ -7,6 +7,7 @@ import AddIcon from '@material-ui/icons/Add'
 import LinkIcon from '@material-ui/icons/Link'
 import CreateGroupDialog from '../displays/CreateGroupDialog'
 import AddLinkDialog from '../displays/addLinkDialog'
+import InfoDialog from '../displays/infoDialog';
 import moment from 'moment'
 import EmptyMessage from '../displays/emptyMessage';
 import SearchPanel from '../inputs/searchPanel';
@@ -33,6 +34,7 @@ class Search extends Component{
             navBarHeight: 0,
             showCreateGroupDialog: false,
             showAddLinkDialog: false,
+            showInfoDialog: false,
             snackBarMessage: undefined,
             disableAction: false,
             nextUrl: undefined,
@@ -204,6 +206,25 @@ class Search extends Component{
 
     closeAddLinkDialog = () => {
         this.setState({showAddLinkDialog: false});
+        axios.get('/api/user/get_info_shown')
+        .then(res => {
+            if (!res.data)
+                this.openInfoDialog();
+        });
+    }
+
+    openInfoDialog = () => {
+        this.setState({showInfoDialog: true});
+    }
+
+    closeInfoDialog = () => {
+        this.setState({showInfoDialog: false});
+        axios.post("/api/user/set_info_shown", {
+            value: true,
+        })
+        .catch(() => {
+            this.setState({snackBarMessage: networkErrorMessage});
+        });
     }
 
     collapseSearchPanel = () => {
@@ -298,6 +319,10 @@ class Search extends Component{
             initialValues={{from: this.state.fromPlace, to: this.state.toPlace, time: this.state.time}}   
             onSubmit={this.createGroup}
             />
+            <InfoDialog 
+            open={this.state.showInfoDialog}
+            onClose={this.closeInfoDialog}
+            />  
             <AddLinkDialog 
             open={this.state.showAddLinkDialog}
             onClose={this.closeAddLinkDialog}
