@@ -29,6 +29,7 @@
     "react-scripts": "2.1.8",
     "redux": "^4.0.4",
     "redux-devtools-extension": "^2.13.8",
+    "redux-starter-kit": "^0.7.0",
     "redux-thunk": "^2.3.0",
     "sass-loader": "^7.1.0",
     "style-loader": "^0.23.1",
