@@ -1,15 +1,28 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import store from './store';
+import { ConnectedRouter } from 'connected-react-router';
+import history from './utils/history';
 import Navbar from './inputs/navBar'
 import * as serviceWorker from './serviceWorker';
 import App from './App';
 import Footer from './displays/footer'
-//import { BrowserRouter as Router,Route } from 'react-router-dom';
-// import { BrowserRouter, Route, Redirect } from 'react-router-dom'
 
+ReactDOM.render(
+    <Provider store={store}>
+        <Navbar />
+    </Provider>,
+    document.getElementById('navbar'));
 
-ReactDOM.render(<Navbar />, document.getElementById('navbar'));
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(
+    <Provider store={store}>
+        <ConnectedRouter history={history}>
+            <App />
+        </ConnectedRouter>
+    </Provider>,
+    document.getElementById('root'));
+
 ReactDOM.render(<Footer />, document.getElementById('footer_container'));
 
 // If you want your app to work offline and load faster, you can change

@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import '../styles/App.scss';
 import { Typography, Grid } from '@material-ui/core';
 
-export default class LoginPage extends Component {
+class LoginPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -14,13 +15,14 @@ export default class LoginPage extends Component {
     }
 
     componentDidMount() {
-        // saving the previous url to local storage and receiving any error messages associated with it
+        /* // saving the previous url to local storage and receiving any error messages associated with it
+        console.log(this.props);
         const {from, message} = this.props.location.state || {from: {pathname: '/' }};
         if (from) {
             const pathname = from.pathname;
             window.localStorage.setItem('redirectUrl', pathname);
         }
-        this.setState({errorMessage: message});
+        this.setState({errorMessage: message}); */
 
         // removing navbar element and moving the main content div to top
         var bar = document.getElementById('navbar');
@@ -95,3 +97,8 @@ export default class LoginPage extends Component {
         );
     }
 }   
+
+export default connect(
+    null,
+    null
+)(LoginPage);

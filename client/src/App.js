@@ -1,44 +1,56 @@
-import React, {Component} from 'react';
-import Search from './pages/search'
-import Groups from './pages/groups'
-import Notifs from './pages/notifs'
-import Requests from './pages/requests'
-import LoginPage from './pages/login'
-import Logout from './pages/logout'
-import privacyPolicy from './pages/privacyPolicy';
-import termsOfUse from './pages/termsOfUse';
-import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
-import withAuth from './AuthWrapper';
+import React, { PureComponent } from 'react';
+import { withRouter, Switch, Route } from 'react-router-dom';
+import { ConnectedRouter } from 'connected-react-router';
+import { connect } from 'react-redux';
+import routes from './routes';
+import { getMe, getRouteMatch } from './store/selectors.js';
+import { checkLogin, fetchInitData } from './store/thunks';
 import InvalidPage from './pages/invalidPage';
 
-function LoginRedirector(props) {
-    const redirectUrl = window.localStorage.getItem('redirectUrl');
-    window.localStorage.removeItem('redirectUrl');
-    return (
-        <Redirect to={redirectUrl ? redirectUrl : '/'} />
-    )
-}
+const mapStateToProps = (state) => ({
+    // loader: getLoader(state),
+    isLoggedIn: !!getMe(state),
+    route: getRouteMatch(state),
+  });
 
-class App extends Component {
+const mapDispatchToProps = { checkLogin, fetchInitData };
+
+class App extends PureComponent {
+    componentDidMount() {
+        console.log('mount');
+        this.props.fetchInitData();
+    }
+
+    renderRoute = (props) => {
+        const { isLoggedIn } = this.props;
+        const path = props.match.path;
+        const route = routes.find(route => route.path === path);
+        if (!route) return null;
+        window.scrollTo(0, 0);
+        const { auth, component: Component } = route;
+        // We do not provide props to component, because
+        // props.match is never the same object as previously
+        // and causes a render every time...
+        return auth && !isLoggedIn ? null : <Component />;
+    };
 
     render() {
         return (
-            <BrowserRouter>
+            <ConnectedRouter history={this.props.history}>
                 <Switch>
-                    <Route path = '/login' component={LoginPage} />
-                    <Route path = '/logout' component={Logout} />
-                    <Route exact path="/" component={withAuth(Search)} />
-                    <Route path ="/groups" component={withAuth(Groups)} />
-                    <Route path='/requests' component={withAuth(Requests)} />
-                    <Route path="/notifs" component={withAuth(Notifs)} />
-                    <Route path='/loginRedirect' component={LoginRedirector} />
-                    <Route path='/privacyPolicy' component={privacyPolicy} />
-                    <Route path='/termsOfUse' component={termsOfUse} />
+                    {routes.map(({ path, exact }) => (
+                        <Route key={path} path={path} exact={exact} render={this.renderRoute} />
+                    ))}
                     <Route component={InvalidPage} />
                 </Switch>
-            </BrowserRouter>
+            </ConnectedRouter>
         )
     }
 }
 
-export default App;
+export default withRouter(
+    connect(
+        mapStateToProps,
+        mapDispatchToProps
+    )(App)
+);

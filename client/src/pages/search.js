@@ -11,7 +11,7 @@ import moment from 'moment'
 import EmptyMessage from '../displays/emptyMessage';
 import SearchPanel from '../inputs/searchPanel';
 
-import {registerPushManager} from '../registerPush';
+import {registerPushManager} from '../utils/registerPush';
 import { Snackbar, Typography, Link } from '@material-ui/core';
 import Footer from '../displays/footer';
 

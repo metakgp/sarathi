@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {Redirect} from 'react-router-dom';
 
-import {unregisterPushManager} from '../registerPush';
+import {unregisterPushManager} from '../utils/registerPush';
 
 export default class Logout extends Component {
 
