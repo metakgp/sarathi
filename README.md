@@ -5,7 +5,7 @@
 <img src="https://github.com/aribalam/TravelKGP/blob/master/logo.png"/>
 </h5>
 
-TravelKGP is a progressive web application intended to connect a group of people taking the same journey at the same time for sharing cabs.
+Sarathi is a progressive web application intended to connect a group of people taking the same journey at the same time for sharing cabs.
 
 Maintained by [Arib Alam](https://www.github.com/aribalam)
 
@@ -16,7 +16,7 @@ IIT Kharagpur has a facebook page named [Travel KGP!](https://www.facebook.com/g
 2. The above point would lead to multiple posts for the same journey.
 3. There was no way to know whether the creator of the post is still open to accepting people without commenting on their posts asking about the status.
 
-TravelKGP Web app aims at solving all the above problems by - 
+Sarathi Web app aims at solving all the above problems by - 
 1. Letting users search for groups matching their journey details as well have the option of creating a new one.
 2. Having a well defined procedure of joining groups through sending requests to its creators.
 3. Creating an option for changing the status of the group between open/closed to allow/deny users to join the group.
@@ -53,11 +53,11 @@ TravelKGP Web app aims at solving all the above problems by -
 <b>Make sure MongoDB is installed and its running in your machine.</b>
 
 1. Clone the repository and switch to `develop` branch<br>
-`git clone https://github.com/aribalam/TravelKGP.git`<br>
+`git clone https://github.com/aribalam/sarathi.git`<br>
 `git checkout develop`
 
 2. Install dependencies <br>
-`cd TravelKGP` <br>
+`cd sarathi` <br>
 `npm install` <br>
 `cd client && npm install`
 
