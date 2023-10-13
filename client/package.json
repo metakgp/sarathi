@@ -16,7 +16,7 @@
     "material-ui": "^0.20.2",
     "material-ui-pickers": "^2.2.4",
     "moment": "^2.24.0",
-    "node-sass": "^4.12.0",
+    "node-sass": "^7.0.0",
     "prop-types": "^15.7.2",
     "react": "^16.9.0-alpha.0",
     "react-datepicker": "^2.5.0",
